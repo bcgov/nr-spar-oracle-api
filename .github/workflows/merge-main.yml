@@ -29,7 +29,7 @@ jobs:
       - name: Initialize
         uses: github/codeql-action/init@v2
         with:
-          languages: javascript
+          languages: java
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
@@ -71,15 +71,7 @@ jobs:
 
       - name: Backend Tests
         run: |
-          cd frontend
-          npm ci
-          npm run test:cov
-
-      - name: Frontend Tests
-        run: |
-          cd frontend
-          npm ci
-          npm run test:cov
+          ./mvnw test -DfailIfNoTests=false
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -90,12 +82,13 @@ jobs:
           args: >
             -Dsonar.exclusions=**/test/**,.github/**/*
             -Dsonar.organization=bcgov-sonarcloud
-            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
-            -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
-            -Dsonar.project.monorepo.enabled=true
-            -Dsonar.projectKey=greenfield-template
-            -Dsonar.sources=backend,frontend
-            -Dsonar.tests=backend/test,frontend/test
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.cobertura.reportPaths=coverage/cobertura-coverage.xml
+            -Dsonar.project.monorepo.enabled=false
+            -Dsonar.projectKey=nr-frontend-starting-app
+            -Dsonar.sources=.
+            -Dsonar.tests=src/test
+
 
   # https://github.com/marketplace/actions/aqua-security-trivy
   trivy-backend:
@@ -239,6 +232,7 @@ jobs:
             oc delete po ${p}
           done
 
+
   zap-backend:
     name: Backend Pen Tests
     needs:
@@ -252,23 +246,6 @@ jobs:
         uses: zaproxy/action-full-scan@v0.3.0
         with:
           target: https://${{ env.NAME }}-test-backend.apps.silver.devops.gov.bc.ca/
-          cmd_options: "-a"
-          allow_issue_writing: false
-          fail_action: false
-
-  zap-frontend:
-    name: Frontend Pen Tests
-    needs:
-      - deploy-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.4.0
-        with:
-          target: https://${{ env.NAME }}-test-frontend.apps.silver.devops.gov.bc.ca/
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
