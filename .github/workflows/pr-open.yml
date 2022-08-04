@@ -13,7 +13,7 @@ jobs:
     outputs:
       build: ${{ steps.check.outputs.build }}
     env:
-      TRIGGERS: ('backend/')
+      TRIGGERS: ('./')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -41,15 +41,15 @@ jobs:
           done < <(git diff origin/main --name-only)
           echo "Container build not required"
 
-      - name: Recycle/retag PROD Image
-        if: steps.check.outputs.build != 'true'
-        uses: shrink/actions-docker-registry-tag@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          repository: ${{ github.repository }}
-          target: prod-backend
-          tags: |
-            ${{ github.event.number }}-backend
+#      - name: Recycle/retag PROD Image
+#        if: steps.check.outputs.build != 'true'
+#        uses: shrink/actions-docker-registry-tag@v2
+#        with:
+#          registry: ${{ env.REGISTRY }}
+#          repository: ${{ github.repository }}
+#          target: prod-backend
+#          tags: |
+#            ${{ github.event.number }}-backend
 
   build-backend:
     name: Backend Image Build
