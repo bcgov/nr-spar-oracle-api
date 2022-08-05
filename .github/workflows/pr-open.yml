@@ -124,8 +124,8 @@ jobs:
 
   sonarcloud:
     name: Static Analysis
-    needs: [build_backend, tests-backend]
-    if: always() && needs.build-backend.result == 'success'
+    needs: [build_backend, tests_backend]
+    if: always() && needs.build_backend.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -160,19 +160,19 @@ jobs:
           args: >
             -Dsonar.exclusions=**/test/**,.github/**/*
             -Dsonar.organization=bcgov-sonarcloud
-            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
-            -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
+            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info
+            -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=true
-            -Dsonar.projectKey=greenfield-template
-            -Dsonar.sources=backend,frontend
-            -Dsonar.tests=backend/test,frontend/test
+            -Dsonar.projectKey=nr-backend-starting-api
+            -Dsonar.sources=.
+            -Dsonar.tests=src/test
 
   deploy_dev:
     name: DEV Deployment
     needs:
-      - build-backend
-      - tests-backend
-    if: always() && needs.build-backend.result == 'success'
+      - build_backend
+      - tests_backend
+    if: always() && needs.build_backend.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -189,7 +189,7 @@ jobs:
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
 
           # Clean previous image, if rebuilding
-          if [ ${{ needs.build-backend.outputs.build == 'true' }} ]
+          if [ ${{ needs.build_backend.outputs.build == 'true' }} ]
           then
             # Clear stale images for import/replacement
             oc delete is ${{ env.NAME }}-${{ env.ZONE }}-backend || \
@@ -201,7 +201,7 @@ jobs:
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-backend | oc apply -f -
 
           # Clean previous image, if rebuilding
-          if [ ${{ needs.build-backend.outputs.build == 'true' }} ]
+          if [ ${{ needs.build_backend.outputs.build == 'true' }} ]
           then
             # Clear stale images for import/replacement
             oc delete is ${{ env.NAME }}-${{ env.ZONE }}-frontend || \
@@ -215,7 +215,6 @@ jobs:
           # Follow any active rollouts (see deploymentconfigs)
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-backend -w
-          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-frontend -w
 
       - name: DEV Deployment update
         uses: mshick/add-pr-comment@v1
@@ -227,4 +226,3 @@ jobs:
             DEV deployments have completed successfully!
 
             Backend: [https://${{ env.NAME }}-${{ github.event.number }}-backend.apps.silver.devops.gov.bc.ca/]()
-            Frontend: [https://${{ env.NAME }}-${{ github.event.number }}-frontend.apps.silver.devops.gov.bc.ca/]()
