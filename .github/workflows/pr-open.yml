@@ -8,7 +8,7 @@ env:
   NAME: gfp
 
 jobs:
-  check-backend:
+  check_backend:
     name: Check Backend
     outputs:
       build: ${{ steps.check.outputs.build }}
@@ -41,22 +41,10 @@ jobs:
           done < <(git diff origin/main --name-only)
           echo "Container build not required"
 
-#      - name: Recycle/retag PROD Image
-#        if: steps.check.outputs.build != 'true'
-#        uses: shrink/actions-docker-registry-tag@v2
-#        with:
-#          registry: ${{ env.REGISTRY }}
-#          repository: ${{ github.repository }}
-#          target: prod-backend
-#          tags: |
-#            ${{ github.event.number }}-backend
-
-  build-backend:
+  build_backend:
     name: Backend Image Build
     runs-on: ubuntu-latest
-    needs:
-      - check-backend
-    if: needs.check-backend.outputs.build == 'true'
+    needs: check_backend
     permissions:
       contents: read
       packages: write
@@ -91,12 +79,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  tests-backend:
+  tests_backend:
     name: Backend Unit Tests
     runs-on: ubuntu-latest
-    needs:
-      - check-backend
-    if: needs.check-backend.outputs.build == 'true'
+    needs: check_backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -138,9 +124,7 @@ jobs:
 
   sonarcloud:
     name: Static Analysis
-    needs:
-      - build-backend
-      - tests-backend
+    needs: [build_backend, tests-backend]
     if: always() && needs.build-backend.result == 'success'
     runs-on: ubuntu-latest
     steps:
@@ -183,7 +167,7 @@ jobs:
             -Dsonar.sources=backend,frontend
             -Dsonar.tests=backend/test,frontend/test
 
-  deploy-dev:
+  deploy_dev:
     name: DEV Deployment
     needs:
       - build-backend

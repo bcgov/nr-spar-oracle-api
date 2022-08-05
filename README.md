@@ -20,7 +20,7 @@ and deploy.
 
 - Java ecosystem
   - Open JDK 17
-  - Spring WebFlux Framework
+  - Spring WebFlux Framework with Reactor (reactive programming)
   - JPA and Hibernate Framework
   - JUnit 5
 - Database
