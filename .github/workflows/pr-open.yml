@@ -84,7 +84,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Tests
+      - uses: actions/setup-java@v3
+        name: Tests
         with:
           java-version: '17'
           distribution: 'adopt'
