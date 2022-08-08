@@ -57,6 +57,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
+
       - name: Build with Maven
         run: mvn --no-transfer-progress --update-snapshots package
 
@@ -68,13 +69,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Backend Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
-          context: ./
+          context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend,mode=max
 
   tests_backend:
     name: Backend Unit Tests
