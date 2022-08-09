@@ -74,8 +74,6 @@ jobs:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend,mode=max
 
   tests_backend:
     name: Backend Unit Tests
