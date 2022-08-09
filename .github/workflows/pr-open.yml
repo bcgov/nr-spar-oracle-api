@@ -129,7 +129,6 @@ jobs:
           args: >
             -Dsonar.exclusions=**/test/**,.github/**/*
             -Dsonar.organization=bcgov-sonarcloud
-#           -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info
             -Dsonar.cobertura.reportPaths=target/site/jacoco/jacoco.xml
             -Dsonar.project.monorepo.enabled=false
             -Dsonar.projectKey=nr-backend-starting-api
