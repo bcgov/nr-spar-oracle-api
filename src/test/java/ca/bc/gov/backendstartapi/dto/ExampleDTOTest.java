@@ -27,4 +27,35 @@ public class ExampleDTOTest {
         Assertions.assertEquals("Campos", dto.getLastName());
         Assertions.assertEquals("id: 2, firstName: 'Ricardo', lastName: 'Campos'", dto.getStringProps());
     }
+
+    @Test
+    public void getStringPropsTestThree() {
+        ExampleDTO dto = new ExampleDTO(2L, "Ricardo", "Campos");
+        final String dtoString = "ExampleDTO(id=2, firstName=Ricardo, lastName=Campos)";
+        final int hashCode = 33;
+
+        ExampleDTO dtoB = new ExampleDTO(3L, "Ricardo", "Campos");
+        final boolean bothEquals = dto.equals(dtoB);
+
+        Assertions.assertEquals(dtoString, dto.toString());
+        Assertions.assertEquals(hashCode, dto.hashCode());
+        Assertions.assertFalse(bothEquals);
+    }
+
+    @Test
+    public void getStringPropsTestFour() {
+        ExampleDTO dto = new ExampleDTO();
+        final String dtoString = "ExampleDTO(id=0, firstName=, lastName=)";
+        final int hashCode = 31;
+
+        ExampleDTO dtoB = new ExampleDTO();
+
+        Assertions.assertEquals(dtoString, dto.toString());
+        Assertions.assertEquals(hashCode, dto.hashCode());
+        Assertions.assertEquals(dto.getId(), 0L);
+        Assertions.assertEquals(dto.getFirstName(), "");
+        Assertions.assertEquals(dto.getLastName(), "");
+        Assertions.assertEquals(dto, dto);
+        Assertions.assertNotEquals(dto, null);
+    }
 }
