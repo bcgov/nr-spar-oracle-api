@@ -8,16 +8,16 @@ env:
   NAME: gfp
 
 jobs:
-  check_backend:
+  check-backend:
     name: Check Backend
     outputs:
       build: ${{ steps.check.outputs.build }}
     env:
-      TRIGGERS: ('./')
+      TRIGGERS: ('backend/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Check and process modified files
         id: check
@@ -41,25 +41,39 @@ jobs:
           done < <(git diff origin/main --name-only)
           echo "Container build not required"
 
-  build_backend:
+      - name: Recycle/retag PROD Image
+        if: steps.check.outputs.build != 'true'
+        uses: shrink/actions-docker-registry-tag@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          repository: ${{ github.repository }}
+          target: prod-backend
+          tags: |
+            ${{ github.event.number }}-backend
+
+  build-backend:
     name: Backend Image Build
     runs-on: ubuntu-latest
-    needs: check_backend
+    needs:
+      - check-backend
+    if: needs.check-backend.outputs.build == 'true'
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout repository and Setup JDK 17
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - uses: actions/setup-java@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
         with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Build with Maven
-        run: mvn --no-transfer-progress --update-snapshots package
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
@@ -69,44 +83,70 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Backend Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-backend
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-  tests_backend:
+  tests-backend:
     name: Backend Unit Tests
     runs-on: ubuntu-latest
-    needs: check_backend
+    needs:
+      - check-backend
+    if: needs.check-backend.outputs.build == 'true'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - uses: actions/setup-java@v3
+      - name: Get npm cache directory
+        id: npm-cache-dir-backend
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache-backend # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          path: ${{ steps.npm-cache-dir-backend.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache for test results
+        id: cache-backend
+        uses: actions/cache@v3
+        with:
+          path: backend/coverage
+          key: backend-coverage-${{ github.run_number }}
+          restore-keys: |
+            backend-coverage-
 
       - name: Tests
         run: |
-          mvn --no-transfer-progress test
+          cd backend
+          npm ci
+          npm run test:cov
 
-      - name: Add coverage to PR
-        uses: madrapps/jacoco-report@v1.2
+      - name: Report code coverage
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
-          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
           title: Backend coverage report
+          delete-old-comments: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./backend/coverage/lcov.info
 
   sonarcloud:
     name: Static Analysis
-    needs: [build_backend, tests_backend]
+    needs:
+      - build-backend
+      - build-frontend
+      - tests-backend
+      - tests-frontend
+    if: always() && (needs.build-backend.result == 'success' || needs.build-frontend.result == 'success')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         # Disable shallow clone for SonarCloud analysis
         with:
           fetch-depth: 0
@@ -115,10 +155,19 @@ jobs:
         id: cache-backend
         uses: actions/cache@v3
         with:
-          path: coverage
+          path: backend/coverage
           key: backend-coverage-${{ github.run_number }}
           restore-keys: |
             backend-coverage-
+
+      - name: Cache for frontend test results
+        id: cache-frontend
+        uses: actions/cache@v3
+        with:
+          path: frontend/coverage
+          key: frontend-coverage-${{ github.run_number }}
+          restore-keys: |
+            frontend-coverage-
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -129,24 +178,25 @@ jobs:
           args: >
             -Dsonar.exclusions=**/test/**,.github/**/*
             -Dsonar.organization=bcgov-sonarcloud
-            -Dsonar.cobertura.reportPaths=target/site/jacoco/jacoco.xml
-            -Dsonar.project.monorepo.enabled=false
-            -Dsonar.projectKey=nr-backend-starting-api
-            -Dsonar.sources=.
-            -Dsonar.tests=src/test
+            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info,frontend/coverage/lcov.info
+            -Dsonar.cobertura.reportPaths=backend/coverage/cobertura-coverage.xml,frontend/coverage/cobertura-coverage.xml
+            -Dsonar.project.monorepo.enabled=true
+            -Dsonar.projectKey=greenfield-template
+            -Dsonar.sources=backend,frontend
+            -Dsonar.tests=backend/test,frontend/test
 
-  deploy_dev:
+  deploy-dev:
     name: DEV Deployment
     needs:
-      - build_backend
-      - tests_backend
-    if: always() && needs.build_backend.result == 'success'
+      - build-backend
+      - tests-backend
+    if: always() && (needs.build-backend.result == 'success' || needs.build-frontend.result == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Deploy
         run: |
           # Login to OpenShift and select project
@@ -157,7 +207,7 @@ jobs:
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
 
           # Clean previous image, if rebuilding
-          if [ ${{ needs.build_backend.outputs.build == 'true' }} ]
+          if [ ${{ needs.build-backend.outputs.build == 'true' }} ]
           then
             # Clear stale images for import/replacement
             oc delete is ${{ env.NAME }}-${{ env.ZONE }}-backend || \
@@ -169,7 +219,7 @@ jobs:
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-backend | oc apply -f -
 
           # Clean previous image, if rebuilding
-          if [ ${{ needs.build_backend.outputs.build == 'true' }} ]
+          if [ ${{ needs.build-backend.outputs.build == 'true' }} ]
           then
             # Clear stale images for import/replacement
             oc delete is ${{ env.NAME }}-${{ env.ZONE }}-frontend || \
@@ -183,6 +233,7 @@ jobs:
           # Follow any active rollouts (see deploymentconfigs)
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-backend -w
+          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-frontend -w
 
       - name: DEV Deployment update
         uses: mshick/add-pr-comment@v1
@@ -194,3 +245,4 @@ jobs:
             DEV deployments have completed successfully!
 
             Backend: [https://${{ env.NAME }}-${{ github.event.number }}-backend.apps.silver.devops.gov.bc.ca/]()
+            Frontend: [https://${{ env.NAME }}-${{ github.event.number }}-frontend.apps.silver.devops.gov.bc.ca/]()
