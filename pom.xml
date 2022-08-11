@@ -35,7 +35,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 		<sonar.organization>bcgov-sonarcloud</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io/console</sonar.host.url>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<profiles>

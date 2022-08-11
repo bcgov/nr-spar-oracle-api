@@ -3,16 +3,16 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "Greenfield Template"
-    tags: "gfp"
-    iconClass: icon-js
+    description: "NR Backend Starting API"
+    tags: "nrbestapi"
+    iconClass: icon-java
 labels:
   app: ${NAME}-${ZONE}
   app.kubernetes.io/part-of: ${NAME}-${ZONE}
 parameters:
   - name: NAME
     description: Product name
-    value: gfp
+    value: nrbestapi
   - name: COMPONENT
     description: Component name
     value: database

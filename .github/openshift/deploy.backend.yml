@@ -3,16 +3,16 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "Greenfield Template"
-    tags: "gfp"
-    iconClass: icon-js
+    description: "NR Backend Starting API"
+    tags: "nrbestapi"
+    iconClass: icon-java
 labels:
   app: ${NAME}-${ZONE}
   app.kubernetes.io/part-of: ${NAME}-${ZONE}
 parameters:
   - name: NAME
     description: Module name
-    value: gfp
+    value: nrbestapi
   - name: COMPONENT
     description: Component name
     value: backend
@@ -33,7 +33,7 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/greenfield-pipeline:prod-backend
+    value: bcgov/nr-backend-starting-api:prod-service-api
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -102,7 +102,7 @@ objects:
                       name: ${NAME}-${ZONE}-database
                       key: database-user
               ports:
-                - containerPort: 3000
+                - containerPort: 8090
                   protocol: TCP
               resources:
                 requests:
@@ -111,7 +111,7 @@ objects:
               readinessProbe:
                 httpGet:
                   path: /
-                  port: 3000
+                  port: 8090
                   scheme: HTTP
                 initialDelaySeconds: 60
                 periodSeconds: 15
@@ -121,7 +121,7 @@ objects:
                 failureThreshold: 3
                 httpGet:
                   path: /
-                  port: 3000
+                  port: 8090
                   scheme: HTTP
                 initialDelaySeconds: 60
                 periodSeconds: 30
@@ -134,10 +134,10 @@ objects:
       name: ${NAME}-${ZONE}-${COMPONENT}
     spec:
       ports:
-        - name: 3000-tcp
+        - name: 8090-tcp
           protocol: TCP
           port: 80
-          targetPort: 3000
+          targetPort: 8090
       selector:
         deploymentconfig: ${NAME}-${ZONE}-${COMPONENT}
   - apiVersion: route.openshift.io/v1
@@ -149,7 +149,7 @@ objects:
     spec:
       host: ${NAME}-${ZONE}-${COMPONENT}.${DOMAIN}
       port:
-        targetPort: 3000-tcp
+        targetPort: 8090-tcp
       to:
         kind: Service
         name: ${NAME}-${ZONE}-${COMPONENT}

@@ -11,7 +11,7 @@ on:
       - "**.yaml"
 
 env:
-  NAME: gfp
+  NAME: nrbestapi
 
 jobs:
   # Clean up OpenShift when PR closed, no conditions
@@ -21,7 +21,7 @@ jobs:
     environment:
       name: dev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Remove OpenShift artifacts
         run: |
           oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
@@ -41,9 +41,9 @@ jobs:
         with:
           registry: ghcr.io
           repository: ${{ github.repository }}
-          target: ${{ github.event.number }}-backend
+          target: ${{ github.event.number }}-service-api
           tags: |
-            test-backend
+            test-service-api
 
   # Notify when PR merged and branch = main
   merge-notification:
