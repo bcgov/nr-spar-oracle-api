@@ -45,13 +45,13 @@ jobs:
           distribution: 'adopt'
 
       - name: Code Validation
-        run: mvn -B validate --file pom.xml
+        run: mvn --no-transfer-progress validate --file pom.xml
 
       - name: Code Compilation
-        run: mvn -B clean compile --file pom.xml
+        run: mvn --no-transfer-progress clean compile --file pom.xml
 
       - name: Checkstyle
-        run: mvn -B checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml
+        run: mvn --no-transfer-progress checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml
 
       - name: Archive Checkstyle
         uses: actions/upload-artifact@v2
@@ -89,13 +89,13 @@ jobs:
           distribution: 'adopt'
 
       - name: Unit Tests
-        run: mvn -B test --file pom.xml
+        run: mvn --no-transfer-progress test --file pom.xml
 
       - name: Integration Tests
-        run: mvn -B verify -P integration-test --file pom.xml
+        run: mvn --no-transfer-progress verify -P integration-test --file pom.xml
 
       - name: Code Coverage
-        run: mvn -B clean verify -P all-tests --file pom.xml
+        run: mvn --no-transfer-progress clean verify -P all-tests --file pom.xml
 
       - name: Generate JaCoCo Badge
         uses: cicirello/jacoco-badge-generator@v2
@@ -153,7 +153,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Code Compilation
-        run: mvn -B clean compile --file pom.xml
+        run: mvn --no-transfer-progress clean compile --file pom.xml
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
