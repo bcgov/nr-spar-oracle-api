@@ -1,8 +1,8 @@
 package ca.bc.gov.backendstartapi.dto;
 
-import lombok.*;
-
 import java.util.Objects;
+
+import lombok.*;
 
 @Getter
 @Setter
