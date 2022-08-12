@@ -51,7 +51,7 @@ But feel free to use Eclipse or other IDE of your choice.
 if you're using IntelliJ IDEA you can set it up by downloading the plugin
 at [this page](https://plugins.jetbrains.com/plugin/8527-google-java-format),
 maintained by Google.
-- Before submitting your commit, make sure your code aren't breaking any rule.
+- Before submitting your commit, make sure your code isn't breaking any rule.
 
 ## Run tests
 
