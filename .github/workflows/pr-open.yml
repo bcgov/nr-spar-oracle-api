@@ -128,7 +128,7 @@ jobs:
         run: mvn --no-transfer-progress clean verify package sonar:sonar -Dsonar.projectKey=bcgov_nr-backend-starting-api -Dsonar.coverage.jacoco.xmlReportPaths=target/coverage-reports/merged-test-report/jacoco.xml --file pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   security:
     name: Security checks
@@ -282,8 +282,8 @@ jobs:
       - name: Deploy
         run: |
           # Login to OpenShift and select project
-          oc login --token=${{ env.OC_TOKEN }} --server=${{ env.OC_SERVER }}
-          oc project ${{ env.OC_NAMESPACE }}
+          oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
+          oc project ${{ secrets.OC_NAMESPACE }}
           # Database uses a default build
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           # Clean previous image, if rebuilding
