@@ -99,6 +99,7 @@ jobs:
 
       - name: Generate JaCoCo Badge
         uses: cicirello/jacoco-badge-generator@v2
+        id: jacoco
         with:
           generate-branches-badge: true
           jacoco-csv-file: target/coverage-reports/merged-test-report/jacoco.csv
