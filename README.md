@@ -49,7 +49,8 @@ and deploy it.
 # Getting started
 
 Once you have cloned this repository, you can get it running by typing: `./mvnw spring-boot:run`
-from the project root directory. Then head to http://localhost:8080/health-check.
+from the project root directory. Then head to http://localhost:8080/check you should see a
+message and an OK.
 
 To run tests all you need is `./mvnw test`.
 

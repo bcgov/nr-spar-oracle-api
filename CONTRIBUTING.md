@@ -63,8 +63,7 @@ Note: TODO add here about database and running HOW-TOs.
 ## Run tests
 
 You can run tests running `./mvnw test`. Tests coverage reposts can be seen
-on your browser typing `google-chrome target/site/jacoco/index.html` for
-Google Chrome or `firefox target/site/jacoco/index.html` for Mozilla Firefox.
+on your commits and pull requests.
 
 ## Submit pull requests
 
