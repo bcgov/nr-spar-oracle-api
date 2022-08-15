@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(CheckEndpoint.class)
-public class CheckEndpointIT {
+class CheckEndpointIT {
 
   @Autowired
   private WebTestClient webTestClient;
