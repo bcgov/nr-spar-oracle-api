@@ -164,7 +164,7 @@
 					<excludes>
 						<exclude>**/configuration/**</exclude>
 						<exclude>**/*$*Builder*</exclude>
-						<exclude>ca/bc/gov/backendstartapi/**/BackendStartApiApplication.class</exclude>
+						<exclude>**/BackendStartApiApplication.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -251,7 +251,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0%</minimum>
+											<minimum>85%</minimum>
 										</limit>
 									</limits>
 								</rule>
