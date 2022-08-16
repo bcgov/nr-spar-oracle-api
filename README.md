@@ -14,10 +14,10 @@ and in case you're interested in the original README file, we still have it [her
 - Work in the open: That means that everything we do should be open, should be
 public. Please, don't create private repositories unless you have a very strong
 reason. Keeping things public is a must follow rule for BC Government.
-- Customer centred services: All the work that's been created is to improve all
-of our users, customers, and friends lives. Is important to keep that in mind
+- Customer centred services: All the work that's been created is to improve users,
+customers, and friends usability and experience. Is important to keep that in mind 
 because as engineers sometimes we face technical issues, however, our goal is
-to have a nice and easy daily experience.
+to have a good product.
 - Community based work: Remember that you're not alone. It's very likely that
 your problem is someone else's problem. Let's figure it out together. So, ask
 a question using our channels. We have [our own Stackoverflow](https://stackoverflow.developer.gov.bc.ca/)
