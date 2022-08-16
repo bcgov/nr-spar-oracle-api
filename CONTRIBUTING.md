@@ -62,7 +62,7 @@ Note: TODO add here about database and running HOW-TOs.
 
 ## Run tests
 
-You can run tests running `./mvnw test`. Tests coverage reposts can be seen
+You can run tests running with `./mvnw test`. Tests coverage reports can be seen
 on your commits and pull requests.
 
 ## Submit pull requests
