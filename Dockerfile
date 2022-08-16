@@ -24,6 +24,6 @@ COPY --from=build /home/app/target/*.jar /usr/share/service/service.jar
 ADD ./dockerfile-entrypoint.sh /usr/share/service/dockerfile-entrypoint.sh
 RUN chmod +x /usr/share/service/dockerfile-entrypoint.sh
 
-EXPOSE 8080
+EXPOSE 8090
 
 ENTRYPOINT ["/usr/share/service/dockerfile-entrypoint.sh"]
