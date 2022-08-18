@@ -1,4 +1,4 @@
-name: Project CI
+name: Commits and PR Open
 
 on:
   pull_request:
