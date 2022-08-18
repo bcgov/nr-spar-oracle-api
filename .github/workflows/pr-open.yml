@@ -200,7 +200,7 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         id: changelog
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           output-file: 'CHANGELOG.md'
           skip-version-file: 'true'
           skip-commit: 'true'
@@ -232,6 +232,9 @@ jobs:
 
   build-backend:
     name: Backend Image Build
+    env:
+      COMPONENT: service-api
+      ZONE: ${{ github.event.number }}
     runs-on: ubuntu-latest
     needs:
       - security
@@ -265,7 +268,17 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ github.event.number }}-service-api
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.ZONE }}-${{ env.COMPONENT }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Clear any previous OpenShift image
+        run: |
+          # Login to OpenShift and select project
+          oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
+          oc project ${{ secrets.OC_NAMESPACE }}
+          # Clean previous image
+          oc delete is ${{ env.NAME }}-${{ env.ZONE }}-${{ env.COMPONENT }} || true
 
   deploy-dev:
     name: DEV Deployment
