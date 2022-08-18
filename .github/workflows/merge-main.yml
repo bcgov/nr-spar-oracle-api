@@ -15,6 +15,47 @@ env:
   NAME: nrbestapi
 
 jobs:
+  cancel-prev-runs:
+    name: Cancel Previous Runs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: n1hility/cancel-previous-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  view-context:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts
+    name: View GitHub Context
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo GitHub context
+        uses: satackey/action-js-inline@v0.0.2
+        with:
+          script: |
+            const github = require('@actions/github');
+            console.log(JSON.stringify(github, null, 2));
+
+  # https://github.com/snyk/snyk
+  snyk:
+    name: Dependency Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true # To make sure that SARIF upload gets called
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
+
   # https://github.com/marketplace/actions/aqua-security-trivy
   trivy-backend:
     name: Backend Image Report
@@ -27,16 +68,16 @@ jobs:
       - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@0.3.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}:test-backend
+          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}:test-service-api
           ignore-unfixed: true
           severity: CRITICAL
           format: "sarif"
-          output: "trivy-results-backend.sarif"
+          output: "trivy-results-service-api.sarif"
 
       - name: Upload Trivy results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: "trivy-results-backend.sarif"
+          sarif_file: "trivy-results-service-api.sarif"
 
   # https://github.com/marketplace/actions/aqua-security-trivy
   trivy-repo:
@@ -119,14 +160,11 @@ jobs:
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-backend | oc apply -f -
-          oc process -f .github/openshift/deploy.frontend.yml -p ZONE=${{ env.ZONE }} \
-            -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-frontend | oc apply -f -
+            -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
-          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-backend -w
-          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-frontend -w
+          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
 
           # Remove completed build runs, build pods and deployment pods
           for p in $(oc get po | grep "Completed" | awk '{print $1}')
@@ -147,7 +185,7 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.3.0
         with:
-          target: https://${{ env.NAME }}-test-backend.apps.silver.devops.gov.bc.ca/
+          target: https://${{ env.NAME }}-test-service-api.apps.silver.devops.gov.bc.ca/
           cmd_options: "-a"
           allow_issue_writing: false
           fail_action: false
@@ -179,14 +217,11 @@ jobs:
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-backend | oc apply -f -
-          oc process -f .github/openshift/deploy.frontend.yml -p ZONE=${{ env.ZONE }} \
-            -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-frontend | oc apply -f -
+            -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
-          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-backend -w
-          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-frontend -w
+          oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
 
           # Remove completed build runs, build pods and deployment pods
           for p in $(oc get po | grep "Completed" | awk '{print $1}')
@@ -199,9 +234,9 @@ jobs:
         with:
           registry: ghcr.io
           repository: ${{ github.repository }}
-          target: ${{ env.PREV }}-backend
+          target: ${{ env.PREV }}-service-api
           tags: |
-            prod-backend
+            prod-service-api
 
       - name: Promote Frontend Image to PROD
         uses: shrink/actions-docker-registry-tag@v2
