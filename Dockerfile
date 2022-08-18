@@ -1,37 +1,29 @@
-# RedHat UBI 8 with nodejs 14
-FROM registry.access.redhat.com/ubi8/ubi as builder
-RUN dnf module install -y nodejs:14
+FROM maven:3.8.6-openjdk-18-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn --no-transfer-progress -f /home/app/pom.xml clean package
 
-# Install packages, build and keep only prod packages
-WORKDIR /app
-COPY . ./
-RUN npm ci --only=prod && \
-    npm run build
+FROM amazoncorretto:17-alpine3.15
+LABEL maintainer="Ricardo Montania Prado de Campos <ricardo.campos@encora.com>"
 
-# Deployment container
-FROM registry.access.redhat.com/ubi8/ubi-micro
+WORKDIR /usr/share/service/
+RUN mkdir -p /usr/share/service/config
+RUN mkdir -p /usr/share/service/dump
+RUN mkdir -p /usr/share/service/public
 
-# Set node to production 
-ENV NODE_ENV production
+ENV LANG en_CA.UTF-8
+ENV LANGUAGE en_CA.UTF-8
+ENV LC_ALL en_CA.UTF-8
 
-# Node packages and dependencies
-COPY --from=builder /usr/bin/node /usr/bin/
-COPY --from=builder /usr/lib64/libz.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlidec.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlienc.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libcrypto.so.1.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libssl.so.1.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libstdc++.so.6 /usr/lib64/
-COPY --from=builder /usr/lib64/libgcc_s.so.1 /usr/lib64/
-COPY --from=builder /usr/lib64/libbrotlicommon.so.1 /usr/lib64/
+ENV HEAP_LOG_PATH /usr/share/service/dump
+ENV JAVA_OPS -Xms256m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HEAP_LOG_PATH
+ENV JAVA_DEBUG_OPS -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:$HEAP_LOG_PATH/garbage-collection.log
+ENV DEBUG_MODE false
 
-# Copy over app
-WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+COPY --from=build /home/app/target/*.jar /usr/share/service/service.jar
+ADD ./dockerfile-entrypoint.sh /usr/share/service/dockerfile-entrypoint.sh
+RUN chmod +x /usr/share/service/dockerfile-entrypoint.sh
 
-# Expose port - mostly a convention, for readability
-EXPOSE 3000
+EXPOSE 8090
 
-# Start up command
-ENTRYPOINT ["node", "dist/main"]
+ENTRYPOINT ["/usr/share/service/dockerfile-entrypoint.sh"]
