@@ -224,7 +224,7 @@ jobs:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
   release:
-    name: Release
+    name: Release (When at main)
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
     needs:
@@ -280,7 +280,7 @@ jobs:
           release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
 
-  build-backend:
+  build-service-api:
     name: Backend Image Build
     env:
       COMPONENT: service-api
@@ -332,7 +332,7 @@ jobs:
     needs:
       - security
       - test
-      - build-backend
+      - build-service-api
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -347,7 +347,7 @@ jobs:
           # Database uses a default build
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           # Clean previous image, if rebuilding
-          if [ ${{ needs.build-backend.outputs.build == 'true' }} ]
+          if [ ${{ needs.build-service-api.outputs.build == 'true' }} ]
           then
             # Clear stale images for import/replacement
             oc delete is ${{ env.NAME }}-${{ env.ZONE }}-service-api || \

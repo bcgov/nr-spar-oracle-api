@@ -15,7 +15,7 @@ parameters:
     value: nrbestapi
   - name: COMPONENT
     description: Component name
-    value: backend
+    value: service-api
   - name: ZONE
     description: Deployment zone, e.g. pr-### or prod
     required: true
