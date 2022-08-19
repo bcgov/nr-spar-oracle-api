@@ -269,8 +269,6 @@ jobs:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.ZONE }}-${{ env.COMPONENT }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Clear any previous OpenShift image
         run: |
