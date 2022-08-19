@@ -15,7 +15,8 @@ services:
       - /pgdata
 
   backend:
-    container_name: backend
+    container_name: service-api
+    image: service-api:latest
     entrypoint:
       - "sh"
       - "-c"
@@ -32,7 +33,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    hostname: backend
+    hostname: service-api
     links:
       - database
     ports:
