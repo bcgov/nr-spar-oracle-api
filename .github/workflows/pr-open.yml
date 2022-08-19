@@ -2,13 +2,6 @@ name: Commits and PR Open
 
 on:
   pull_request:
-  push:
-    branches:
-      - '*'
-      - '*/*'
-      - '**'
-    tags-ignore:
-      - '**'
 
 env:
   REGISTRY: ghcr.io
@@ -239,7 +232,6 @@ jobs:
     needs:
       - security
       - test
-    if: github.ref_name == 'main'
     permissions:
       contents: read
       packages: write
@@ -284,7 +276,6 @@ jobs:
       - security
       - test
       - build-backend
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
