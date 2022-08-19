@@ -1,0 +1,11 @@
+automation:
+  - .github/*
+
+coverage:
+  - src/test/**/*.java
+
+source:
+  - src/main/**/*.java
+
+docker:
+  - any: ['Dockerfile','dockerfile-entrypoint.sh']
