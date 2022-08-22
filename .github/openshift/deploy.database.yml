@@ -128,9 +128,9 @@ objects:
                       psql -q -d
                       $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
-                initialDelaySeconds: 30
+                initialDelaySeconds: 60
                 periodSeconds: 15
-                timeoutSeconds: 1
+                timeoutSeconds: 10
               livenessProbe:
                 exec:
                   command:
@@ -141,9 +141,9 @@ objects:
                       psql -q -d
                       $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 5
-                initialDelaySeconds: 30
+                initialDelaySeconds: 60
                 periodSeconds: 15
-                timeoutSeconds: 1
+                timeoutSeconds: 10
               env:
                 - name: POSTGRESQL_DATABASE
                   valueFrom:
@@ -164,10 +164,10 @@ objects:
                 - name: ${NAME}-${ZONE}-${COMPONENT}
                   mountPath: "/var/lib/pgsql/data"
               livenessProbe:
-                initialDelaySeconds: 30
+                initialDelaySeconds: 60
                 tcpSocket:
                   port: 5432
-                timeoutSeconds: 1
+                timeoutSeconds: 10
               readinessProbe:
                 exec:
                   command:
