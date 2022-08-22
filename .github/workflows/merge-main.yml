@@ -182,27 +182,7 @@ jobs:
 
   # https://github.com/snyk/cli, https://github.com/snyk/actions
   # Note: using free tier - called late in pipeline to limit runs
-  snyk:
-    name: Vulnerability Report
-    needs:
-      - zap-service-api
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        continue-on-error: true # To make sure that SARIF upload gets called
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --all-projects --severity-threshold=high --sarif-file-output=snyk.sarif
-
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
+  # Disabled snyk because it don't support Java 17 or Maven with JDK 17 yet
 
   # https://github.com/marketplace/actions/aqua-security-trivy
   trivy-repo:
@@ -278,7 +258,6 @@ jobs:
     name: PROD Deployment
     needs:
       - image-service-api
-      - snyk
       - trivy-repo
     runs-on: ubuntu-latest
     environment:
