@@ -1,4 +1,4 @@
-name: PR Open
+name: Pull Request Open
 
 on:
   pull_request:
