@@ -3,11 +3,11 @@ package ca.bc.gov.backendstartapi.dto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ExampleDTOTest {
+public class ExampleDtoTest {
 
     @Test
     public void getStringPropsTest() {
-        ExampleDTO dto = new ExampleDTO();
+        ExampleDto dto = new ExampleDto();
         dto.setId(1L);
         dto.setFirstName("Ricardo");
         dto.setLastName("Campos");
@@ -20,7 +20,7 @@ public class ExampleDTOTest {
 
     @Test
     public void getStringPropsTestTwo() {
-        ExampleDTO dto = new ExampleDTO(2L, "Ricardo", "Campos");
+        ExampleDto dto = new ExampleDto(2L, "Ricardo", "Campos");
 
         Assertions.assertEquals(2L, dto.getId());
         Assertions.assertEquals("Ricardo", dto.getFirstName());
@@ -30,11 +30,11 @@ public class ExampleDTOTest {
 
     @Test
     public void getStringPropsTestThree() {
-        ExampleDTO dto = new ExampleDTO(2L, "Ricardo", "Campos");
+        ExampleDto dto = new ExampleDto(2L, "Ricardo", "Campos");
         final String dtoString = "ExampleDTO(id=2, firstName=Ricardo, lastName=Campos)";
         final int hashCode = 33;
 
-        ExampleDTO dtoB = new ExampleDTO(3L, "Ricardo", "Campos");
+        ExampleDto dtoB = new ExampleDto(3L, "Ricardo", "Campos");
         final boolean bothEquals = dto.equals(dtoB);
 
         Assertions.assertEquals(dtoString, dto.toString());
@@ -44,11 +44,11 @@ public class ExampleDTOTest {
 
     @Test
     public void getStringPropsTestFour() {
-        ExampleDTO dto = new ExampleDTO();
+        ExampleDto dto = new ExampleDto();
         final String dtoString = "ExampleDTO(id=0, firstName=, lastName=)";
         final int hashCode = 31;
 
-        ExampleDTO dtoB = new ExampleDTO();
+        ExampleDto dtoB = new ExampleDto();
 
         Assertions.assertEquals(dtoString, dto.toString());
         Assertions.assertEquals(hashCode, dto.hashCode());

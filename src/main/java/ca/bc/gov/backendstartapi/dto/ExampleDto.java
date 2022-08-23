@@ -6,25 +6,40 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * This class represents an example data object.
+ */
 @Getter
 @Setter
 @ToString
-public class ExampleDTO {
+public class ExampleDto {
 
   private Long id;
   private String firstName;
   private String lastName;
 
-  public ExampleDTO() {
+  public ExampleDto() {
     this(0L, "", "");
   }
 
-  public ExampleDTO(Long id, String firstName, String lastName) {
+  /**
+   * Create a new Example Dto.
+   *
+   * @param id id to be set
+   * @param firstName first name of the example
+   * @param lastName last name of the example
+   */
+  public ExampleDto(Long id, String firstName, String lastName) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
   }
 
+  /**
+   * Create a string with all props.
+   *
+   * @return a string representing all the properties
+   */
   public String getStringProps() {
     StringBuilder builder = new StringBuilder();
     if (id > 0) {
@@ -48,7 +63,7 @@ public class ExampleDTO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExampleDTO that = (ExampleDTO) o;
+    ExampleDto that = (ExampleDto) o;
     return id.equals(that.id);
   }
 

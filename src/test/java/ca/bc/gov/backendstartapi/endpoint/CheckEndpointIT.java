@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import ca.bc.gov.backendstartapi.vo.CheckVO;
+import ca.bc.gov.backendstartapi.vo.CheckVo;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -23,15 +23,15 @@ class CheckEndpointIT {
   @Test
   @DisplayName("Check test")
   void checkTest() {
-    CheckVO check = CheckVO.builder().message("OK").build();
+    CheckVo check = CheckVo.builder().message("OK").build();
 
     webTestClient.get()
             .uri("/check")
              .accept(MediaType.APPLICATION_JSON)
         .exchange()
         .expectStatus().isOk()
-        .expectBody(CheckVO.class)
-        .value(CheckVO::getMessage, equalTo("OK"));
+        .expectBody(CheckVo.class)
+        .value(CheckVo::getMessage, equalTo("OK"));
 
   }
 }
