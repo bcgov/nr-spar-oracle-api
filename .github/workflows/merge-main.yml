@@ -35,7 +35,7 @@ jobs:
           owner: orgs/bcgov
           package: ${{ github.event.repository.name }}
           skip_tags: prod-service-api
-          token: ${{ secrets.DELETE_PACKAGES_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   codeql:
     name: Semantic Code Analysis
