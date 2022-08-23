@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.2</version>
+		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov</groupId>
 	<artifactId>backend-start-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>backend-start-api</name>
 	<description>Starting backend API project</description>
 
@@ -264,7 +264,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 				<configuration>
 					<source>17</source>
 					<doctitle>Javadoc Documentation for ${project.name} ${project.version}</doctitle>

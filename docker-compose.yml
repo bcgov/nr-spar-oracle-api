@@ -1,38 +1,36 @@
----
-version: "3.8"
+version: '3.9'
 
 services:
   database:
     container_name: database
+    image: postgres:12
     environment:
       POSTGRES_USER: default
       POSTGRES_PASSWORD: default
       POSTGRES_DB: default
     hostname: database
-    image: postgres:12
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U default"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - /pgdata
 
   backend:
-    container_name: backend
-    entrypoint:
-      - "sh"
-      - "-c"
-      - "mvn spring-boot:run"
+    depends_on:
+      database:
+        condition: service_healthy
+    container_name: service-api
+    image: service-api:latest
     environment:
       NODE_ENV: development
       POSTGRESQL_HOST: database
       POSTGRESQL_USER: default
       POSTGRESQL_PASSWORD: default
       POSTGRESQL_DATABASE: default
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8090/check"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    hostname: backend
+    hostname: service-api
     links:
       - database
     ports:
