@@ -6,11 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * This class represents a check object.
+ */
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckVO implements BaseResponse {
+public class CheckVo implements BaseResponse {
 
   private String message;
 }
