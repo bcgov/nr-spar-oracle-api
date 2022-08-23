@@ -31,7 +31,7 @@ public class ExampleDtoTest {
     @Test
     public void getStringPropsTestThree() {
         ExampleDto dto = new ExampleDto(2L, "Ricardo", "Campos");
-        final String dtoString = "ExampleDTO(id=2, firstName=Ricardo, lastName=Campos)";
+        final String dtoString = "ExampleDto(id=2, firstName=Ricardo, lastName=Campos)";
         final int hashCode = 33;
 
         ExampleDto dtoB = new ExampleDto(3L, "Ricardo", "Campos");
@@ -45,7 +45,7 @@ public class ExampleDtoTest {
     @Test
     public void getStringPropsTestFour() {
         ExampleDto dto = new ExampleDto();
-        final String dtoString = "ExampleDTO(id=0, firstName=, lastName=)";
+        final String dtoString = "ExampleDto(id=0, firstName=, lastName=)";
         final int hashCode = 31;
 
         ExampleDto dtoB = new ExampleDto();
