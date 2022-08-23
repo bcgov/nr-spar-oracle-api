@@ -269,19 +269,19 @@ jobs:
             pom.xml
             CHANGELOG.md
           commit-msg: "doc: updating pom to ${{ steps.changelog.outputs.version }} [ci skip]"
-          github-token: ${{ secrets.PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
 
   build-service-api:
-    name: Backend Image Build
+    name: Service API Image Build
     env:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
@@ -312,7 +312,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Backend Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
