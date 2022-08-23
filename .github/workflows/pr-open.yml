@@ -281,7 +281,7 @@ jobs:
           body: ${{ steps.changelog.outputs.clean_changelog }}
 
   build-service-api:
-    name: Backend Image Build
+    name: Service API Image Build
     env:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
@@ -312,7 +312,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Backend Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .

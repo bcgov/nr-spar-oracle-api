@@ -51,7 +51,7 @@ jobs:
       - name: Initialize
         uses: github/codeql-action/init@v2
         with:
-          languages: javascript
+          languages: java
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
@@ -153,7 +153,7 @@ jobs:
           oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc create -f - || true
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-backend | oc apply -f -
+            -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
           # Follow any active rollouts (see deploymentconfigs)
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
@@ -266,7 +266,7 @@ jobs:
       ZONE: prod
       PREV: test
     steps:
-      - name: Remove any stale backend images
+      - name: Remove any stale images
         if: needs.image-service-api.outputs.build == 'true'
         env:
           COMPONENT: service-api
@@ -303,7 +303,7 @@ jobs:
             oc delete po ${p}
           done
 
-      - name: Promote Backend Image to PROD
+      - name: Promote Image to PROD
         uses: shrink/actions-docker-registry-tag@v2
         with:
           registry: ${{ env.REGISTRY }}

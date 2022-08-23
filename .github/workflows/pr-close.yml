@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     steps:
-      - name: Promote Backend Image to TEST
+      - name: Promote Image to TEST
         uses: shrink/actions-docker-registry-tag@v2
         with:
           registry: ghcr.io
