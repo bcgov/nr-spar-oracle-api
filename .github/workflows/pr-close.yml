@@ -5,10 +5,7 @@ on:
     types:
       - closed
     paths-ignore:
-      - ".**"
       - "**.md"
-      - "**.yml"
-      - "**.yaml"
 
 env:
   REGISTRY: ghcr.io

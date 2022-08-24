@@ -2,6 +2,13 @@ name: Pull Request Open
 
 on:
   pull_request:
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+    tags-ignore:
+      - '**'
 
 env:
   REGISTRY: ghcr.io
@@ -224,6 +231,7 @@ jobs:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
     needs:
       - security
       - sonarcloud
