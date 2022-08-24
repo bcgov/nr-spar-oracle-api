@@ -171,11 +171,10 @@ jobs:
         with:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
-  # Only for Pull Requests
+  # For every commit and pull request
   codeql:
-    name: Semantic Code Analysis (Only PR)
+    name: Semantic Code Analysis (Commits and PR)
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     permissions:
       actions: read
       contents: read
