@@ -171,6 +171,7 @@ jobs:
         with:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
+  # Only for Pull Requests
   codeql:
     name: Semantic Code Analysis (Only PR)
     runs-on: ubuntu-latest
