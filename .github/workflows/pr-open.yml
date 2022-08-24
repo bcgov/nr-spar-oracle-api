@@ -1,4 +1,4 @@
-name: Pull Request Open
+name: Commits and Pull Request Open
 
 on:
   pull_request:
@@ -19,65 +19,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pr-validation:
-    name: Pull Request Label Validation
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Pull request size and stability labels
-        uses: actions/labeler@v4
-        continue-on-error: true
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Conventional Label
-        uses: bcoe/conventional-release-labels@v1
-        continue-on-error: true
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ignored_types: '["chore","pr"]'
-          type_labels: '{"feat": "feature", "fix": "fix", "bug": "fix", "doc": "documentation", "ci": "ci", "chore": "chore", "breaking": "breaking", "BREAKING CHANGE": "breaking"}'
-
-      - name: Checkout branch
-        uses: actions/checkout@v3
-        with:
-          ref: refs/heads/${{ github.head_ref }}
-
-      - name: Conventional Changelog Update
-        continue-on-error: true
-        uses: TriPSs/conventional-changelog-action@v3
-        id: changelog
-        with:
-          github-token: ${{ github.token }}
-          output-file: 'CHANGELOG.md'
-          skip-version-file: 'true'
-          skip-commit: 'true'
-          git-push: 'false'
-          git-branch: refs/heads/${{ github.head_ref }}
-
-      - name: Checkout pr
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-
-      - name: Comment PR
-        continue-on-error: true
-        uses: thollander/actions-comment-pull-request@v1
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        with:
-          message: |
-            # Current changelog
-
-            ${{ steps.changelog.outputs.clean_changelog }}
-          comment_includes: '# Current changelog'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  # For every commit and pull request
   validate:
-    name: Code validation
+    name: Code validation (Commits and PR)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -111,8 +55,9 @@ jobs:
           path: target/site/checkstyle.html
           retention-days: 5
 
-  sonarcloud:
-    name: Test Code and Static Analysis
+  # For every commit and pull request
+  tests:
+    name: Code tests (Commits and PR)
     runs-on: ubuntu-latest
     needs:
       - validate
@@ -182,8 +127,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  # For every commit and pull request
   security:
-    name: Security checks
+    name: Security checks (Commits and PR)
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -225,8 +171,68 @@ jobs:
         with:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
+  # Only for Pull Requests
+  pr-validation:
+    name: Label Validation (Only PR)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Pull request size and stability labels
+        uses: actions/labeler@v4
+        continue-on-error: true
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Conventional Label
+        uses: bcoe/conventional-release-labels@v1
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ignored_types: '["chore","pr"]'
+          type_labels: '{"feat": "feature", "fix": "fix", "bug": "fix", "doc": "documentation", "ci": "ci", "chore": "chore", "breaking": "breaking", "BREAKING CHANGE": "breaking"}'
+
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: refs/heads/${{ github.head_ref }}
+
+      - name: Conventional Changelog Update
+        continue-on-error: true
+        uses: TriPSs/conventional-changelog-action@v3
+        id: changelog
+        with:
+          github-token: ${{ github.token }}
+          output-file: 'CHANGELOG.md'
+          skip-version-file: 'true'
+          skip-commit: 'true'
+          git-push: 'false'
+          git-branch: refs/heads/${{ github.head_ref }}
+
+      - name: Checkout pr
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Comment PR
+        continue-on-error: true
+        uses: thollander/actions-comment-pull-request@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          message: |
+            # Current changelog
+
+            ${{ steps.changelog.outputs.clean_changelog }}
+          comment_includes: '# Current changelog'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Only for Pull Requests
   build-service-api:
-    name: Service API Image Build
+    name: Image Build (Only PR)
     env:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
@@ -234,7 +240,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
     needs:
       - security
-      - sonarcloud
+      - tests
     permissions:
       contents: read
       packages: write
@@ -274,13 +280,15 @@ jobs:
           # Clean previous image
           oc delete is ${{ env.NAME }}-${{ env.ZONE }}-${{ env.COMPONENT }} || true
 
+  # Only for Pull Requests
   deploy-dev:
-    name: DEV Deployment
+    name: DEV Deployment (Only PR)
     needs:
       - security
-      - sonarcloud
+      - tests
       - build-service-api
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
