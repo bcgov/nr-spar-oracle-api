@@ -51,6 +51,7 @@ jobs:
       - name: Initialize
         uses: github/codeql-action/init@v2
         with:
+          debug: true
           languages: java
 
       - name: Set up JDK 17
