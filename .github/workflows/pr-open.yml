@@ -1,4 +1,4 @@
-name: Commits and Pull Request Open
+name: Commits and PR Open
 
 on:
   pull_request:
@@ -175,7 +175,7 @@ jobs:
   pr-validation:
     name: Label Validation (Only PR)
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     permissions:
       contents: read
       pull-requests: write
@@ -237,7 +237,7 @@ jobs:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
       - security
       - tests
@@ -288,7 +288,7 @@ jobs:
       - tests
       - build-service-api
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref != 'main'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
