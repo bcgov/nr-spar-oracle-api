@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set NRBESTAPI_VERSION env
-        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $NRBESTAPI_VERSION
+        run: echo "NRBESTAPI_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - name: Print NRBESTAPI_VERSION env
         run: echo NRBESTAPI_VERSION:${{ env.NRBESTAPI_VERSION }}
 
