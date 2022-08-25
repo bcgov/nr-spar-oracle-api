@@ -4,6 +4,8 @@ services:
   backend:
     container_name: service-api
     image: service-api:latest
+    environment:
+      NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
     hostname: service-api
     ports:
       - "8090:8090"

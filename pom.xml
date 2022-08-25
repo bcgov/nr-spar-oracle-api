@@ -326,7 +326,6 @@
 				<configuration>
 					<skip>${checkstyle.skip}</skip>
 					<configLocation>.mvn/google_checks.xml</configLocation>
-					<encoding>UTF-8</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 					<linkXRef>false</linkXRef>

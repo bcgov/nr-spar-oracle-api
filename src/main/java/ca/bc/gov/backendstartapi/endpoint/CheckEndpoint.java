@@ -1,5 +1,6 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,12 @@ import reactor.core.publisher.Mono;
 @RestController
 public class CheckEndpoint {
 
+  @Value("${nrbestapi.version}")
+  private String nrbestapiVersion;
+
   @GetMapping(value = "/check", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<ResponseEntity<? extends BaseResponse>> check() {
-    CheckVo check = CheckVo.builder().message("OK").build();
+    CheckVo check = CheckVo.builder().message("OK").release(nrbestapiVersion).build();
     return Mono.just(ResponseEntity.status(HttpStatus.OK).body(check));
   }
 }

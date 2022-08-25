@@ -16,4 +16,5 @@ import lombok.NoArgsConstructor;
 public class CheckVo implements BaseResponse {
 
   private String message;
+  private String release;
 }
