@@ -95,7 +95,6 @@ jobs:
       COMPONENT: backend
       PREV: ${{ github.event.number }}
       ZONE: test
-      NRBESTAPI_VERSION: test-${{ github.event.number }}
     environment:
       name: test
     runs-on: ubuntu-22.04
