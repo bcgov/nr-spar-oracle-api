@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/bcgov/nr-backend-starting-api/compare/v0.2.2...v0.2.3) (2022-08-25)
+
+
+### Bug Fixes
+
+* adjust image promotion not working ([#24](https://github.com/bcgov/nr-backend-starting-api/issues/24)) ([6756747](https://github.com/bcgov/nr-backend-starting-api/commit/6756747d2896fefa7790e8967397f4220030662d))
+
+
+
 ## [0.2.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.2.1...v0.2.2) (2022-08-25)
 
 
