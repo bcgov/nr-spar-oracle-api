@@ -20,17 +20,6 @@ concurrency:
 
 jobs:
   # For every commit and pull request
-  service-version:
-    name: Get Service version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set NRBESTAPI_VERSION env
-        run: echo "NRBESTAPI_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-      - name: Print NRBESTAPI_VERSION env
-        run: echo NRBESTAPI_VERSION:${{ env.NRBESTAPI_VERSION }}
-
-  # For every commit and pull request
   validate:
     name: Code validation (Commits and PR)
     runs-on: ubuntu-latest
