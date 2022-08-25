@@ -1,14 +1,11 @@
-name: Pull Request Close
+name: PR Close
 
 on:
   pull_request:
     types:
       - closed
     paths-ignore:
-      - ".**"
       - "**.md"
-      - "**.yml"
-      - "**.yaml"
 
 env:
   REGISTRY: ghcr.io
