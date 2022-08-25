@@ -34,11 +34,11 @@ jobs:
 
   # If merged, then handle any image promotion
   image-backend:
-    name: Backend Image Promotion
+    name: Image Promotion
     outputs:
       build: ${{ steps.check.outputs.build }}
     env:
-      COMPONENT: backend
+      COMPONENT: service-api
       PREV: ${{ github.event.number }}
       ZONE: test
     environment:
