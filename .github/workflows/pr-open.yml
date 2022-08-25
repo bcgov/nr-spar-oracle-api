@@ -270,6 +270,7 @@ jobs:
     env:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
+      NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
@@ -326,6 +327,7 @@ jobs:
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
+      NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     steps:
       - uses: actions/checkout@v3
       - name: Deploy
@@ -347,6 +349,7 @@ jobs:
 
           # Process and apply template
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
+            -p NRBESTAPI_VERSION=${{ env.NRBESTAPI_VERSION }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)

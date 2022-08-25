@@ -148,6 +148,10 @@ jobs:
       ZONE: test
     steps:
       - uses: actions/checkout@v3
+      - name: Set NRBESTAPI_VERSION env
+        run: echo "NRBESTAPI_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Print NRBESTAPI_VERSION env
+        run: echo NRBESTAPI_VERSION:test-${{ env.NRBESTAPI_VERSION }}
       - name: Deploy
         run: |
           # Login to OpenShift and select project
@@ -157,6 +161,7 @@ jobs:
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc create -f - || true
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
+            -p NRBESTAPI_VERSION=test-${{ env.NRBESTAPI_VERSION }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
           # Follow any active rollouts (see deploymentconfigs)
           #oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
@@ -281,6 +286,10 @@ jobs:
           oc delete is/${{ env.NAME }}-${{ env.ZONE}}-${{ env.COMPONENT }} || true
 
       - uses: actions/checkout@v3
+      - name: Set NRBESTAPI_VERSION env
+        run: echo "NRBESTAPI_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Print NRBESTAPI_VERSION env
+        run: echo NRBESTAPI_VERSION:prod-${{ env.NRBESTAPI_VERSION }}
       - name: Deploy
         run: |
           # Login to OpenShift and select project
@@ -295,6 +304,7 @@ jobs:
           # Process and apply deployment templates
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
+            -p NRBESTAPI_VERSION=prod-${{ env.NRBESTAPI_VERSION }} \
             -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
