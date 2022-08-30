@@ -1,6 +1,7 @@
 package ca.bc.gov.backendstartapi.dto;
 
 import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
