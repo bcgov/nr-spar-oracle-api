@@ -1,14 +1,11 @@
 package ca.bc.gov.backendstartapi.dto;
 
 import java.util.Objects;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * This class represents an example data object.
- */
+/** This class represents an example data object. */
 @Getter
 @Setter
 @ToString
