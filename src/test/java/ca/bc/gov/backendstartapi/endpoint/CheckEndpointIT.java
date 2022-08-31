@@ -23,8 +23,6 @@ class CheckEndpointIT {
   @Test
   @DisplayName("Check test")
   void checkTest() {
-    CheckVo check = CheckVo.builder().message("OK").build();
-
     webTestClient.get()
             .uri("/check")
              .accept(MediaType.APPLICATION_JSON)
