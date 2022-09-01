@@ -1,15 +1,14 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import ca.bc.gov.backendstartapi.response.BaseResponse;
+import ca.bc.gov.backendstartapi.vo.CheckVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import ca.bc.gov.backendstartapi.response.BaseResponse;
-import ca.bc.gov.backendstartapi.vo.CheckVo;
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 /** This class represents a check endpoint object. */

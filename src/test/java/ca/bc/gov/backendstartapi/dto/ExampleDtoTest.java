@@ -3,10 +3,10 @@ package ca.bc.gov.backendstartapi.dto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ExampleDtoTest {
+class ExampleDtoTest {
 
   @Test
-  public void getStringPropsTest() {
+  void getStringPropsTest() {
     ExampleDto dto = new ExampleDto();
     dto.setId(1L);
     dto.setFirstName("Ricardo");
@@ -20,7 +20,7 @@ public class ExampleDtoTest {
   }
 
   @Test
-  public void getStringPropsTestTwo() {
+  void getStringPropsTestTwo() {
     ExampleDto dto = new ExampleDto(2L, "Ricardo", "Campos");
 
     Assertions.assertEquals(2L, dto.getId());
@@ -31,7 +31,7 @@ public class ExampleDtoTest {
   }
 
   @Test
-  public void getStringPropsTestThree() {
+  void getStringPropsTestThree() {
     ExampleDto dto = new ExampleDto(2L, "Ricardo", "Campos");
     final String dtoString = "ExampleDto(id=2, firstName=Ricardo, lastName=Campos)";
     final int hashCode = 33;
@@ -45,7 +45,7 @@ public class ExampleDtoTest {
   }
 
   @Test
-  public void getStringPropsTestFour() {
+  void getStringPropsTestFour() {
     ExampleDto dto = new ExampleDto();
     final String dtoString = "ExampleDto(id=0, firstName=, lastName=)";
     final int hashCode = 31;

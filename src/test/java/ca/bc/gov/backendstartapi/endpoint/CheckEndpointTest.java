@@ -1,5 +1,8 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import static org.hamcrest.Matchers.equalTo;
+
+import ca.bc.gov.backendstartapi.vo.CheckVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,13 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import ca.bc.gov.backendstartapi.vo.CheckVo;
-
-import static org.hamcrest.Matchers.equalTo;
-
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(CheckEndpoint.class)
-class CheckEndpointIT {
+class CheckEndpointTest {
 
   @Autowired private WebTestClient webTestClient;
 
