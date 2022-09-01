@@ -1,16 +1,11 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
-import static org.hamcrest.Matchers.equalTo;
-
-import ca.bc.gov.backendstartapi.dto.UserDto;
-import ca.bc.gov.backendstartapi.exception.UserExistsException;
-import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
-import ca.bc.gov.backendstartapi.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,13 +18,24 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.support.WebExchangeBindException;
+
+import ca.bc.gov.backendstartapi.dto.UserDto;
+import ca.bc.gov.backendstartapi.exception.UserExistsException;
+import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
+import ca.bc.gov.backendstartapi.repository.UserRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = UserEndpoint.class)
 @Import(UserRepository.class)
 public class UserEndpointIT {
+
+  private final String FIRSTNAME = "Ricardo";
+  private final String LASTNAME = "Campos";
+  private final UserDto USERDTO = UserDto.builder().firstName(FIRSTNAME).lastName(LASTNAME).build();
 
   @Autowired private WebTestClient webTestClient;
 
@@ -38,16 +44,14 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Create user with success")
   void createSuccess() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-
-    Mockito.when(userRepository.saveUser(userDto, true)).thenReturn(Mono.just(userDto));
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(USERDTO), UserDto.class)
         .exchange()
         .expectStatus()
         .isOk()
@@ -55,24 +59,24 @@ public class UserEndpointIT {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo("Ricardo")
+        .isEqualTo(FIRSTNAME)
         .jsonPath("$.lastName")
-        .isEqualTo("Campos");
+        .isEqualTo(LASTNAME);
   }
 
   @Test
   @DisplayName("Create user without firstName")
   void createWithoutFirstName() {
-    UserDto userDto = UserDto.builder().lastName("Campos").build();
+    UserDto userDtoPartial = UserDto.builder().lastName("Campos").build();
 
-    Mockito.when(userRepository.saveUser(userDto, true)).thenThrow(WebExchangeBindException.class);
+    Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(userDtoPartial), UserDto.class)
         .exchange()
         .expectStatus()
         .isBadRequest()
@@ -85,16 +89,16 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Create user without lastName")
   void createWithoutLastName() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").build();
+    UserDto userDtoPartial = UserDto.builder().firstName("Ricardo").build();
 
-    Mockito.when(userRepository.saveUser(userDto, true)).thenThrow(WebExchangeBindException.class);
+    Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(userDtoPartial), UserDto.class)
         .exchange()
         .expectStatus()
         .isBadRequest()
@@ -107,16 +111,16 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Create user with minimum lastName size")
   void createSizeMin() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("C").build();
+    UserDto userDtoError = UserDto.builder().firstName("Ricardo").lastName("C").build();
 
-    Mockito.when(userRepository.saveUser(userDto, true)).thenThrow(WebExchangeBindException.class);
+    Mockito.when(userRepository.save(userDtoError)).thenThrow(WebExchangeBindException.class);
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(userDtoError), UserDto.class)
         .exchange()
         .expectStatus()
         .isBadRequest()
@@ -129,17 +133,17 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Create user with maximum lastName size")
   void createSizeMax() {
-    UserDto userDto =
+    UserDto userDtoError =
         UserDto.builder().firstName("Ricardo").lastName("CamposCamposCamposCampos").build();
 
-    Mockito.when(userRepository.saveUser(userDto, true)).thenThrow(WebExchangeBindException.class);
+    Mockito.when(userRepository.save(userDtoError)).thenThrow(WebExchangeBindException.class);
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(userDtoError), UserDto.class)
         .exchange()
         .expectStatus()
         .isBadRequest()
@@ -149,19 +153,17 @@ public class UserEndpointIT {
         .value(equalTo("{\"lastName\":\"size must be between 2 and 20\"}"));
   }
 
-  // create error duplicate
   @Test
   @DisplayName("Try to create existing user")
   void createExisting() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-    Mockito.when(userRepository.saveUser(userDto, true)).thenReturn(Mono.just(userDto));
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(USERDTO), UserDto.class)
         .exchange()
         .expectStatus()
         .isOk()
@@ -173,14 +175,14 @@ public class UserEndpointIT {
         .jsonPath("$.lastName")
         .isEqualTo("Campos");
 
-    Mockito.when(userRepository.saveUser(userDto, true)).thenThrow(UserExistsException.class);
+    Mockito.when(userRepository.save(USERDTO)).thenThrow(UserExistsException.class);
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(USERDTO), UserDto.class)
         .exchange()
         .expectStatus()
         .isBadRequest()
@@ -193,15 +195,14 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Find users by first name")
   void findUsersByFirstName() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-    Mockito.when(userRepository.saveUser(userDto, true)).thenReturn(Mono.just(userDto));
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(USERDTO), UserDto.class)
         .exchange()
         .expectStatus()
         .isOk()
@@ -209,16 +210,15 @@ public class UserEndpointIT {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo("Ricardo")
+        .isEqualTo(FIRSTNAME)
         .jsonPath("$.lastName")
-        .isEqualTo("Campos");
+        .isEqualTo(LASTNAME);
 
-    List<UserDto> users = new ArrayList<>(Collections.singletonList(userDto));
-    Mockito.when(userRepository.findUserByFirstName("Ricardo"))
-        .thenReturn(Flux.fromIterable(users));
+    List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
+    Mockito.when(userRepository.findByFirstName(FIRSTNAME)).thenReturn(Flux.fromIterable(users));
 
     final Map<String, String> params = new HashMap<>();
-    params.put("firstName", "Ricardo");
+    params.put("firstName", FIRSTNAME);
 
     webTestClient
         .get()
@@ -235,16 +235,14 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Find users by last name")
   void findUsersByLastName() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-
-    Mockito.when(userRepository.saveUser(userDto, true)).thenReturn(Mono.just(userDto));
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
 
     webTestClient
         .post()
         .uri("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
-        .body(Mono.just(userDto), UserDto.class)
+        .body(Mono.just(USERDTO), UserDto.class)
         .exchange()
         .expectStatus()
         .isOk()
@@ -252,15 +250,15 @@ public class UserEndpointIT {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo("Ricardo")
+        .isEqualTo(FIRSTNAME)
         .jsonPath("$.lastName")
-        .isEqualTo("Campos");
+        .isEqualTo(LASTNAME);
 
-    List<UserDto> users = new ArrayList<>(Collections.singletonList(userDto));
-    Mockito.when(userRepository.findUserByLastName("Campos")).thenReturn(Flux.fromIterable(users));
+    List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
+    Mockito.when(userRepository.findByLastName(LASTNAME)).thenReturn(Flux.fromIterable(users));
 
     final Map<String, String> params = new HashMap<>();
-    params.put("lastName", "Campos");
+    params.put("lastName", LASTNAME);
 
     webTestClient
         .get()
@@ -275,13 +273,57 @@ public class UserEndpointIT {
   }
 
   @Test
+  @DisplayName("Find users by first and last name")
+  void findUsersByFirstAndLastName() {
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
+
+    webTestClient
+        .post()
+        .uri("/users")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(Mono.just(USERDTO), UserDto.class)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(MediaType.APPLICATION_JSON)
+        .expectBody()
+        .jsonPath("$.firstName")
+        .isEqualTo(FIRSTNAME)
+        .jsonPath("$.lastName")
+        .isEqualTo(LASTNAME);
+
+    Mockito.when(userRepository.find(FIRSTNAME, LASTNAME)).thenReturn(Mono.just(USERDTO));
+
+    final Map<String, String> params = new HashMap<>();
+    params.put("firstName", FIRSTNAME);
+    params.put("lastName", LASTNAME);
+
+    webTestClient
+        .get()
+        .uri("/users/find/{firstName}/{lastName}", params)
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(MediaType.APPLICATION_JSON)
+        .expectBody()
+        .jsonPath("$.firstName")
+        .isEqualTo(FIRSTNAME)
+        .jsonPath("$.lastName")
+        .isEqualTo(LASTNAME);
+  }
+
+  @Test
   @DisplayName("Find users by last name not found")
   void findUsersNotFound() {
     final Map<String, String> params = new HashMap<>();
     params.put("firstName", "RRR");
 
     Flux<UserDto> userDtoFlux = Flux.empty();
-    Mockito.when(userRepository.findUserByFirstName("RRR")).thenReturn(userDtoFlux);
+    Mockito.when(userRepository.findByFirstName("RRR")).thenReturn(userDtoFlux);
 
     webTestClient
         .get()
@@ -299,14 +341,11 @@ public class UserEndpointIT {
   @Test
   @DisplayName("Delete user that doesn't exist")
   void deleteUserDoesNotExist() {
-    UserDto userDto = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-
     final Map<String, String> params = new HashMap<>();
-    params.put("firstName", userDto.getFirstName());
-    params.put("lastName", userDto.getLastName());
+    params.put("firstName", FIRSTNAME);
+    params.put("lastName", LASTNAME);
 
-    Mockito.when(userRepository.findUser(userDto.getFirstName(), userDto.getLastName()))
-        .thenThrow(UserNotFoundException.class);
+    Mockito.when(userRepository.find(FIRSTNAME, LASTNAME)).thenThrow(UserNotFoundException.class);
 
     webTestClient
         .delete()

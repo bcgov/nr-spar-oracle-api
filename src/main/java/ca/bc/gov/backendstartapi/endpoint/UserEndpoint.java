@@ -38,9 +38,7 @@ public class UserEndpoint {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<UserDto> create(@Valid @RequestBody UserDto user) {
-    return userRepository
-        .saveUser(user, true)
-        .onErrorResume(UserExistsException.class, Mono::error);
+    return userRepository.save(user).onErrorResume(UserExistsException.class, Mono::error);
   }
 
   @GetMapping(
@@ -48,14 +46,14 @@ public class UserEndpoint {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<UserDto> readByFirstName(@PathVariable("firstName") String firstName) {
     return userRepository
-        .findUserByFirstName(firstName)
+        .findByFirstName(firstName)
         .switchIfEmpty(Mono.error(new UserNotFoundException()));
   }
 
   @GetMapping(value = "/find-by-last-name/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<UserDto> readByLastName(@PathVariable("lastName") String lastName) {
     return userRepository
-        .findUserByLastName(lastName)
+        .findByLastName(lastName)
         .switchIfEmpty(Mono.error(new UserNotFoundException()));
   }
 
@@ -63,7 +61,7 @@ public class UserEndpoint {
   public Mono<UserDto> readByUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     return userRepository
-        .findUser(firstName, lastName)
+        .find(firstName, lastName)
         .switchIfEmpty(Mono.error(new UserNotFoundException()));
   }
 
@@ -71,7 +69,7 @@ public class UserEndpoint {
   public Mono<UserDto> deleteUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     return userRepository
-        .findUser(firstName, lastName)
+        .find(firstName, lastName)
         .flatMap(user -> userRepository.delete(user))
         .switchIfEmpty(Mono.error(new UserNotFoundException()));
   }

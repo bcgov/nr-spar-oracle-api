@@ -1,11 +1,10 @@
 package ca.bc.gov.backendstartapi.dto;
 
+import ca.bc.gov.backendstartapi.response.BaseResponse;
+import ca.bc.gov.backendstartapi.util.Empty;
 import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import ca.bc.gov.backendstartapi.response.BaseResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class UserDto implements BaseResponse {
+public class UserDto implements BaseResponse, Empty {
 
   @Size(min = 2, max = 20)
   @NotNull
@@ -44,5 +43,10 @@ public class UserDto implements BaseResponse {
   @Override
   public String toString() {
     return "UserDto{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + '}';
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return hashCode() == 961;
   }
 }

@@ -31,6 +31,11 @@ public class ObjectUtil {
       return value.isEmpty();
     }
 
+    // Check if given object implements Comparable<T>
+    if (obj instanceof Empty) {
+      return true;
+    }
+
     throw new RuntimeException("Type not supported: " + obj.getClass().getName());
   }
 }

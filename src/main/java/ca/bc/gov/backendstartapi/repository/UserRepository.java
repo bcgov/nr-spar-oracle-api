@@ -26,19 +26,17 @@ public class UserRepository {
    * @param userDto user to be saved
    * @return the new saved user.
    */
-  public Mono<UserDto> saveUser(UserDto userDto, boolean create) {
+  public Mono<UserDto> save(UserDto userDto) {
     UserDto saved = users.put(userDto.hashCode(), userDto);
-    if (create && !Objects.isNull(saved)) {
+    if (!Objects.isNull(saved)) {
       return Mono.error(new UserExistsException());
     }
 
-    if (create) {
-      firstNameIndex.putIfAbsent(userDto.getFirstName(), new ArrayList<>());
-      lastNameIndex.putIfAbsent(userDto.getLastName(), new ArrayList<>());
+    firstNameIndex.putIfAbsent(userDto.getFirstName(), new ArrayList<>());
+    lastNameIndex.putIfAbsent(userDto.getLastName(), new ArrayList<>());
 
-      firstNameIndex.get(userDto.getFirstName()).add(userDto.hashCode());
-      lastNameIndex.get(userDto.getLastName()).add(userDto.hashCode());
-    }
+    firstNameIndex.get(userDto.getFirstName()).add(userDto.hashCode());
+    lastNameIndex.get(userDto.getLastName()).add(userDto.hashCode());
 
     return Mono.just(userDto);
   }
@@ -49,7 +47,7 @@ public class UserRepository {
    * @param firstName the user's first name
    * @return a list with all possible users
    */
-  public Flux<UserDto> findUserByFirstName(String firstName) {
+  public Flux<UserDto> findByFirstName(String firstName) {
     List<Integer> indexes = firstNameIndex.get(firstName);
     if (ObjectUtil.isEmptyOrNull(indexes)) {
       return Flux.empty();
@@ -64,7 +62,7 @@ public class UserRepository {
    * @param lastName the user's last name
    * @return a list with all possible users
    */
-  public Flux<UserDto> findUserByLastName(String lastName) {
+  public Flux<UserDto> findByLastName(String lastName) {
     List<Integer> indexes = lastNameIndex.get(lastName);
     if (ObjectUtil.isEmptyOrNull(indexes)) {
       return Flux.empty();
@@ -80,7 +78,7 @@ public class UserRepository {
    * @param lastName the user's last name
    * @return a UserDto if found
    */
-  public Mono<UserDto> findUser(String firstName, String lastName) {
+  public Mono<UserDto> find(String firstName, String lastName) {
     UserDto userDtoToFind = UserDto.builder().firstName(firstName).lastName(lastName).build();
 
     UserDto userDb = users.get(userDtoToFind.hashCode());
@@ -91,6 +89,12 @@ public class UserRepository {
     return Mono.just(userDb);
   }
 
+  /**
+   * Delete a user from the repository.
+   *
+   * @param userDto user to be deleted
+   * @return a Mono instance containing the deleted user data
+   */
   public Mono<UserDto> delete(UserDto userDto) {
     UserDto removed = users.remove(userDto.hashCode());
     return Mono.just(removed);
