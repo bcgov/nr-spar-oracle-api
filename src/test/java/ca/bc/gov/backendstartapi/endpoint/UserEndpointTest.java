@@ -1,11 +1,16 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import static org.hamcrest.Matchers.equalTo;
+
+import ca.bc.gov.backendstartapi.dto.UserDto;
+import ca.bc.gov.backendstartapi.exception.UserExistsException;
+import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
+import ca.bc.gov.backendstartapi.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,20 +23,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.support.WebExchangeBindException;
-
-import ca.bc.gov.backendstartapi.dto.UserDto;
-import ca.bc.gov.backendstartapi.exception.UserExistsException;
-import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
-import ca.bc.gov.backendstartapi.repository.UserRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import static org.hamcrest.Matchers.equalTo;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = UserEndpoint.class)
 @Import(UserRepository.class)
-public class UserEndpointIT {
+class UserEndpointTest {
 
   private final String FIRSTNAME = "Ricardo";
   private final String LASTNAME = "Campos";

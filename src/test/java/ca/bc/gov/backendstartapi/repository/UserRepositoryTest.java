@@ -1,12 +1,11 @@
 package ca.bc.gov.backendstartapi.repository;
 
+import ca.bc.gov.backendstartapi.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import ca.bc.gov.backendstartapi.dto.UserDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;

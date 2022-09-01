@@ -1,16 +1,14 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import ca.bc.gov.backendstartapi.exception.UserExistsException;
+import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
-
-import ca.bc.gov.backendstartapi.exception.UserExistsException;
-import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 
 /** This class is responsible for handling all kind of exceptions and validations. */
 @RestControllerAdvice
@@ -52,7 +50,7 @@ public class RestExceptionEndpoint {
   }
 
   /**
-   * Create a Map of String with a single message key and its content
+   * Create a Map of String with a single message key and its content.
    *
    * @param message The message that should be returned to the user
    * @return A Map of String with the message

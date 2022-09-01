@@ -1,16 +1,14 @@
 package ca.bc.gov.backendstartapi.repository;
 
+import ca.bc.gov.backendstartapi.dto.UserDto;
+import ca.bc.gov.backendstartapi.exception.UserExistsException;
+import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import org.springframework.stereotype.Repository;
-
-import ca.bc.gov.backendstartapi.dto.UserDto;
-import ca.bc.gov.backendstartapi.exception.UserExistsException;
-import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -74,7 +72,7 @@ public class UserRepository {
   }
 
   /**
-   * Find a specific user by its name
+   * Find a specific user by its name.
    *
    * @param firstName the user's first name
    * @param lastName the user's last name

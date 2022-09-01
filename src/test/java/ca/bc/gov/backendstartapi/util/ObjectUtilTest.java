@@ -1,15 +1,13 @@
 package ca.bc.gov.backendstartapi.util;
 
+import ca.bc.gov.backendstartapi.dto.ExampleDto;
+import ca.bc.gov.backendstartapi.dto.UserDto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import ca.bc.gov.backendstartapi.dto.ExampleDto;
-import ca.bc.gov.backendstartapi.dto.UserDto;
 
 public class ObjectUtilTest {
 
@@ -45,8 +43,10 @@ public class ObjectUtilTest {
   @Test
   @DisplayName("IsEmptyOrNull class not supported")
   void isEmptyOrNullTest_exception() {
-    Assertions.assertThrows(RuntimeException.class, () -> {
-      Assertions.assertTrue(ObjectUtil.isEmptyOrNull(new ExampleDto()));
-    });
+    Assertions.assertThrows(
+        RuntimeException.class,
+        () -> {
+          Assertions.assertTrue(ObjectUtil.isEmptyOrNull(new ExampleDto()));
+        });
   }
 }

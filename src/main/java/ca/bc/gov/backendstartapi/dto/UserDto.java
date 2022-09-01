@@ -1,12 +1,10 @@
 package ca.bc.gov.backendstartapi.dto;
 
-import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import ca.bc.gov.backendstartapi.response.BaseResponse;
 import ca.bc.gov.backendstartapi.util.Empty;
+import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

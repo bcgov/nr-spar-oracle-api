@@ -3,7 +3,7 @@ package ca.bc.gov.backendstartapi.util;
 import java.util.List;
 import java.util.Objects;
 
-/** This class contains utils methods */
+/** This class contains utils methods. */
 public class ObjectUtil {
 
   /**
