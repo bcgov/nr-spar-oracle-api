@@ -72,7 +72,7 @@ For unit tests, please use this command: `./mvnw test --file pom.xml`
 And for integration tests, this one: `./mvnw verify -P integration-test --file pom.xml`
 
 Tests coverage reports can be seen on your commits and pull requests. But in case you 
-want to check locally, use this command to run all tests `mvn --no-transfer-progress clean verify -P all-tests --file pom.xml`,
+want to check locally, use this command to run all tests `./mvnw --no-transfer-progress clean verify -P all-tests --file pom.xml`,
 and check out the files inside `target/coverage-reports/`
 
 ## Submit pull requests
