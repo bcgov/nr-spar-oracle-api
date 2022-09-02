@@ -31,6 +31,8 @@
 		<skip.unit.tests>false</skip.unit.tests>
 		<jacoco.skip>true</jacoco.skip>
 		<checkstyle.skip>true</checkstyle.skip>
+    <checkstyle.failsOnError>true</checkstyle.failsOnError>
+		<checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
 		<jacoco.output.data>${project.build.directory}/coverage-reports</jacoco.output.data>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
@@ -325,9 +327,12 @@
 				</dependencies>
 				<configuration>
 					<skip>${checkstyle.skip}</skip>
+					<failsOnError>${checkstyle.failsOnError}</failsOnError>
+					<includeTestSourceDirectory>
+						${checkstyle.includeTestSourceDirectory}
+					</includeTestSourceDirectory>
 					<configLocation>.mvn/google_checks.xml</configLocation>
 					<consoleOutput>true</consoleOutput>
-					<failsOnError>true</failsOnError>
 					<linkXRef>false</linkXRef>
 				</configuration>
 				<executions>
