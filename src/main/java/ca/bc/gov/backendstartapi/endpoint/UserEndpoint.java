@@ -21,8 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** This class exposes user related endpoints. */
-@CrossOrigin(
-    originPatterns = {"http://localhost:3000", "https://*.apps.silver.devops.gov.bc.ca"})
+@CrossOrigin(originPatterns = {"http://localhost:3000", "https://*.apps.silver.devops.gov.bc.ca"})
 @NoArgsConstructor
 @RestController
 @RequestMapping("/users")

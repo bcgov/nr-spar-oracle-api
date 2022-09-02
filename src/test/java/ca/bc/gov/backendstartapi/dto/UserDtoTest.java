@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class UserDtoTest {
+class UserDtoTest {
 
   @Test
   @DisplayName("Getter and Setter tests")

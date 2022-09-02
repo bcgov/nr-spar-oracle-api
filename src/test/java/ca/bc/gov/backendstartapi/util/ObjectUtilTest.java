@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ObjectUtilTest {
+class ObjectUtilTest {
 
   @Test
   @DisplayName("IsEmptyOrNull method test")
@@ -45,8 +45,6 @@ public class ObjectUtilTest {
   void isEmptyOrNullTest_exception() {
     Assertions.assertThrows(
         RuntimeException.class,
-        () -> {
-          Assertions.assertTrue(ObjectUtil.isEmptyOrNull(new ExampleDto()));
-        });
+        () -> Assertions.assertTrue(ObjectUtil.isEmptyOrNull(new ExampleDto())));
   }
 }

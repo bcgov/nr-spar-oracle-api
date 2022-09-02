@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
   private final UserRepository userRepository = new UserRepository();
   private final String FIRSTNAME = "Ricardo";

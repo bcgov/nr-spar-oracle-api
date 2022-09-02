@@ -52,6 +52,8 @@ that can be very helpful. Take a look at
 [this page](https://plugins.jetbrains.com/plugin/8527-google-java-format)
 or search directly on the IDE Plugins menu.
 
+You can check your code before submitting with `./mvnw --no-transfer-progress checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml`
+
 ## Run this application
 
 After setting up your environment you might want to see this service running. 

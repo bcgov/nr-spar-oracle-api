@@ -6,6 +6,8 @@ import java.util.Objects;
 /** This class contains utils methods. */
 public class ObjectUtil {
 
+  private ObjectUtil() {}
+
   /**
    * Check if a given object instance is null or empty.
    *
@@ -17,23 +19,21 @@ public class ObjectUtil {
       return true;
     }
 
-    if (obj instanceof String) {
-      String value = obj.toString();
-      return value.trim().isEmpty();
+    if (obj instanceof String string) {
+      return string.trim().isEmpty();
     }
 
     if (obj instanceof Integer) {
       return Integer.parseInt(String.valueOf(obj)) == 0;
     }
 
-    if (obj instanceof List) {
-      List value = (List) obj;
-      return value.isEmpty();
+    if (obj instanceof List list) {
+      return list.isEmpty();
     }
 
     // Check if given object implements Comparable<T>
-    if (obj instanceof Empty) {
-      return true;
+    if (obj instanceof Empty empty) {
+      return empty.isEmpty();
     }
 
     throw new RuntimeException("Type not supported: " + obj.getClass().getName());
