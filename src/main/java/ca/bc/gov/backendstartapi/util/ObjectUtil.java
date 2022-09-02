@@ -1,6 +1,8 @@
 package ca.bc.gov.backendstartapi.util;
 
-import java.util.List;
+import ca.bc.gov.backendstartapi.exception.EmptyObjectNotSupportedException;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Objects;
 
 /** This class contains utils methods. */
@@ -27,8 +29,12 @@ public class ObjectUtil {
       return Integer.parseInt(String.valueOf(obj)) == 0;
     }
 
-    if (obj instanceof List list) {
-      return list.isEmpty();
+    if (obj.getClass().isArray()) {
+      return Array.getLength(obj) == 0;
+    }
+
+    if (Collection.class.isAssignableFrom(obj.getClass())) {
+      return Collection.class.cast(obj).isEmpty();
     }
 
     // Check if given object implements Comparable<T>
@@ -36,6 +42,6 @@ public class ObjectUtil {
       return empty.isEmpty();
     }
 
-    throw new RuntimeException("Type not supported: " + obj.getClass().getName());
+    throw new EmptyObjectNotSupportedException("Type not supported: " + obj.getClass().getName());
   }
 }

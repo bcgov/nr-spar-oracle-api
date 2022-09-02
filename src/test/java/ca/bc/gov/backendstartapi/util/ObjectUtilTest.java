@@ -27,6 +27,12 @@ class ObjectUtilTest {
     Assertions.assertTrue(ObjectUtil.isEmptyOrNull(value1));
     Assertions.assertFalse(ObjectUtil.isEmptyOrNull(value2));
 
+    // Array
+    Integer[] array1 = new Integer[]{1,2,3};
+    Integer[] array2 = new Integer[]{};
+    Assertions.assertFalse(ObjectUtil.isEmptyOrNull(array1));
+    Assertions.assertTrue(ObjectUtil.isEmptyOrNull(array2));
+
     // List
     List<Object> emptyList = new ArrayList<>();
     List<Object> nonEmptyList = Arrays.asList("1", "2");
