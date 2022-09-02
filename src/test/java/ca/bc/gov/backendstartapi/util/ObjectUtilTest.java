@@ -52,6 +52,7 @@ class ObjectUtilTest {
   @Test
   @DisplayName("IsEmptyOrNull class not supported")
   void isEmptyOrNullTest_exception() {
-    assertThrows(RuntimeException.class, () -> ObjectUtil.isEmptyOrNull(new ExampleDto()));
+    final ExampleDto example = new ExampleDto();
+    assertThrows(RuntimeException.class, () -> ObjectUtil.isEmptyOrNull(example));
   }
 }
