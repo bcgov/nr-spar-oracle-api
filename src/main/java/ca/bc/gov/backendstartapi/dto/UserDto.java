@@ -5,14 +5,18 @@ import ca.bc.gov.backendstartapi.util.Empty;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /** This class represents a User data transition object. */
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto implements BaseResponse, Empty {
 
   @Size(min = 2, max = 20)

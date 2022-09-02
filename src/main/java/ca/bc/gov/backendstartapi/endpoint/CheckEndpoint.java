@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Mono;
 /** This class represents a check endpoint object. */
 @Slf4j
 @RestController
-@CrossOrigin(originPatterns = {"http://localhost:3000", "https://*.apps.silver.devops.gov.bc.ca"})
 public class CheckEndpoint {
 
   @Value("${nrbestapi.version}")
