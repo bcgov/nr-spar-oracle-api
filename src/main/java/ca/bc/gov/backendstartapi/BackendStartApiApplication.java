@@ -3,9 +3,7 @@ package ca.bc.gov.backendstartapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Starting point of the service app.
- */
+/** Starting point of the service app. */
 @SpringBootApplication
 public class BackendStartApiApplication {
 

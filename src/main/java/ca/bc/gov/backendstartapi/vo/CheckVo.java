@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * This class represents a check object.
- */
+/** This class represents a check object. */
 @Builder
 @Getter
 @AllArgsConstructor
