@@ -37,7 +37,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  @DisplayName("2-Find by first name")
+  @DisplayName("Find by first name")
   void findByFirstNameTest() {
     userRepository.save(USERDTO);
     Flux<UserDto> userDtoFlux = userRepository.findByFirstName(FIRSTNAME);
@@ -74,6 +74,22 @@ class UserRepositoryTest {
     Mono<UserDto> findMono = userRepository.find(FIRSTNAME, LASTNAME);
 
     StepVerifier.create(findMono)
+        .assertNext(
+            result -> {
+              Assertions.assertFalse(result.isEmpty());
+              Assertions.assertEquals(FIRSTNAME, result.getFirstName());
+              Assertions.assertEquals(LASTNAME, result.getLastName());
+            })
+        .verifyComplete();
+  }
+
+  @Test
+  @DisplayName("Find All users test")
+  void findAllTest() {
+    userRepository.save(USERDTO);
+    Flux<UserDto> usersFlux = userRepository.findAll();
+
+    StepVerifier.create(usersFlux)
         .assertNext(
             result -> {
               Assertions.assertFalse(result.isEmpty());

@@ -315,6 +315,47 @@ class UserEndpointTest {
   }
 
   @Test
+  @DisplayName("Find all users")
+  void findAllUsers() {
+    Mockito.when(userRepository.save(USERDTO)).thenReturn(Mono.just(USERDTO));
+
+    webTestClient
+        .post()
+        .uri("/users")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(Mono.just(USERDTO), UserDto.class)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(MediaType.APPLICATION_JSON)
+        .expectBody()
+        .jsonPath("$.firstName")
+        .isEqualTo(FIRSTNAME)
+        .jsonPath("$.lastName")
+        .isEqualTo(LASTNAME);
+
+    Mockito.when(userRepository.findAll())
+        .thenReturn(Flux.fromIterable(Collections.singletonList(USERDTO)));
+
+    webTestClient
+        .get()
+        .uri("/users/find-all")
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectHeader()
+        .contentType(MediaType.APPLICATION_JSON)
+        .expectBody()
+        .jsonPath("$[0].firstName")
+        .isEqualTo(FIRSTNAME)
+        .jsonPath("$[0].lastName")
+        .isEqualTo(LASTNAME);
+  }
+
+  @Test
   @DisplayName("Find users by last name not found")
   void findUsersNotFound() {
     final Map<String, String> params = new HashMap<>();

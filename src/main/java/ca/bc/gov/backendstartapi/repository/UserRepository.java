@@ -90,6 +90,15 @@ public class UserRepository {
   }
 
   /**
+   * Find all users.
+   *
+   * @return a list of UserDto
+   */
+  public Flux<UserDto> findAll() {
+    return Flux.fromIterable(users.values());
+  }
+
+  /**
    * Delete a user from the repository.
    *
    * @param userDto user to be deleted

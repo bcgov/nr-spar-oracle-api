@@ -90,6 +90,16 @@ public class UserEndpoint {
   }
 
   /**
+   * Get a list with all registered users.
+   *
+   * @return a Mono instance containing the found user or a 404 if not found.
+   */
+  @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Flux<UserDto> readAllUsers() {
+    return userRepository.findAll();
+  }
+
+  /**
    * Delete a user given his first and last name.
    *
    * @param firstName user's first name
