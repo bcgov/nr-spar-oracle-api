@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "db559797-d9ba-4bee-93f8-f33c3574ef63",
-		"name": "nr-starting-api test collection",
+		"name": "starting-api test collection",
 		"description": "## Description\nThis collection contains the API tests of the starting API.\n## Coverage\nThe aim is to have a coverage of 100%, every request on the API should have a mathcing test in this collection.\n## What to test\n- Status code\n- Response body field validation\n- Response time (1s avg)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
