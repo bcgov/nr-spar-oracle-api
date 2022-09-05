@@ -28,7 +28,10 @@ public class CorsConfig implements WebFluxConfigurer {
     if (!ObjectUtil.isEmptyOrNull(allowedOrigins)) {
       log.info("allowedOrigins: {}", Arrays.asList(allowedOrigins));
 
-      registry.addMapping("/**").allowedOriginPatterns(allowedOrigins);
+      registry
+          .addMapping("/**")
+          .allowedOriginPatterns(allowedOrigins)
+          .allowedMethods("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD");
     }
     WebFluxConfigurer.super.addCorsMappings(registry);
   }
