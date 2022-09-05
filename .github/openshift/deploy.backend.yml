@@ -37,6 +37,9 @@ parameters:
   - name: NRBESTAPI_VERSION
     description: Current service API release version
     required: true
+  - name: ALLOWED_ORIGINS
+    description: Sets all the allowed request origins
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -89,6 +92,8 @@ objects:
               env:
                 - name: NRBESTAPI_VERSION
                   value: ${NRBESTAPI_VERSION}
+                - name: ALLOWED_ORIGINS
+                  value: ${ALLOWED_ORIGINS}
               ports:
                 - containerPort: 8090
                   protocol: TCP
