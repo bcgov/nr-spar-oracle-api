@@ -11,14 +11,4 @@ public class EmptyObjectNotSupportedException extends RuntimeException {
   public EmptyObjectNotSupportedException(String message) {
     super(message);
   }
-
-  /**
-   * Retrieves the message to return to the user.
-   *
-   * @return A string containing the message
-   */
-  @Override
-  public String getMessage() {
-    return "Given class doesn't implement Empty interface.";
-  }
 }

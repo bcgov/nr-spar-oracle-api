@@ -12,6 +12,11 @@ public class ObjectUtil {
 
   /**
    * Check if a given object instance is null or empty.
+   * By empty, it means to have no value or be entirely blank.
+   * You can check for String, Character, Integer, Arrays,
+   * and Collections. For another classes, they should
+   * implement the interface Empty, and create a method
+   * that can return the emptiness condition of that class.
    *
    * @param obj Object instance to be checked
    * @return true if empty or null, false otherwise
@@ -23,6 +28,10 @@ public class ObjectUtil {
 
     if (obj instanceof String string) {
       return string.trim().isEmpty();
+    }
+
+    if (obj instanceof Character localChar) {
+      return localChar == ' ';
     }
 
     if (obj instanceof Integer) {

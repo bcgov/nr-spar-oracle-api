@@ -79,7 +79,7 @@ public class UserRepository {
    * @return a UserDto if found
    */
   public Mono<UserDto> find(String firstName, String lastName) {
-    UserDto userDtoToFind = UserDto.builder().firstName(firstName).lastName(lastName).build();
+    UserDto userDtoToFind = new UserDto(firstName, lastName);
 
     UserDto userDb = users.get(userDtoToFind.hashCode());
     if (Objects.isNull(userDb)) {

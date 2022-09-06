@@ -33,7 +33,7 @@ class UserEndpointTest {
 
   private final String FIRSTNAME = "Ricardo";
   private final String LASTNAME = "Campos";
-  private final UserDto USERDTO = UserDto.builder().firstName(FIRSTNAME).lastName(LASTNAME).build();
+  private final UserDto USERDTO = new UserDto(FIRSTNAME, LASTNAME);
 
   @Autowired private WebTestClient webTestClient;
 
@@ -65,7 +65,7 @@ class UserEndpointTest {
   @Test
   @DisplayName("Create user without firstName")
   void createWithoutFirstName() {
-    UserDto userDtoPartial = UserDto.builder().lastName("Campos").build();
+    UserDto userDtoPartial = new UserDto(null, "Campos");
 
     Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
@@ -81,13 +81,13 @@ class UserEndpointTest {
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody(String.class)
-        .value(equalTo("{\"firstName\":\"must not be null\"}"));
+        .value(equalTo("{\"firstName\":\"must not be blank\"}"));
   }
 
   @Test
   @DisplayName("Create user without lastName")
   void createWithoutLastName() {
-    UserDto userDtoPartial = UserDto.builder().firstName("Ricardo").build();
+    UserDto userDtoPartial = new UserDto("Ricardo", null);
 
     Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
@@ -103,13 +103,13 @@ class UserEndpointTest {
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody(String.class)
-        .value(equalTo("{\"lastName\":\"must not be null\"}"));
+        .value(equalTo("{\"lastName\":\"must not be blank\"}"));
   }
 
   @Test
   @DisplayName("Create user with minimum lastName size")
   void createSizeMin() {
-    UserDto userDtoError = UserDto.builder().firstName("Ricardo").lastName("C").build();
+    UserDto userDtoError = new UserDto("Ricardo", "C");
 
     Mockito.when(userRepository.save(userDtoError)).thenThrow(WebExchangeBindException.class);
 
@@ -131,8 +131,7 @@ class UserEndpointTest {
   @Test
   @DisplayName("Create user with maximum lastName size")
   void createSizeMax() {
-    UserDto userDtoError =
-        UserDto.builder().firstName("Ricardo").lastName("CamposCamposCamposCampos").build();
+    UserDto userDtoError = new UserDto("Ricardo", "CamposCamposCamposCampos");
 
     Mockito.when(userRepository.save(userDtoError)).thenThrow(WebExchangeBindException.class);
 

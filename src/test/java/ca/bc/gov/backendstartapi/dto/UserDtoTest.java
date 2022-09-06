@@ -9,7 +9,7 @@ class UserDtoTest {
   @Test
   @DisplayName("Getter and Setter tests")
   void gettersAndSettersTest() {
-    UserDto user = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
+    UserDto user = new UserDto("Ricardo", "Campos");
 
     Assertions.assertEquals("Ricardo", user.getFirstName());
     Assertions.assertEquals("Campos", user.getLastName());
@@ -18,12 +18,12 @@ class UserDtoTest {
   @Test
   @DisplayName("Equals and Hashcode tests")
   void equalsTests() {
-    UserDto userA = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-    UserDto userB = UserDto.builder().firstName("Igor").lastName("Melo").build();
+    UserDto userA = new UserDto("Ricardo", "Campos");
+    UserDto userB = new UserDto("Igor", "Melo");
 
     Assertions.assertNotEquals(userA, userB);
     Assertions.assertEquals(
-        userA, UserDto.builder().firstName("Ricardo").lastName("Campos").build());
+        userA, new UserDto("Ricardo", "Campos"));
 
     Assertions.assertEquals(518622622, userA.hashCode());
     Assertions.assertEquals(72991099, userB.hashCode());
@@ -32,8 +32,8 @@ class UserDtoTest {
   @Test
   @DisplayName("ToString test")
   void toStringTests() {
-    UserDto userA = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-    UserDto userB = UserDto.builder().firstName("Igor").lastName("Melo").build();
+    UserDto userA = new UserDto("Ricardo", "Campos");
+    UserDto userB = new UserDto("Igor", "Melo");
 
     Assertions.assertEquals("UserDto{firstName='Ricardo', lastName='Campos'}", userA.toString());
     Assertions.assertEquals("UserDto{firstName='Igor', lastName='Melo'}", userB.toString());
@@ -42,11 +42,11 @@ class UserDtoTest {
   @Test
   @DisplayName("IsEmpty test")
   void isEmptyTests() {
-    UserDto userA = UserDto.builder().firstName("Ricardo").lastName("Campos").build();
-    UserDto userB = UserDto.builder().firstName("Igor").build();
-    UserDto userC = UserDto.builder().build();
-    UserDto userD = UserDto.builder().firstName("").lastName("").build();
-    UserDto userE = UserDto.builder().firstName(null).lastName(null).build();
+    UserDto userA = new UserDto("Ricardo", "Campos");
+    UserDto userB = new UserDto("Igor", null);
+    UserDto userC = new UserDto();
+    UserDto userD = new UserDto("", "");
+    UserDto userE = new UserDto(null, null);
 
     Assertions.assertFalse(userA.isEmpty());
     Assertions.assertFalse(userB.isEmpty());

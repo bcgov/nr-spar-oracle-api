@@ -3,16 +3,14 @@ package ca.bc.gov.backendstartapi.dto;
 import ca.bc.gov.backendstartapi.response.BaseResponse;
 import ca.bc.gov.backendstartapi.util.Empty;
 import java.util.Objects;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /** This class represents a User data transition object. */
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,11 +18,11 @@ import lombok.Setter;
 public class UserDto implements BaseResponse, Empty {
 
   @Size(min = 2, max = 20)
-  @NotNull
+  @NotBlank
   private String firstName;
 
   @Size(min = 2, max = 20)
-  @NotNull
+  @NotBlank
   private String lastName;
 
   @Override
@@ -46,7 +44,8 @@ public class UserDto implements BaseResponse, Empty {
 
   @Override
   public String toString() {
-    return "UserDto{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + '}';
+    String template = "UserDto{firstName='%s', lastName='%s'}";
+    return String.format(template, firstName, lastName);
   }
 
   @Override

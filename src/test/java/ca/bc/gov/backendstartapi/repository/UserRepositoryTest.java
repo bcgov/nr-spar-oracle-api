@@ -17,7 +17,7 @@ class UserRepositoryTest {
   private final String FIRSTNAME = "Ricardo";
   private final String LASTNAME = "Campos";
 
-  private final UserDto USERDTO = UserDto.builder().firstName(FIRSTNAME).lastName(LASTNAME).build();
+  private final UserDto USERDTO = new UserDto(FIRSTNAME, LASTNAME);
 
   @Test
   @DisplayName("Save user into repository")
