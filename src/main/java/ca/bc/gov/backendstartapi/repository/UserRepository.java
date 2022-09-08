@@ -43,7 +43,7 @@ public class UserRepository {
     users
         .values()
         .forEach(
-            (dto) -> {
+            dto -> {
               if (dto.getFirstName().equals(firstName)) {
                 usersFound.add(dto);
               }
@@ -62,7 +62,7 @@ public class UserRepository {
     users
         .values()
         .forEach(
-            (dto) -> {
+            dto -> {
               if (dto.getLastName().equals(lastName)) {
                 usersFound.add(dto);
               }
@@ -106,17 +106,5 @@ public class UserRepository {
   public Mono<UserDto> delete(UserDto userDto) {
     UserDto removed = users.remove(userDto.hashCode());
     return Mono.just(removed);
-  }
-
-  /**
-   * Create a Flux with all users that were found.
-   *
-   * @param indexes a list of integer with all indexes found
-   * @return a list with all possible users
-   */
-  private Flux<UserDto> createFromIndexes(List<Integer> indexes) {
-    final List<UserDto> userList = new ArrayList<>();
-    indexes.forEach(index -> userList.add(users.get(index)));
-    return Flux.fromIterable(userList);
   }
 }
