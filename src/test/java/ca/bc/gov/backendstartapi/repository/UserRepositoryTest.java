@@ -40,7 +40,7 @@ class UserRepositoryTest {
   @DisplayName("Find by first name")
   void findByFirstNameTest() {
     userRepository.save(USERDTO);
-    Flux<UserDto> userDtoFlux = userRepository.findByFirstName(FIRSTNAME);
+    Flux<UserDto> userDtoFlux = userRepository.findAllByFirstName(FIRSTNAME);
 
     StepVerifier.create(userDtoFlux).expectComplete();
 

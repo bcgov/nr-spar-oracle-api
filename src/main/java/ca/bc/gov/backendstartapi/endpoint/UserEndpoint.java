@@ -53,11 +53,11 @@ public class UserEndpoint {
    * @return A Flux instance containing all found users.
    */
   @GetMapping(
-      value = "/find-by-first-name/{firstName}",
+      value = "/find-all-by-first-name/{firstName}",
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<UserDto> readByFirstName(@PathVariable("firstName") String firstName) {
     return userRepository
-        .findByFirstName(firstName)
+        .findAllByFirstName(firstName)
         .switchIfEmpty(Mono.error(new UserNotFoundException()));
   }
 
@@ -67,7 +67,9 @@ public class UserEndpoint {
    * @param lastName user's last name
    * @return A Flux instance containing all found users.
    */
-  @GetMapping(value = "/find-by-last-name/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(
+      value = "/find-all-by-last-name/{lastName}",
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<UserDto> readByLastName(@PathVariable("lastName") String lastName) {
     return userRepository
         .findByLastName(lastName)

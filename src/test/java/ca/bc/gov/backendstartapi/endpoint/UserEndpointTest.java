@@ -212,14 +212,14 @@ class UserEndpointTest {
         .isEqualTo(LASTNAME);
 
     List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
-    Mockito.when(userRepository.findByFirstName(FIRSTNAME)).thenReturn(Flux.fromIterable(users));
+    Mockito.when(userRepository.findAllByFirstName(FIRSTNAME)).thenReturn(Flux.fromIterable(users));
 
     final Map<String, String> params = new HashMap<>();
     params.put("firstName", FIRSTNAME);
 
     webTestClient
         .get()
-        .uri("/users/find-by-first-name/{firstName}", params)
+        .uri("/users/find-all-by-first-name/{firstName}", params)
         .accept(MediaType.APPLICATION_JSON)
         .exchange()
         .expectStatus()
@@ -259,7 +259,7 @@ class UserEndpointTest {
 
     webTestClient
         .get()
-        .uri("/users/find-by-last-name/{lastName}", params)
+        .uri("/users/find-all-by-last-name/{lastName}", params)
         .accept(MediaType.APPLICATION_JSON)
         .exchange()
         .expectStatus()
@@ -361,11 +361,11 @@ class UserEndpointTest {
     params.put("firstName", "RRR");
 
     Flux<UserDto> userDtoFlux = Flux.empty();
-    Mockito.when(userRepository.findByFirstName("RRR")).thenReturn(userDtoFlux);
+    Mockito.when(userRepository.findAllByFirstName("RRR")).thenReturn(userDtoFlux);
 
     webTestClient
         .get()
-        .uri("/users/find-by-first-name/{firstName}", params)
+        .uri("/users/find-all-by-first-name/{firstName}", params)
         .accept(MediaType.APPLICATION_JSON)
         .exchange()
         .expectStatus()

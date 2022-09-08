@@ -2,7 +2,6 @@ package ca.bc.gov.backendstartapi.repository;
 
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
-import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +16,6 @@ import reactor.core.publisher.Mono;
 public class UserRepository {
 
   private final Map<Integer, UserDto> users = new HashMap<>();
-  private final Map<String, List<Integer>> firstNameIndex = new HashMap<>();
-  private final Map<String, List<Integer>> lastNameIndex = new HashMap<>();
 
   /**
    * Save a user.
@@ -32,12 +29,6 @@ public class UserRepository {
       return Mono.error(new UserExistsException());
     }
 
-    firstNameIndex.putIfAbsent(userDto.getFirstName(), new ArrayList<>());
-    lastNameIndex.putIfAbsent(userDto.getLastName(), new ArrayList<>());
-
-    firstNameIndex.get(userDto.getFirstName()).add(userDto.hashCode());
-    lastNameIndex.get(userDto.getLastName()).add(userDto.hashCode());
-
     return Mono.just(userDto);
   }
 
@@ -47,13 +38,17 @@ public class UserRepository {
    * @param firstName the user's first name
    * @return a list with all possible users
    */
-  public Flux<UserDto> findByFirstName(String firstName) {
-    List<Integer> indexes = firstNameIndex.get(firstName);
-    if (ObjectUtil.isEmptyOrNull(indexes)) {
-      return Flux.empty();
-    }
-
-    return createFromIndexes(indexes);
+  public Flux<UserDto> findAllByFirstName(String firstName) {
+    final List<UserDto> usersFound = new ArrayList<>();
+    users
+        .values()
+        .forEach(
+            (dto) -> {
+              if (dto.getFirstName().equals(firstName)) {
+                usersFound.add(dto);
+              }
+            });
+    return Flux.fromIterable(usersFound);
   }
 
   /**
@@ -63,12 +58,16 @@ public class UserRepository {
    * @return a list with all possible users
    */
   public Flux<UserDto> findByLastName(String lastName) {
-    List<Integer> indexes = lastNameIndex.get(lastName);
-    if (ObjectUtil.isEmptyOrNull(indexes)) {
-      return Flux.empty();
-    }
-
-    return createFromIndexes(indexes);
+    final List<UserDto> usersFound = new ArrayList<>();
+    users
+        .values()
+        .forEach(
+            (dto) -> {
+              if (dto.getLastName().equals(lastName)) {
+                usersFound.add(dto);
+              }
+            });
+    return Flux.fromIterable(usersFound);
   }
 
   /**
