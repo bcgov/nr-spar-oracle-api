@@ -13,7 +13,7 @@ import lombok.Setter;
 @JsonInclude(Include.NON_EMPTY)
 public class ExceptionResponse {
 
-  private static final String messageTemplate = "%d field(s) with validation problem!";
+  private static final String MESSAGE_TEMPLATE = "%d field(s) with validation problem!";
   private String errorMessage;
   private List<FieldExceptionResponse> fields;
 
@@ -22,7 +22,7 @@ public class ExceptionResponse {
   }
 
   public ExceptionResponse(int issuesCount) {
-    this(String.format(messageTemplate, issuesCount));
+    this(String.format(MESSAGE_TEMPLATE, issuesCount));
   }
 
   public ExceptionResponse(String errorMessage) {
