@@ -80,8 +80,13 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"firstName\":\"must not be blank\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("1 field(s) with validation problem!")
+        .jsonPath("$.fields[0].fieldName")
+        .isEqualTo("firstName")
+        .jsonPath("$.fields[0].fieldMessage")
+        .isEqualTo("must not be blank");
   }
 
   @Test
@@ -102,8 +107,13 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"lastName\":\"must not be blank\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("1 field(s) with validation problem!")
+        .jsonPath("$.fields[0].fieldName")
+        .isEqualTo("lastName")
+        .jsonPath("$.fields[0].fieldMessage")
+        .isEqualTo("must not be blank");
   }
 
   @Test
@@ -124,8 +134,13 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"lastName\":\"size must be between 2 and 20\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("1 field(s) with validation problem!")
+        .jsonPath("$.fields[0].fieldName")
+        .isEqualTo("lastName")
+        .jsonPath("$.fields[0].fieldMessage")
+        .isEqualTo("size must be between 2 and 20");
   }
 
   @Test
@@ -146,8 +161,13 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"lastName\":\"size must be between 2 and 20\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("1 field(s) with validation problem!")
+        .jsonPath("$.fields[0].fieldName")
+        .isEqualTo("lastName")
+        .jsonPath("$.fields[0].fieldMessage")
+        .isEqualTo("size must be between 2 and 20");
   }
 
   @Test
@@ -185,8 +205,9 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"message\":\"User already registered!\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("User already registered!");
   }
 
   @Test
@@ -372,8 +393,9 @@ class UserEndpointTest {
         .isNotFound()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"message\":\"User not registered!\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("User not registered!");
   }
 
   @Test
@@ -394,7 +416,8 @@ class UserEndpointTest {
         .isNotFound()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody(String.class)
-        .value(equalTo("{\"message\":\"User not registered!\"}"));
+        .expectBody()
+        .jsonPath("$.errorMessage")
+        .isEqualTo("User not registered!");
   }
 }

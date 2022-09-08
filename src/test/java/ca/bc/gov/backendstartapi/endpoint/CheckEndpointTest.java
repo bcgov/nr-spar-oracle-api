@@ -21,8 +21,6 @@ class CheckEndpointTest {
   @Test
   @DisplayName("Check test")
   void checkTest() {
-    CheckVo check = CheckVo.builder().message("OK").build();
-
     webTestClient
         .get()
         .uri("/check")
