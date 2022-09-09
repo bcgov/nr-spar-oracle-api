@@ -45,12 +45,24 @@ We recommend IntelliJ IDEA Community, because all of its plugins and
 configurations possibilities, here's [the website](https://www.jetbrains.com/idea/download).
 But feel free to use Eclipse or other IDE of your choice.
 
-### Check-style
+### Code style
 
-We use Google Java Style Guide. If your IDE is IntelliJ, there's a plugin
-that can be very helpful. Take a look at
-[this page](https://plugins.jetbrains.com/plugin/8527-google-java-format)
-or search directly on the IDE Plugins menu.
+Our Java code is formatted following the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+A formatter and plugins based on it for Eclipse and IntelliJ are available and  make writing
+style-conformant code quite easy. Check the installation notes on the
+[formatter's project page](https://github.com/google/google-java-format).
+
+We configured a tool to validate changes submitted to us in accordance to our style guide. **Passing
+such validation, however, doesn't mean that the code conforms to the style guide**, as some rules
+cannot be checked by this tool. We ask you to check if your code adheres to the following rules
+before submitting it.
+
+- [2.2 File encoding: UTF-8](https://google.github.io/styleguide/javaguide.html#s2.2-file-encoding)
+- [5.2.2 Class names](https://google.github.io/styleguide/javaguide.html#s5.2.2-class-names)
+- [5.2.3 Method names](https://google.github.io/styleguide/javaguide.html#s5.2.3-method-names)
+- [5.2.4 Constant names](https://google.github.io/styleguide/javaguide.html#s5.2.4-constant-names)
+- [5.3 Camel case: defined](https://google.github.io/styleguide/javaguide.html#s5.3-camel-case)
+- [6.1 @Override: always used](https://google.github.io/styleguide/javaguide.html#s6.1-override-annotation)
 
 You can check your code before submitting with `./mvnw --no-transfer-progress checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml`
 

@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "db559797-d9ba-4bee-93f8-f33c3574ef63",
+		"name": "starting-api test collection",
+		"description": "## Description\nThis collection contains the API tests of the starting API.\n## Coverage\nThe aim is to have a coverage of 100%, every request on the API should have a mathcing test in this collection.\n## What to test\n- Status code\n- Response body field validation\n- Response time (1s avg)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Version check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"JSON body is valid\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql('OK');",
+							"    pm.expect(jsonData.release).to.include('test');",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1s\", () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api-addr}}/check",
+					"host": [
+						"{{api-addr}}"
+					],
+					"path": [
+						"check"
+					]
+				},
+				"description": "Returns the API status, environment and version."
+			},
+			"response": []
+		}
+	]
+}
