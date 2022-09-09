@@ -175,14 +175,13 @@ jobs:
       - name: Update POM
         run: mvn versions:commit
 
-      - name: Update resources
-        uses: test-room-7/action-update-file@v1
+      - name: Commit pom and changelog
+        uses: EndBug/add-and-commit@v9
         with:
-          file-path: |
-            pom.xml
-            CHANGELOG.md
-          commit-msg: "doc: updating pom to ${{ steps.changelog.outputs.version }} [ci skip]"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          author_name: Ci Bot
+          author_email: cibot@users.noreply.github.com
+          message: 'doc: updating pom to ${{ steps.changelog.outputs.version }} [ci skip]'
+          add: '["pom.xml","CHANGELOG.md"]'
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -220,6 +219,7 @@ jobs:
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NRBESTAPI_VERSION=test-${{ env.NRBESTAPI_VERSION }} \
+            -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
           # Follow any active rollouts (see deploymentconfigs)
           #oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
@@ -363,6 +363,7 @@ jobs:
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NRBESTAPI_VERSION=prod-${{ env.NRBESTAPI_VERSION }} \
+            -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)

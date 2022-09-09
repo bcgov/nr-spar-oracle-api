@@ -1,4 +1,6 @@
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/nr-backend-starting-api)
+[![Coverage](.github/badges/jacoco.svg)]
+[![Branches](.github/badges/branches.svg)]
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bcgov_nr-backend-starting-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bcgov_nr-backend-starting-api)
 
 # Natural Resources Back-End Starting API

@@ -64,18 +64,28 @@ before submitting it.
 - [5.3 Camel case: defined](https://google.github.io/styleguide/javaguide.html#s5.3-camel-case)
 - [6.1 @Override: always used](https://google.github.io/styleguide/javaguide.html#s6.1-override-annotation)
 
+You can check your code before submitting with `./mvnw --no-transfer-progress checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml`
+
 ## Run this application
 
 After setting up your environment you might want to see this service running. 
 You can get it up and running by typing `./mvnw spring-boot:run` in the project
 root directory.
 
+In case you want to debug with remote JVM, you can do it with this command:
+`./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"`
+
 Note: TODO add here about database and running HOW-TOs.
 
 ## Run tests
 
-You can run tests running with `./mvnw test`. Tests coverage reports can be seen
-on your commits and pull requests.
+For unit tests, please use this command: `./mvnw test --file pom.xml`
+
+And for integration tests, this one: `./mvnw verify -P integration-test --file pom.xml`
+
+Tests coverage reports can be seen on your commits and pull requests. But in case you 
+want to check locally, use this command to run all tests `./mvnw --no-transfer-progress clean verify -P all-tests --file pom.xml`,
+and check out the files inside `target/coverage-reports/`
 
 ## Submit pull requests
 

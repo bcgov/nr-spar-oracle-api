@@ -164,7 +164,7 @@
 				<configuration>
 					<skip>${jacoco.skip}</skip>
 					<excludes>
-						<exclude>**/configuration/**</exclude>
+						<exclude>**/config/**</exclude>
 						<exclude>**/*$*Builder*</exclude>
 						<exclude>**/BackendStartApiApplication.*</exclude>
 					</excludes>
