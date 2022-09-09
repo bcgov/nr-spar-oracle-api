@@ -2,6 +2,7 @@ package ca.bc.gov.backendstartapi.dto;
 
 import ca.bc.gov.backendstartapi.response.BaseResponse;
 import ca.bc.gov.backendstartapi.util.Empty;
+import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -50,6 +51,7 @@ public class UserDto implements BaseResponse, Empty {
 
   @Override
   public boolean isEmpty() {
-    return hashCode() == 961;
+    return ObjectUtil.isEmptyOrNull(firstName)
+        && ObjectUtil.isEmptyOrNull(lastName);
   }
 }

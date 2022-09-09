@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public interface Empty {
 
   /**
-   * Check if a given object is empty. This method should be implemented for every class that
-   * subscribe to it.
+   * Check if a given object is empty.
    *
    * @return true if empty (all fields are empty), false otherwise
    */

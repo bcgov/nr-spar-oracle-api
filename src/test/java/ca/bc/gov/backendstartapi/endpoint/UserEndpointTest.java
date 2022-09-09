@@ -1,7 +1,5 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
-import static org.hamcrest.Matchers.equalTo;
-
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
@@ -205,9 +203,7 @@ class UserEndpointTest {
         .isBadRequest()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody()
-        .jsonPath("$.errorMessage")
-        .isEqualTo("User already registered!");
+        .expectBody(UserExistsException.class);
   }
 
   @Test
@@ -416,8 +412,6 @@ class UserEndpointTest {
         .isNotFound()
         .expectHeader()
         .contentType(MediaType.APPLICATION_JSON)
-        .expectBody()
-        .jsonPath("$.errorMessage")
-        .isEqualTo("User not registered!");
+        .expectBody(UserNotFoundException.class);
   }
 }
