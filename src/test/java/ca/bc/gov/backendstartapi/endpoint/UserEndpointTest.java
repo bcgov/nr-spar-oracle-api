@@ -29,9 +29,9 @@ import reactor.core.publisher.Mono;
 @Import(UserRepository.class)
 class UserEndpointTest {
 
-  private final String FIRSTNAME = "Ricardo";
-  private final String LASTNAME = "Campos";
-  private final UserDto USERDTO = new UserDto(FIRSTNAME, LASTNAME);
+  private static final String FIRST_NAME = "Ricardo";
+  private static final String LAST_NAME = "Campos";
+  private static final UserDto USERDTO = new UserDto(FIRST_NAME, LAST_NAME);
 
   @Autowired private WebTestClient webTestClient;
 
@@ -55,15 +55,15 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
   }
 
   @Test
   @DisplayName("Create user without firstName")
   void createWithoutFirstName() {
-    UserDto userDtoPartial = new UserDto(null, "Campos");
+    UserDto userDtoPartial = new UserDto(null, LAST_NAME);
 
     Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
@@ -90,7 +90,7 @@ class UserEndpointTest {
   @Test
   @DisplayName("Create user without lastName")
   void createWithoutLastName() {
-    UserDto userDtoPartial = new UserDto("Ricardo", null);
+    UserDto userDtoPartial = new UserDto(FIRST_NAME, null);
 
     Mockito.when(userRepository.save(userDtoPartial)).thenThrow(WebExchangeBindException.class);
 
@@ -117,7 +117,7 @@ class UserEndpointTest {
   @Test
   @DisplayName("Create user with minimum lastName size")
   void createSizeMin() {
-    UserDto userDtoError = new UserDto("Ricardo", "C");
+    UserDto userDtoError = new UserDto(FIRST_NAME, "C");
 
     Mockito.when(userRepository.save(userDtoError)).thenThrow(WebExchangeBindException.class);
 
@@ -186,9 +186,9 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo("Ricardo")
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo("Campos");
+        .isEqualTo(LAST_NAME);
 
     Mockito.when(userRepository.save(USERDTO)).thenThrow(UserExistsException.class);
 
@@ -224,15 +224,16 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
 
     List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
-    Mockito.when(userRepository.findAllByFirstName(FIRSTNAME)).thenReturn(Flux.fromIterable(users));
+    Mockito.when(userRepository.findAllByFirstName(FIRST_NAME))
+        .thenReturn(Flux.fromIterable(users));
 
     final Map<String, String> params = new HashMap<>();
-    params.put("firstName", FIRSTNAME);
+    params.put("firstName", FIRST_NAME);
 
     webTestClient
         .get()
@@ -264,15 +265,15 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
 
     List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
-    Mockito.when(userRepository.findByLastName(LASTNAME)).thenReturn(Flux.fromIterable(users));
+    Mockito.when(userRepository.findByLastName(LAST_NAME)).thenReturn(Flux.fromIterable(users));
 
     final Map<String, String> params = new HashMap<>();
-    params.put("lastName", LASTNAME);
+    params.put("lastName", LAST_NAME);
 
     webTestClient
         .get()
@@ -304,15 +305,15 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
 
-    Mockito.when(userRepository.find(FIRSTNAME, LASTNAME)).thenReturn(Mono.just(USERDTO));
+    Mockito.when(userRepository.find(FIRST_NAME, LAST_NAME)).thenReturn(Mono.just(USERDTO));
 
     final Map<String, String> params = new HashMap<>();
-    params.put("firstName", FIRSTNAME);
-    params.put("lastName", LASTNAME);
+    params.put("firstName", FIRST_NAME);
+    params.put("lastName", LAST_NAME);
 
     webTestClient
         .get()
@@ -325,9 +326,9 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
   }
 
   @Test
@@ -348,9 +349,9 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$.firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$.lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
 
     Mockito.when(userRepository.findAll())
         .thenReturn(Flux.fromIterable(Collections.singletonList(USERDTO)));
@@ -366,9 +367,9 @@ class UserEndpointTest {
         .contentType(MediaType.APPLICATION_JSON)
         .expectBody()
         .jsonPath("$[0].firstName")
-        .isEqualTo(FIRSTNAME)
+        .isEqualTo(FIRST_NAME)
         .jsonPath("$[0].lastName")
-        .isEqualTo(LASTNAME);
+        .isEqualTo(LAST_NAME);
   }
 
   @Test
@@ -398,10 +399,10 @@ class UserEndpointTest {
   @DisplayName("Delete user that doesn't exist")
   void deleteUserDoesNotExist() {
     final Map<String, String> params = new HashMap<>();
-    params.put("firstName", FIRSTNAME);
-    params.put("lastName", LASTNAME);
+    params.put("firstName", FIRST_NAME);
+    params.put("lastName", LAST_NAME);
 
-    Mockito.when(userRepository.find(FIRSTNAME, LASTNAME)).thenThrow(UserNotFoundException.class);
+    Mockito.when(userRepository.find(FIRST_NAME, LAST_NAME)).thenThrow(UserNotFoundException.class);
 
     webTestClient
         .delete()

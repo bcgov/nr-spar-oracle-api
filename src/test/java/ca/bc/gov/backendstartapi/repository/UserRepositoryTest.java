@@ -14,24 +14,25 @@ import reactor.test.StepVerifier;
 class UserRepositoryTest {
 
   private final UserRepository userRepository = new UserRepository();
-  private final String FIRSTNAME = "Ricardo";
-  private final String LASTNAME = "Campos";
+  private static final String FIRST_NAME = "Ricardo";
+  private static final String LAST_NAME = "Campos";
 
-  private final UserDto USERDTO = new UserDto(FIRSTNAME, LASTNAME);
+  private static final UserDto USERDTO = new UserDto(FIRST_NAME, LAST_NAME);
 
   @Test
   @DisplayName("Save user into repository")
   void saveTest() {
     userRepository.save(USERDTO);
 
-    Mono<UserDto> userDtoMono = userRepository.find(USERDTO.getFirstName(), USERDTO.getLastName());
+    Mono<UserDto> userDtoMono =
+        userRepository.find(USERDTO.getFirstName(), USERDTO.getLastName());
 
     StepVerifier.create(userDtoMono)
         .assertNext(
             userSaved -> {
               Assertions.assertFalse(userSaved.isEmpty());
-              Assertions.assertEquals(FIRSTNAME, userSaved.getFirstName());
-              Assertions.assertEquals(LASTNAME, userSaved.getLastName());
+              Assertions.assertEquals(FIRST_NAME, userSaved.getFirstName());
+              Assertions.assertEquals(LAST_NAME, userSaved.getLastName());
             })
         .verifyComplete();
   }
@@ -40,29 +41,29 @@ class UserRepositoryTest {
   @DisplayName("Find by first name")
   void findByFirstNameTest() {
     userRepository.save(USERDTO);
-    Flux<UserDto> userDtoFlux = userRepository.findAllByFirstName(FIRSTNAME);
+    Flux<UserDto> userDtoFlux = userRepository.findAllByFirstName(FIRST_NAME);
 
     StepVerifier.create(userDtoFlux).expectComplete();
 
     UserDto userDto = userDtoFlux.blockFirst();
     Assertions.assertNotNull(userDto);
     Assertions.assertFalse(userDto.isEmpty());
-    Assertions.assertEquals(FIRSTNAME, userDto.getFirstName());
-    Assertions.assertEquals(LASTNAME, userDto.getLastName());
+    Assertions.assertEquals(FIRST_NAME, userDto.getFirstName());
+    Assertions.assertEquals(LAST_NAME, userDto.getLastName());
   }
 
   @Test
   @DisplayName("Find by last name")
   void findByLastNameTest() {
     userRepository.save(USERDTO);
-    Flux<UserDto> userDtoFlux = userRepository.findByLastName(LASTNAME);
+    Flux<UserDto> userDtoFlux = userRepository.findByLastName(LAST_NAME);
 
     StepVerifier.create(userDtoFlux)
         .assertNext(
             result -> {
               Assertions.assertFalse(result.isEmpty());
-              Assertions.assertEquals(FIRSTNAME, result.getFirstName());
-              Assertions.assertEquals(LASTNAME, result.getLastName());
+              Assertions.assertEquals(FIRST_NAME, result.getFirstName());
+              Assertions.assertEquals(LAST_NAME, result.getLastName());
             })
         .verifyComplete();
   }
@@ -71,14 +72,14 @@ class UserRepositoryTest {
   @DisplayName("Find by first and last name")
   void findTest() {
     userRepository.save(USERDTO);
-    Mono<UserDto> findMono = userRepository.find(FIRSTNAME, LASTNAME);
+    Mono<UserDto> findMono = userRepository.find(FIRST_NAME, LAST_NAME);
 
     StepVerifier.create(findMono)
         .assertNext(
             result -> {
               Assertions.assertFalse(result.isEmpty());
-              Assertions.assertEquals(FIRSTNAME, result.getFirstName());
-              Assertions.assertEquals(LASTNAME, result.getLastName());
+              Assertions.assertEquals(FIRST_NAME, result.getFirstName());
+              Assertions.assertEquals(LAST_NAME, result.getLastName());
             })
         .verifyComplete();
   }
@@ -93,8 +94,8 @@ class UserRepositoryTest {
         .assertNext(
             result -> {
               Assertions.assertFalse(result.isEmpty());
-              Assertions.assertEquals(FIRSTNAME, result.getFirstName());
-              Assertions.assertEquals(LASTNAME, result.getLastName());
+              Assertions.assertEquals(FIRST_NAME, result.getFirstName());
+              Assertions.assertEquals(LAST_NAME, result.getLastName());
             })
         .verifyComplete();
   }
@@ -109,12 +110,12 @@ class UserRepositoryTest {
         .assertNext(
             result -> {
               Assertions.assertFalse(result.isEmpty());
-              Assertions.assertEquals(FIRSTNAME, result.getFirstName());
-              Assertions.assertEquals(LASTNAME, result.getLastName());
+              Assertions.assertEquals(FIRST_NAME, result.getFirstName());
+              Assertions.assertEquals(LAST_NAME, result.getLastName());
             })
         .verifyComplete();
 
-    Mono<UserDto> findMono = userRepository.find(FIRSTNAME, LASTNAME);
+    Mono<UserDto> findMono = userRepository.find(FIRST_NAME, LAST_NAME);
     StepVerifier.create(findMono).expectComplete();
 
     Assertions.assertNull(findMono.block());

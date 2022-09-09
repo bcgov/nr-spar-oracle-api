@@ -175,14 +175,13 @@ jobs:
       - name: Update POM
         run: mvn versions:commit
 
-      - name: Update resources
-        uses: test-room-7/action-update-file@v1
+      - name: Commit pom and changelog
+        uses: EndBug/add-and-commit@v9
         with:
-          file-path: |
-            pom.xml
-            CHANGELOG.md
-          commit-msg: "doc: updating pom to ${{ steps.changelog.outputs.version }} [ci skip]"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          author_name: Ci Bot
+          author_email: cibot@users.noreply.github.com
+          message: 'doc: updating pom to ${{ steps.changelog.outputs.version }} [ci skip]'
+          add: '["pom.xml","CHANGELOG.md"]'
 
       - name: Create Release
         uses: actions/create-release@v1
