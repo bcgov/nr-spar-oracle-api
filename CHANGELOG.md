@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.3.0...v0.4.0) (2022-09-16)
+
+
+### Bug Fixes
+
+* test user and find all req ([74d8d9b](https://github.com/bcgov/nr-backend-starting-api/commit/74d8d9b67980f7e00d08c02ac7c16287fbd909bf))
+
+
+### Features
+
+* add api tests for user endpoint ([242f237](https://github.com/bcgov/nr-backend-starting-api/commit/242f237b1c762b59a5502549d8b4a8e82902d046))
+
+
+
 # [0.3.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.2.3...v0.3.0) (2022-09-09)
 
 
@@ -38,15 +52,6 @@
 ### Bug Fixes
 
 * release tag not generating ([#22](https://github.com/bcgov/nr-backend-starting-api/issues/22)) ([beaae03](https://github.com/bcgov/nr-backend-starting-api/commit/beaae03cda3a7f36a4dafaf33289767e9563dc67))
-
-
-
-# [0.2.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.1.0...v0.2.0) (2022-08-25)
-
-
-### Features
-
-* remove conditions and allow PRs to build images ([#17](https://github.com/bcgov/nr-backend-starting-api/issues/17)) ([bf6d4d2](https://github.com/bcgov/nr-backend-starting-api/commit/bf6d4d2282ad682366a08bf6077b53f450b6034f))
 
 
 
