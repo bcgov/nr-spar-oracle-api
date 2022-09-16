@@ -22,7 +22,7 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.firstName).to.eql('Jhon');",
+									"    pm.expect(jsonData.firstName).to.eql('John');",
 									"    pm.expect(jsonData.lastName).to.eql('Doe');",
 									"});",
 									"",
@@ -35,7 +35,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let baseUrl = pm.environment.get(\"apiAddr\") + \"/users/Jhon/Doe\"",
+									"let baseUrl = pm.environment.get(\"apiAddr\") + \"/users/John/Doe\"",
 									"let options = { method: 'DELETE',",
 									"  url: baseUrl",
 									"}",
@@ -59,7 +59,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Jhon\",\n    \"lastName\": \"Doe\"\n}",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -122,7 +122,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Jhon\",\n    \"lastName\": \"Doe\"\n}",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,7 +219,7 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    jsonData.forEach(obj => pm.expect(obj.firstName).to.eql(\"Jhon\"));",
+									"    jsonData.forEach(obj => pm.expect(obj.firstName).to.eql(\"John\"));",
 									"    jsonData.forEach(obj => pm.expect(obj.lastName).to.eql(\"Doe\"));",
 									"});",
 									"",
@@ -239,14 +239,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all-by-first-name/Jhon",
+							"raw": "{{apiAddr}}/users/find-all-by-first-name/John",
 							"host": [
 								"{{apiAddr}}"
 							],
 							"path": [
 								"users",
 								"find-all-by-first-name",
-								"Jhon"
+								"John"
 							]
 						},
 						"description": "Search for a existing user, with a valid first name."
@@ -312,7 +312,7 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    jsonData.forEach(obj => pm.expect(obj.firstName).to.eql(\"Jhon\"));",
+									"    jsonData.forEach(obj => pm.expect(obj.firstName).to.eql(\"John\"));",
 									"    jsonData.forEach(obj => pm.expect(obj.lastName).to.eql(\"Doe\"));",
 									"});"
 								],
@@ -401,7 +401,7 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.firstName).to.eql('Jhon');",
+									"    pm.expect(jsonData.firstName).to.eql('John');",
 									"    pm.expect(jsonData.lastName).to.eql('Doe');",
 									"});",
 									"",
@@ -421,14 +421,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find/Jhon/Doe",
+							"raw": "{{apiAddr}}/users/find/John/Doe",
 							"host": [
 								"{{apiAddr}}"
 							],
 							"path": [
 								"users",
 								"find",
-								"Jhon",
+								"John",
 								"Doe"
 							]
 						},
@@ -437,7 +437,7 @@
 					"response": []
 				},
 				{
-					"name": "Find user by first and last name Copy",
+					"name": "Find user by first and last name that is not registered",
 					"event": [
 						{
 							"listen": "test",
@@ -496,8 +496,14 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    jsonData.forEach(obj => pm.expect(obj.firstName).to.eql(\"Jhon\"));",
-									"    jsonData.forEach(obj => pm.expect(obj.lastName).to.eql(\"Doe\"));",
+									"    let flag = false;",
+									"    ",
+									"    jsonData.forEach(obj => {",
+									"        if (obj.firstName === \"John\" && obj.lastName === \"Doe\")",
+									"            flag = true;",
+									"    });",
+									"    if (!flag)",
+									"        pm.expect.fail(\"User not found on the list\");",
 									"});",
 									"",
 									""
@@ -542,7 +548,7 @@
 									"",
 									"pm.test(\"JSON body is valid\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.firstName).to.eql('Jhon');",
+									"    pm.expect(jsonData.firstName).to.eql('John');",
 									"    pm.expect(jsonData.lastName).to.eql('Doe');",
 									"});",
 									"",
@@ -562,13 +568,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/Jhon/Doe",
+							"raw": "{{apiAddr}}/users/John/Doe",
 							"host": [
 								"{{apiAddr}}"
 							],
 							"path": [
 								"users",
-								"Jhon",
+								"John",
 								"Doe"
 							]
 						},
