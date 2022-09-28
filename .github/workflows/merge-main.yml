@@ -251,7 +251,7 @@ jobs:
           allow_issue_writing: false
           fail_action: false
 
-  test-api:
+  api-tests:
     name: Newman API tests runner
     needs:
       - deploy-test

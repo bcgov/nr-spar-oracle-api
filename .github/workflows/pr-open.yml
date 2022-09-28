@@ -373,3 +373,35 @@ jobs:
           message: |
             DEV deployments have completed successfully!
             Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/]()
+
+  api-tests:
+    name: Newman API tests runner
+    needs:
+      - deploy-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Make Directory for Test Results
+        run: mkdir -p testArtifacts
+
+      - name: Run Postman Collection
+        run: |
+          newman run test/postman/starting-api.postman_collection.json --env-var "apiAddr=https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
+
+      - name: Output the results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Reports
+          path: testArtifacts 
