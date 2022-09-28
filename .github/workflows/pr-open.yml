@@ -359,6 +359,11 @@ jobs:
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NRBESTAPI_VERSION=${{ env.NRBESTAPI_VERSION }} \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
+            -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
+            -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
+            -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
+            -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
+            -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
