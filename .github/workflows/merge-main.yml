@@ -251,6 +251,38 @@ jobs:
           allow_issue_writing: false
           fail_action: false
 
+  test-api:
+    name: Newman API tests runner
+    needs:
+      - deploy-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Make Directory for Test Results
+        run: mkdir -p testArtifacts
+
+      - name: Run Postman Collection
+        run: |
+          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
+
+      - name: Output the results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Reports
+          path: testArtifacts
+
   # https://github.com/snyk/cli, https://github.com/snyk/actions
   # Note: using free tier - called late in pipeline to limit runs
   # Disabled snyk because it don't support Java 17 or Maven with JDK 17 yet
