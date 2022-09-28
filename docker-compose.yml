@@ -6,7 +6,14 @@ services:
     image: service-api:latest
     environment:
       NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      SERVICE_NAME: ${SERVICE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     hostname: service-api
+    network_mode: "host"
+    dns: 142.22.202.100
     ports:
       - "8090:8090"
     build:
