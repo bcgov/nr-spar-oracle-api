@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "db559797-d9ba-4bee-93f8-f33c3574ef63",
+		"_postman_id": "4cd8a8d1-1dd6-47ba-8dc9-45f8e4621a07",
 		"name": "starting-api test collection",
 		"description": "## Description\nThis collection contains the API tests of the starting API.\n## Coverage\nThe aim is to have a coverage of 100%, every request on the API should have a mathcing test in this collection.\n## What to test\n- Status code\n- Response body field validation\n- Response time (1s avg)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23598385"
 	},
 	"item": [
 		{
@@ -67,7 +68,8 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiAddr}}/users",
+							"raw": "https://{{apiAddr}}/users",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -130,7 +132,8 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiAddr}}/users",
+							"raw": "https://{{apiAddr}}/users",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -194,7 +197,8 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiAddr}}/users",
+							"raw": "https://{{apiAddr}}/users",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -239,7 +243,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all-by-first-name/John",
+							"raw": "https://{{apiAddr}}/users/find-all-by-first-name/John",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -285,7 +290,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all-by-first-name/Jane",
+							"raw": "https://{{apiAddr}}/users/find-all-by-first-name/Jane",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -330,7 +336,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all-by-last-name/Doe",
+							"raw": "https://{{apiAddr}}/users/find-all-by-last-name/Doe",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -374,7 +381,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all-by-last-name/Doer",
+							"raw": "https://{{apiAddr}}/users/find-all-by-last-name/Doer",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -421,7 +429,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find/John/Doe",
+							"raw": "https://{{apiAddr}}/users/find/John/Doe",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -468,7 +477,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find/Jane/Doer",
+							"raw": "https://{{apiAddr}}/users/find/Jane/Doer",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -522,7 +532,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/find-all",
+							"raw": "https://{{apiAddr}}/users/find-all",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -568,7 +579,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/John/Doe",
+							"raw": "https://{{apiAddr}}/users/John/Doe",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -614,7 +626,8 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiAddr}}/users/Jane/Doer",
+							"raw": "https://{{apiAddr}}/users/Jane/Doer",
+							"protocol": "https",
 							"host": [
 								"{{apiAddr}}"
 							],
@@ -658,12 +671,13 @@
 				"header": [
 					{
 						"key": "Host",
-						"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca",
+						"value": "{{apiAddr}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{apiAddr}}/check",
+					"raw": "https://{{apiAddr}}/check",
+					"protocol": "https",
 					"host": [
 						"{{apiAddr}}"
 					],

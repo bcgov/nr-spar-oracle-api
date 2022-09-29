@@ -372,7 +372,7 @@ jobs:
           allow-repeats: false
           message: |
             DEV deployments have completed successfully!
-            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca]()
+            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/]()
 
   api-tests:
     name: Newman API tests runner
@@ -398,7 +398,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run test/postman/starting-api.postman_collection.json --env-var "apiAddr=https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
+          newman run test/postman/starting-api.postman_collection.json --env-var "apiAddr=https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
 
       - name: Output the results
         uses: actions/upload-artifact@v2
