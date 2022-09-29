@@ -372,7 +372,7 @@ jobs:
           allow-repeats: false
           message: |
             DEV deployments have completed successfully!
-            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/]()
+            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca]()
 
   api-tests:
     name: Newman API tests runner
