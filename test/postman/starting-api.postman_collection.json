@@ -658,7 +658,7 @@
 							"pm.test(\"JSON body is valid\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('OK');",
-							"    pm.expect(jsonData.release).to.include('test');",
+							"    pm.expect(jsonData.release).to.include(pm.environment.get(\"releaseVer\"));",
 							"});",
 							""
 						],

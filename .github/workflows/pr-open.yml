@@ -398,10 +398,10 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run test/postman/starting-api.postman_collection.json --env-var "apiAddr=${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
+          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json --env-var "apiAddr=${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca" --env-var "releaseVer=snapshot-${{ github.event.number }}" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
 
       - name: Output the results
         uses: actions/upload-artifact@v2
         with:
-          name: Reports
+          name: API test report
           path: testArtifacts 
