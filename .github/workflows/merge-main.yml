@@ -162,11 +162,23 @@ jobs:
           distribution: 'temurin'
 
       - name: Conventional Changelog Update
+        continue-on-error: true
         uses: TriPSs/conventional-changelog-action@v3
         id: changelog
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           output-file: 'CHANGELOG.md'
+          skip-version-file: 'true'
+          skip-commit: 'true'
+          git-push: 'false'
+
+      - name: Only Tag Generation
+        continue-on-error: true
+        uses: TriPSs/conventional-changelog-action@v3
+        if: ${{ steps.changelog.outputs.skipped == 'true' || steps.changelog.outcome != 'success' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          output-file: 'false'
           skip-version-file: 'true'
           skip-commit: 'true'
           git-push: 'false'
