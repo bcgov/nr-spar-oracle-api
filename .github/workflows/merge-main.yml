@@ -177,7 +177,7 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         if: ${{ steps.changelog.outputs.skipped == 'true' || steps.changelog.outcome != 'success' }}
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           output-file: 'false'
           skip-version-file: 'true'
           skip-commit: 'true'
