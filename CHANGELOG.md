@@ -1,4 +1,4 @@
-# [0.4.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.3.0...v0.4.0) (2022-09-16)
+## [0.4.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.0...v0.4.1) (2022-10-04)
 
 
 ### Bug Fixes
@@ -43,15 +43,6 @@
 ### Bug Fixes
 
 * release version not present at check response ([#23](https://github.com/bcgov/nr-backend-starting-api/issues/23)) ([0fc4ff1](https://github.com/bcgov/nr-backend-starting-api/commit/0fc4ff13d1a9ff57e686af1b38ee078a33b37625))
-
-
-
-## [0.2.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.2.0...v0.2.1) (2022-08-25)
-
-
-### Bug Fixes
-
-* release tag not generating ([#22](https://github.com/bcgov/nr-backend-starting-api/issues/22)) ([beaae03](https://github.com/bcgov/nr-backend-starting-api/commit/beaae03cda3a7f36a4dafaf33289767e9563dc67))
 
 
 
