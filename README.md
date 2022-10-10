@@ -35,15 +35,20 @@ and deploy it.
 - Java ecosystem
   - Maven
   - Open JDK 17
-  - Spring WebFlux Framework with Reactor (reactive programming)
+  - Spring Web MVC Framework
   - JPA and Hibernate Framework
-  - JUnit 5, Mockito
+- Testing
+  - JUnit 5
+  - Mockito and Mock MVC
+  - Automated tests with Postman and Newman
 - Database
+  - Remote Oracle with secure connection
   - PostgreSQL
 - DevOps
   - Docker
-  - Sonar pipes
-  - Deploy to OpenShift cluster
+  - Docker Composer
+  - Sonar Cloud
+  - Deploy to OpenShift with GitHub Actions
 - Tools (Recommendations)
   - IntelliJ IDEA
   - Postman
@@ -55,10 +60,8 @@ Once you have cloned this repository, you can get it running by typing: `./mvnw 
 from the project root directory. Then head to http://localhost:8080/check you should see a
 message and an OK.
 
-To run tests all you need is `./mvnw test`.
-
-Before writing your first line of code, please take a moment and check out
-our [CONTRIBUTING](CONTRIBUTING.md) guide.
+Before writing your first line of code, and learn more about the checks, including
+tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) guide.
 
 ## Getting help
 
