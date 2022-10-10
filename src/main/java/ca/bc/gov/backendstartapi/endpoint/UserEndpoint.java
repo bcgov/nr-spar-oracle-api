@@ -1,9 +1,11 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
 import ca.bc.gov.backendstartapi.dto.UserDto;
-import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 import ca.bc.gov.backendstartapi.repository.UserRepository;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** This class exposes user related endpoints. */
 @NoArgsConstructor
@@ -42,8 +42,8 @@ public class UserEndpoint {
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<UserDto> create(@Valid @RequestBody UserDto user) {
-    return userRepository.save(user).onErrorResume(UserExistsException.class, Mono::error);
+  public UserDto create(@Valid @RequestBody UserDto user) {
+    return userRepository.save(user);
   }
 
   /**
@@ -55,10 +55,12 @@ public class UserEndpoint {
   @GetMapping(
       value = "/find-all-by-first-name/{firstName}",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public Flux<UserDto> readByFirstName(@PathVariable("firstName") String firstName) {
-    return userRepository
-        .findAllByFirstName(firstName)
-        .switchIfEmpty(Mono.error(new UserNotFoundException()));
+  public List<UserDto> readByFirstName(@PathVariable("firstName") String firstName) {
+    List<UserDto> userList = userRepository.findAllByFirstName(firstName);
+    if (userList.isEmpty()) {
+      throw new UserNotFoundException();
+    }
+    return userList;
   }
 
   /**
@@ -70,10 +72,12 @@ public class UserEndpoint {
   @GetMapping(
       value = "/find-all-by-last-name/{lastName}",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public Flux<UserDto> readByLastName(@PathVariable("lastName") String lastName) {
-    return userRepository
-        .findByLastName(lastName)
-        .switchIfEmpty(Mono.error(new UserNotFoundException()));
+  public List<UserDto> readByLastName(@PathVariable("lastName") String lastName) {
+    List<UserDto> userList = userRepository.findAllByLastName(lastName);
+    if (userList.isEmpty()) {
+      throw new UserNotFoundException();
+    }
+    return userList;
   }
 
   /**
@@ -84,11 +88,14 @@ public class UserEndpoint {
    * @return a Mono instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<UserDto> readByUser(
+  public UserDto readByUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
-    return userRepository
-        .find(firstName, lastName)
-        .switchIfEmpty(Mono.error(new UserNotFoundException()));
+    Optional<UserDto> userDtoOp = userRepository.find(firstName, lastName);
+    if (userDtoOp.isEmpty()) {
+      throw new UserNotFoundException();
+    }
+
+    return userDtoOp.get();
   }
 
   /**
@@ -97,7 +104,7 @@ public class UserEndpoint {
    * @return a Mono instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Flux<UserDto> readAllUsers() {
+  public Collection<UserDto> readAllUsers() {
     return userRepository.findAll();
   }
 
@@ -109,11 +116,8 @@ public class UserEndpoint {
    * @return a Mono instance containing the removed user info
    */
   @DeleteMapping(value = "/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<UserDto> deleteUser(
+  public UserDto deleteUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
-    return userRepository
-        .find(firstName, lastName)
-        .flatMap(user -> userRepository.delete(user))
-        .switchIfEmpty(Mono.error(new UserNotFoundException()));
+    return userRepository.delete(new UserDto(firstName, lastName));
   }
 }

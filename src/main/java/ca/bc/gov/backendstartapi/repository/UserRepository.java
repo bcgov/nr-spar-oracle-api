@@ -2,14 +2,15 @@ package ca.bc.gov.backendstartapi.repository;
 
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
+import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** This class is a sample class to handle users first and last name in memory. */
 @Repository
@@ -23,13 +24,13 @@ public class UserRepository {
    * @param userDto user to be saved
    * @return the new saved user.
    */
-  public Mono<UserDto> save(UserDto userDto) {
+  public UserDto save(UserDto userDto) {
     UserDto saved = users.put(userDto.hashCode(), userDto);
     if (!Objects.isNull(saved)) {
-      return Mono.error(new UserExistsException());
+      throw new UserExistsException();
     }
 
-    return Mono.just(userDto);
+    return userDto;
   }
 
   /**
@@ -38,7 +39,7 @@ public class UserRepository {
    * @param firstName the user's first name
    * @return a list with all possible users
    */
-  public Flux<UserDto> findAllByFirstName(String firstName) {
+  public List<UserDto> findAllByFirstName(String firstName) {
     final List<UserDto> usersFound = new ArrayList<>();
     users
         .values()
@@ -48,7 +49,7 @@ public class UserRepository {
                 usersFound.add(dto);
               }
             });
-    return Flux.fromIterable(usersFound);
+    return usersFound;
   }
 
   /**
@@ -57,7 +58,7 @@ public class UserRepository {
    * @param lastName the user's last name
    * @return a list with all possible users
    */
-  public Flux<UserDto> findByLastName(String lastName) {
+  public List<UserDto> findAllByLastName(String lastName) {
     final List<UserDto> usersFound = new ArrayList<>();
     users
         .values()
@@ -67,7 +68,7 @@ public class UserRepository {
                 usersFound.add(dto);
               }
             });
-    return Flux.fromIterable(usersFound);
+    return usersFound;
   }
 
   /**
@@ -77,15 +78,15 @@ public class UserRepository {
    * @param lastName the user's last name
    * @return a UserDto if found
    */
-  public Mono<UserDto> find(String firstName, String lastName) {
+  public Optional<UserDto> find(String firstName, String lastName) {
     UserDto userDtoToFind = new UserDto(firstName, lastName);
 
     UserDto userDb = users.get(userDtoToFind.hashCode());
     if (Objects.isNull(userDb)) {
-      return Mono.empty();
+      return Optional.empty();
     }
 
-    return Mono.just(userDb);
+    return Optional.of(userDb);
   }
 
   /**
@@ -93,8 +94,8 @@ public class UserRepository {
    *
    * @return a list of UserDto
    */
-  public Flux<UserDto> findAll() {
-    return Flux.fromIterable(users.values());
+  public Collection<UserDto> findAll() {
+    return users.values();
   }
 
   /**
@@ -103,8 +104,11 @@ public class UserRepository {
    * @param userDto user to be deleted
    * @return a Mono instance containing the deleted user data
    */
-  public Mono<UserDto> delete(UserDto userDto) {
+  public UserDto delete(UserDto userDto) {
     UserDto removed = users.remove(userDto.hashCode());
-    return Mono.just(removed);
+    if (removed == null) {
+      throw new UserNotFoundException();
+    }
+    return removed;
   }
 }

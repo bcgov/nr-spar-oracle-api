@@ -5,15 +5,13 @@ import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.CorsRegistry;
-import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /** This class holds the configuration for CORS handling. */
 @Configuration
-@EnableWebFlux
 @Slf4j
-public class CorsConfig implements WebFluxConfigurer {
+public class CorsConfig implements WebMvcConfigurer {
 
   @Value("${server.allowed.cors.origins}")
   private String[] allowedOrigins;
@@ -33,6 +31,6 @@ public class CorsConfig implements WebFluxConfigurer {
           .allowedOriginPatterns(allowedOrigins)
           .allowedMethods("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD");
     }
-    WebFluxConfigurer.super.addCorsMappings(registry);
+    WebMvcConfigurer.super.addCorsMappings(registry);
   }
 }
