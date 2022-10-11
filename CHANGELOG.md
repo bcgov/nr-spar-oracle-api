@@ -1,3 +1,7 @@
+## [0.4.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.1...v0.4.2) (2022-10-11)
+
+
+
 ## [0.4.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.0...v0.4.1) (2022-10-04)
 
 
@@ -34,15 +38,6 @@
 ### Bug Fixes
 
 * adjust image promotion not working ([#24](https://github.com/bcgov/nr-backend-starting-api/issues/24)) ([6756747](https://github.com/bcgov/nr-backend-starting-api/commit/6756747d2896fefa7790e8967397f4220030662d))
-
-
-
-## [0.2.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.2.1...v0.2.2) (2022-08-25)
-
-
-### Bug Fixes
-
-* release version not present at check response ([#23](https://github.com/bcgov/nr-backend-starting-api/issues/23)) ([0fc4ff1](https://github.com/bcgov/nr-backend-starting-api/commit/0fc4ff13d1a9ff57e686af1b38ee078a33b37625))
 
 
 
