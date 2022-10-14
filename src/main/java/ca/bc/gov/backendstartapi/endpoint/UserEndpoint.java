@@ -37,7 +37,7 @@ public class UserEndpoint {
    * Create a user with first and last name.
    *
    * @param user a UserDto containing both first and last name
-   * @return a Mono instance containing the new user info
+   * @return a UserDto instance containing the new user info
    */
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -50,7 +50,7 @@ public class UserEndpoint {
    * Get a list of users given the last name.
    *
    * @param firstName user's first name
-   * @return A Flux instance containing all found users.
+   * @return A List containing all found users.
    */
   @GetMapping(
       value = "/find-all-by-first-name/{firstName}",
@@ -67,7 +67,7 @@ public class UserEndpoint {
    * Get a list of users given the last name.
    *
    * @param lastName user's last name
-   * @return A Flux instance containing all found users.
+   * @return A List containing all found users.
    */
   @GetMapping(
       value = "/find-all-by-last-name/{lastName}",
@@ -85,7 +85,7 @@ public class UserEndpoint {
    *
    * @param firstName user's first name
    * @param lastName user's last name
-   * @return a Mono instance containing the found user or a 404 if not found.
+   * @return a UserDto instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserDto readByUser(
@@ -101,7 +101,7 @@ public class UserEndpoint {
   /**
    * Get a list with all registered users.
    *
-   * @return a Mono instance containing the found user or a 404 if not found.
+   * @return a Collection containing all found users or a 404 if not found.
    */
   @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
   public Collection<UserDto> readAllUsers() {
@@ -113,7 +113,7 @@ public class UserEndpoint {
    *
    * @param firstName user's first name
    * @param lastName user's last name
-   * @return a Mono instance containing the removed user info
+   * @return a UserDto instance containing the removed user info.
    */
   @DeleteMapping(value = "/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserDto deleteUser(

@@ -13,22 +13,19 @@ import ca.bc.gov.backendstartapi.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -39,6 +36,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
 class UserEndpointTest {
 
   private static final String FIRST_NAME = "Ricardo";
@@ -47,7 +45,7 @@ class UserEndpointTest {
 
   private MockMvc mockMvc;
 
-  @MockBean UserRepository userRepository;
+  @Autowired UserRepository userRepository;
 
   @Autowired private WebApplicationContext webApplicationContext;
 
@@ -64,10 +62,9 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(1)
   @DisplayName("Create user with success")
   void createSuccess() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
     mockMvc
         .perform(
             post("/users")
@@ -81,6 +78,7 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(2)
   @DisplayName("Create user without firstName")
   void createWithoutFirstName() throws Exception {
     UserDto userDtoPartial = new UserDto(null, LAST_NAME);
@@ -99,6 +97,7 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(3)
   @DisplayName("Create user without lastName")
   void createWithoutLastName() throws Exception {
     UserDto userDtoPartial = new UserDto(FIRST_NAME, null);
@@ -117,6 +116,7 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(4)
   @DisplayName("Create user with minimum lastName size")
   void createSizeMin() throws Exception {
     UserDto userDtoError = new UserDto(FIRST_NAME, "C");
@@ -135,7 +135,8 @@ class UserEndpointTest {
   }
 
   @Test
-  @DisplayName("Create user with maximum lastName size")
+  @Order(5)
+  @DisplayName("Create user with above than maximum lastName size")
   void createSizeMax() throws Exception {
     UserDto userDtoError = new UserDto("Ricardo", "CamposCamposCamposCampos");
 
@@ -153,23 +154,9 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(6)
   @DisplayName("Try to create existing user")
   void createExisting() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
-    mockMvc
-        .perform(
-            post("/users")
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(getUserDtoString(USERDTO)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
-        .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();
-
-    Mockito.when(userRepository.save(USERDTO)).thenThrow(UserExistsException.class);
-
     mockMvc
         .perform(
             post("/users")
@@ -184,10 +171,10 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(7)
   @DisplayName("Find users by first name")
   void findUsersByFirstName() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
+    /*
     mockMvc
         .perform(
             post("/users")
@@ -197,10 +184,7 @@ class UserEndpointTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
         .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();
-
-    List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
-    Mockito.when(userRepository.findAllByFirstName(FIRST_NAME)).thenReturn(users);
+        .andReturn();*/
 
     mockMvc
         .perform(
@@ -214,10 +198,10 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(8)
   @DisplayName("Find users by last name")
   void findUsersByLastName() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
+    /*
     mockMvc
         .perform(
             post("/users")
@@ -227,10 +211,7 @@ class UserEndpointTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
         .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();
-
-    List<UserDto> users = new ArrayList<>(Collections.singletonList(USERDTO));
-    Mockito.when(userRepository.findAllByLastName(LAST_NAME)).thenReturn(users);
+        .andReturn();*/
 
     mockMvc
         .perform(
@@ -244,10 +225,10 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(9)
   @DisplayName("Find users by first and last name")
   void findUsersByFirstAndLastName() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
+    /*
     mockMvc
         .perform(
             post("/users")
@@ -257,9 +238,7 @@ class UserEndpointTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
         .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();
-
-    Mockito.when(userRepository.find(FIRST_NAME, LAST_NAME)).thenReturn(Optional.of(USERDTO));
+        .andReturn();*/
 
     mockMvc
         .perform(
@@ -273,10 +252,10 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(10)
   @DisplayName("Find all users")
   void findAllUsers() throws Exception {
-    Mockito.when(userRepository.save(USERDTO)).thenReturn(USERDTO);
-
+    /*
     mockMvc
         .perform(
             post("/users")
@@ -286,9 +265,7 @@ class UserEndpointTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
         .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();
-
-    Mockito.when(userRepository.findAll()).thenReturn(Collections.singletonList(USERDTO));
+        .andReturn();*/
 
     mockMvc
         .perform(
@@ -302,10 +279,9 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(11)
   @DisplayName("Find users by last name not found")
   void findUsersNotFound() throws Exception {
-    Mockito.when(userRepository.findAllByFirstName("RRR")).thenReturn(new ArrayList<>());
-
     mockMvc
         .perform(
             get("/users/find-all-by-first-name/{firstName}", "RRR")
@@ -320,11 +296,9 @@ class UserEndpointTest {
   }
 
   @Test
+  @Order(12)
   @DisplayName("Delete user that doesn't exist")
   void deleteUserDoesNotExist() throws Exception {
-    Mockito.when(userRepository.delete(new UserDto("User", "Name")))
-        .thenThrow(UserNotFoundException.class);
-
     mockMvc
         .perform(
             delete("/users/{firstName}/{lastName}", "User", "Name")
