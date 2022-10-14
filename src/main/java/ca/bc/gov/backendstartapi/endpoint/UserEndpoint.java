@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,6 +89,7 @@ public class UserEndpoint {
    * @return a Mono instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasAuthority('SCOPE_editor')")
   public UserDto readByUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     Optional<UserDto> userDtoOp = userRepository.find(firstName, lastName);
@@ -104,6 +106,7 @@ public class UserEndpoint {
    * @return a Mono instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasAuthority('SCOPE_email')")
   public Collection<UserDto> readAllUsers() {
     return userRepository.findAll();
   }
