@@ -174,18 +174,6 @@ class UserEndpointTest {
   @Order(7)
   @DisplayName("Find users by first name")
   void findUsersByFirstName() throws Exception {
-    /*
-    mockMvc
-        .perform(
-            post("/users")
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(getUserDtoString(USERDTO)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
-        .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();*/
-
     mockMvc
         .perform(
             get("/users/find-all-by-first-name/{firstName}", FIRST_NAME)
@@ -201,18 +189,6 @@ class UserEndpointTest {
   @Order(8)
   @DisplayName("Find users by last name")
   void findUsersByLastName() throws Exception {
-    /*
-    mockMvc
-        .perform(
-            post("/users")
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(getUserDtoString(USERDTO)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
-        .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();*/
-
     mockMvc
         .perform(
             get("/users/find-all-by-last-name/{lastName}", LAST_NAME)
@@ -228,18 +204,6 @@ class UserEndpointTest {
   @Order(9)
   @DisplayName("Find users by first and last name")
   void findUsersByFirstAndLastName() throws Exception {
-    /*
-    mockMvc
-        .perform(
-            post("/users")
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(getUserDtoString(USERDTO)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
-        .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();*/
-
     mockMvc
         .perform(
             get("/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
@@ -255,18 +219,6 @@ class UserEndpointTest {
   @Order(10)
   @DisplayName("Find all users")
   void findAllUsers() throws Exception {
-    /*
-    mockMvc
-        .perform(
-            post("/users")
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(getUserDtoString(USERDTO)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
-        .andExpect(jsonPath("$.lastName").value(LAST_NAME))
-        .andReturn();*/
-
     mockMvc
         .perform(
             get("/users/find-all")
