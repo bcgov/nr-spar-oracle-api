@@ -117,7 +117,7 @@ class UserEndpointTest {
 
   @Test
   @Order(4)
-  @DisplayName("Create user with minimum lastName size")
+  @DisplayName("Create user with bellow minimum lastName size")
   void createSizeMin() throws Exception {
     UserDto userDtoError = new UserDto(FIRST_NAME, "C");
 

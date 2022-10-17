@@ -93,7 +93,7 @@ public class UserRepository {
   /**
    * Find all users.
    *
-   * @return a list of UserDto
+   * @return a collection of UserDto
    */
   public Collection<UserDto> findAll() {
     return users.values();
@@ -103,7 +103,7 @@ public class UserRepository {
    * Delete a user from the repository.
    *
    * @param userDto user to be deleted
-   * @return a Mono instance containing the deleted user data
+   * @return a UserDto instance containing the deleted user data
    * @throws UserNotFoundException if the user doesn't exist.
    */
   public UserDto delete(UserDto userDto) {
