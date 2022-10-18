@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.support.WebExchangeBindException;
 
 /** This class is responsible for handling all kind of exceptions and validations. */
 @RestControllerAdvice
@@ -20,11 +20,11 @@ public class RestExceptionEndpoint {
   /**
    * Handle all javax.validation exceptions.
    *
-   * @param ex WebExchangeBindException instance
+   * @param ex MethodArgumentNotValidException instance
    * @return a Map of String containing all the invalid fields and messages
    */
-  @ExceptionHandler(WebExchangeBindException.class)
-  ResponseEntity<ExceptionResponse> generalException(WebExchangeBindException ex) {
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  ResponseEntity<ExceptionResponse> generalException(MethodArgumentNotValidException ex) {
     ExceptionResponse exResponse = new ExceptionResponse(ex.getFieldErrors().size());
     List<FieldExceptionResponse> fieldList = new ArrayList<>();
     for (FieldError fe : ex.getFieldErrors()) {
