@@ -1,5 +1,6 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,7 +53,8 @@ class UserEndpointTest {
 
   @BeforeEach
   public void setup() {
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    this.mockMvc =
+        MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
   }
 
   private String getUserDtoString(UserDto userDto) throws Exception {
@@ -64,6 +67,7 @@ class UserEndpointTest {
   @Test
   @Order(1)
   @DisplayName("Create user with success")
+  @WithMockUser
   void createSuccess() throws Exception {
     mockMvc
         .perform(
@@ -80,6 +84,7 @@ class UserEndpointTest {
   @Test
   @Order(2)
   @DisplayName("Create user without firstName")
+  @WithMockUser
   void createWithoutFirstName() throws Exception {
     UserDto userDtoPartial = new UserDto(null, LAST_NAME);
 
@@ -99,6 +104,7 @@ class UserEndpointTest {
   @Test
   @Order(3)
   @DisplayName("Create user without lastName")
+  @WithMockUser
   void createWithoutLastName() throws Exception {
     UserDto userDtoPartial = new UserDto(FIRST_NAME, null);
 
@@ -118,6 +124,7 @@ class UserEndpointTest {
   @Test
   @Order(4)
   @DisplayName("Create user with bellow minimum lastName size")
+  @WithMockUser
   void createSizeMin() throws Exception {
     UserDto userDtoError = new UserDto(FIRST_NAME, "C");
 
@@ -137,6 +144,7 @@ class UserEndpointTest {
   @Test
   @Order(5)
   @DisplayName("Create user with above than maximum lastName size")
+  @WithMockUser
   void createSizeMax() throws Exception {
     UserDto userDtoError = new UserDto("Ricardo", "CamposCamposCamposCampos");
 
@@ -156,6 +164,7 @@ class UserEndpointTest {
   @Test
   @Order(6)
   @DisplayName("Try to create existing user")
+  @WithMockUser
   void createExisting() throws Exception {
     mockMvc
         .perform(
@@ -173,6 +182,7 @@ class UserEndpointTest {
   @Test
   @Order(7)
   @DisplayName("Find users by first name")
+  @WithMockUser
   void findUsersByFirstName() throws Exception {
     mockMvc
         .perform(
@@ -188,6 +198,7 @@ class UserEndpointTest {
   @Test
   @Order(8)
   @DisplayName("Find users by last name")
+  @WithMockUser
   void findUsersByLastName() throws Exception {
     mockMvc
         .perform(
@@ -202,7 +213,22 @@ class UserEndpointTest {
 
   @Test
   @Order(9)
-  @DisplayName("Find users by first and last name")
+  @DisplayName("Find users by first and last name - 403 Forbidden")
+  @WithMockUser(value = "someUser", password = "123")
+  void findUsersByFirstAndLastNameUnauthorized() throws Exception {
+    mockMvc
+        .perform(
+            get("/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+                .header("Content-Type", "application/json")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()))
+        .andReturn();
+  }
+
+  @Test
+  @Order(9)
+  @DisplayName("Find users by first and last name - Authenticated")
+  @WithMockUser(authorities = "SCOPE_editor")
   void findUsersByFirstAndLastName() throws Exception {
     mockMvc
         .perform(
@@ -218,11 +244,13 @@ class UserEndpointTest {
   @Test
   @Order(10)
   @DisplayName("Find all users")
+  @WithMockUser(authorities = "SCOPE_email")
   void findAllUsers() throws Exception {
     mockMvc
         .perform(
             get("/users/find-all")
                 .header("Content-Type", "application/json")
+                .header("X-Authorization", "Bearer lalala")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].firstName").value(FIRST_NAME))
@@ -233,6 +261,7 @@ class UserEndpointTest {
   @Test
   @Order(11)
   @DisplayName("Find users by last name not found")
+  @WithMockUser
   void findUsersNotFound() throws Exception {
     mockMvc
         .perform(
@@ -250,6 +279,7 @@ class UserEndpointTest {
   @Test
   @Order(12)
   @DisplayName("Delete user that doesn't exist")
+  @WithMockUser
   void deleteUserDoesNotExist() throws Exception {
     mockMvc
         .perform(
