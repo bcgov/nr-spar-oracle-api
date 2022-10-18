@@ -225,6 +225,11 @@ jobs:
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NRBESTAPI_VERSION=test-${{ env.NRBESTAPI_VERSION }} \
+            -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
+            -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
+            -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
+            -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
+            -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
           # Follow any active rollouts (see deploymentconfigs)
@@ -401,6 +406,11 @@ jobs:
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NRBESTAPI_VERSION=prod-${{ env.NRBESTAPI_VERSION }} \
+            -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
+            -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
+            -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
+            -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
+            -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-service-api | oc apply -f -
 

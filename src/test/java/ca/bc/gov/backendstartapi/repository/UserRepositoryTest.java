@@ -36,7 +36,7 @@ class UserRepositoryTest {
     userRepository.save(USERDTO);
 
     List<UserDto> userList = userRepository.findAllByFirstName(FIRST_NAME);
-    Assertions.assertFalse(userList.isEmpty());
+    Assertions.assertEquals(1, userList.size());
     Assertions.assertEquals(FIRST_NAME, userList.get(0).getFirstName());
     Assertions.assertEquals(LAST_NAME, userList.get(0).getLastName());
   }
@@ -47,7 +47,7 @@ class UserRepositoryTest {
     userRepository.save(USERDTO);
 
     List<UserDto> userList = userRepository.findAllByLastName(LAST_NAME);
-    Assertions.assertFalse(userList.isEmpty());
+    Assertions.assertEquals(1, userList.size());
     Assertions.assertEquals(FIRST_NAME, userList.get(0).getFirstName());
     Assertions.assertEquals(LAST_NAME, userList.get(0).getLastName());
   }
@@ -69,7 +69,7 @@ class UserRepositoryTest {
     userRepository.save(USERDTO);
 
     Collection<UserDto> userList = userRepository.findAll();
-    Assertions.assertFalse(userList.isEmpty());
+    Assertions.assertEquals(1, userList.size());
     UserDto userDto = new ArrayList<>(userList).get(0);
     Assertions.assertEquals(FIRST_NAME, userDto.getFirstName());
     Assertions.assertEquals(LAST_NAME, userDto.getLastName());

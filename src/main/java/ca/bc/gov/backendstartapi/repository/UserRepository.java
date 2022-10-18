@@ -23,6 +23,7 @@ public class UserRepository {
    *
    * @param userDto user to be saved
    * @return the new saved user.
+   * @throws UserExistsException if the user already exists.
    */
   public UserDto save(UserDto userDto) {
     UserDto saved = users.put(userDto.hashCode(), userDto);
@@ -76,7 +77,7 @@ public class UserRepository {
    *
    * @param firstName the user's first name
    * @param lastName the user's last name
-   * @return a UserDto if found
+   * @return an Optional of UserDto if found, or Empty Optional otherwise.
    */
   public Optional<UserDto> find(String firstName, String lastName) {
     UserDto userDtoToFind = new UserDto(firstName, lastName);
@@ -92,7 +93,7 @@ public class UserRepository {
   /**
    * Find all users.
    *
-   * @return a list of UserDto
+   * @return a collection of UserDto
    */
   public Collection<UserDto> findAll() {
     return users.values();
@@ -102,7 +103,8 @@ public class UserRepository {
    * Delete a user from the repository.
    *
    * @param userDto user to be deleted
-   * @return a Mono instance containing the deleted user data
+   * @return a UserDto instance containing the deleted user data
+   * @throws UserNotFoundException if the user doesn't exist.
    */
   public UserDto delete(UserDto userDto) {
     UserDto removed = users.remove(userDto.hashCode());

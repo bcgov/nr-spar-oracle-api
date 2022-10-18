@@ -56,9 +56,18 @@ and deploy it.
 
 # Getting started
 
-Once you have cloned this repository, you can get it running by typing: `./mvnw spring-boot:run`
-from the project root directory. Then head to http://localhost:8080/check you should see a
-message and an OK.
+Once you have cloned this repository, can get it running by typing: `./mvnw spring-boot:run`
+from the project root directory. You **must** provide three environment variables for database
+access configuration:
+
+- `DATABASE_HOST`
+- `DATABASE_PORT`
+- `SERVICE_NAME` (the database's name)
+- `DATABASE_USER`
+- `DATABASE_PASSWORD`
+
+Then head to http://localhost:8090/actuator/health to check if the system was successfully launched:
+the `status` property should have the value *UP*.
 
 Before writing your first line of code, and learn more about the checks, including
 tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) guide.

@@ -20,7 +20,7 @@ public class RestExceptionEndpoint {
   /**
    * Handle all javax.validation exceptions.
    *
-   * @param ex WebExchangeBindException instance
+   * @param ex MethodArgumentNotValidException instance
    * @return a Map of String containing all the invalid fields and messages
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
