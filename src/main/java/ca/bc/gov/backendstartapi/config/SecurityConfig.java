@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+/** This class contains all configurations related to security and authentication. */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -17,6 +18,13 @@ public class SecurityConfig {
   @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
   String jwkSetUri;
 
+  /**
+   * Filters a request to add security checks and configurations.
+   *
+   * @param http instance of HttpSecurity containing the request.
+   * @return SecurityFilterChain with allowed endpoints and all configuration.
+   * @throws Exception due to bad configuration possibilities.
+   */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeRequests()
