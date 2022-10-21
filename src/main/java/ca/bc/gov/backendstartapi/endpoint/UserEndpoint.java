@@ -89,7 +89,7 @@ public class UserEndpoint {
    * @return a UserDto instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasAuthority('SCOPE_editor')")
+  @PreAuthorize("hasRole('ROLE_user')")
   public UserDto readByUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     Optional<UserDto> userDtoOp = userRepository.find(firstName, lastName);
@@ -106,7 +106,7 @@ public class UserEndpoint {
    * @return a Collection containing all found users or a 404 if not found.
    */
   @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasAuthority('SCOPE_email')")
+  @PreAuthorize("hasRole('sudo')")
   public Collection<UserDto> readAllUsers() {
     return userRepository.findAll();
   }
