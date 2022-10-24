@@ -1,4 +1,7 @@
 FROM maven:3.8.6-openjdk-18-slim AS build
+
+ARG KEYCLOAK_SERVER_REALM
+
 COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn --no-transfer-progress -f /home/app/pom.xml clean package
@@ -19,6 +22,7 @@ ENV HEAP_LOG_PATH /usr/share/service/dump
 ENV JAVA_OPS -Xms256m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HEAP_LOG_PATH
 ENV JAVA_DEBUG_OPS -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:$HEAP_LOG_PATH/garbage-collection.log
 ENV DEBUG_MODE false
+ENV KEYCLOAK_SERVER_REALM=$KEYCLOAK_SERVER_REALM
 
 COPY InstallCert.java .
 

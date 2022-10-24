@@ -280,7 +280,6 @@ jobs:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
-      KEYCLOAK_SERVER_REALM: ${{ secrets.KEYCLOAK_SERVER_REALM }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
@@ -314,6 +313,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            KEYCLOAK_SERVER_REALM=${{ secrets.KEYCLOAK_SERVER_REALM }}
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.ZONE }}-${{ env.COMPONENT }}
 
       - name: Clear any previous OpenShift image
