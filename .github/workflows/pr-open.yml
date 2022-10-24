@@ -280,6 +280,7 @@ jobs:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
+      KEYCLOAK_SERVER_REALM: ${{ secrets.KEYCLOAK_SERVER_REALM }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
