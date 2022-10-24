@@ -43,6 +43,7 @@ public class UserEndpoint {
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasRole('user_write')")
   public UserDto create(@Valid @RequestBody UserDto user) {
     return userRepository.save(user);
   }
@@ -56,6 +57,7 @@ public class UserEndpoint {
   @GetMapping(
       value = "/find-all-by-first-name/{firstName}",
       produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasRole('user_read')")
   public List<UserDto> readByFirstName(@PathVariable("firstName") String firstName) {
     List<UserDto> userList = userRepository.findAllByFirstName(firstName);
     if (userList.isEmpty()) {
@@ -73,6 +75,7 @@ public class UserEndpoint {
   @GetMapping(
       value = "/find-all-by-last-name/{lastName}",
       produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasRole('user_read')")
   public List<UserDto> readByLastName(@PathVariable("lastName") String lastName) {
     List<UserDto> userList = userRepository.findAllByLastName(lastName);
     if (userList.isEmpty()) {
@@ -89,7 +92,7 @@ public class UserEndpoint {
    * @return a UserDto instance containing the found user or a 404 if not found.
    */
   @GetMapping(value = "/find/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('ROLE_user')")
+  @PreAuthorize("hasRole('user_read')")
   public UserDto readByUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     Optional<UserDto> userDtoOp = userRepository.find(firstName, lastName);
@@ -106,7 +109,7 @@ public class UserEndpoint {
    * @return a Collection containing all found users or a 404 if not found.
    */
   @GetMapping(value = "/find-all", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('sudo')")
+  @PreAuthorize("hasRole('user_read')")
   public Collection<UserDto> readAllUsers() {
     return userRepository.findAll();
   }
@@ -119,6 +122,7 @@ public class UserEndpoint {
    * @return a UserDto instance containing the removed user info.
    */
   @DeleteMapping(value = "/{firstName}/{lastName}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasRole('user_write')")
   public UserDto deleteUser(
       @PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
     return userRepository.delete(new UserDto(firstName, lastName));

@@ -1,12 +1,21 @@
 package ca.bc.gov.backendstartapi.config;
 
+import com.nimbusds.jose.shaded.json.JSONArray;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /** This class contains all configurations related to security and authentication. */
@@ -46,9 +55,24 @@ public class SecurityConfig {
         .csrf()
         .disable()
         .oauth2ResourceServer()
-        .jwt()
-        .jwkSetUri(jwkSetUri);
+        .jwt(jwt -> jwt.jwtAuthenticationConverter(converter()).jwkSetUri(jwkSetUri));
 
     return http.build();
+  }
+
+  private Converter<Jwt, AbstractAuthenticationToken> converter() {
+    JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+    converter.setJwtGrantedAuthoritiesConverter(roleConverter());
+    return converter;
+  }
+
+  private Converter<Jwt, Collection<GrantedAuthority>> roleConverter() {
+    return jwt -> {
+      final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
+      return realmAccess.stream()
+          .map(roleName -> "ROLE_" + roleName)
+          .map(SimpleGrantedAuthority::new)
+          .collect(Collectors.toList());
+    };
   }
 }

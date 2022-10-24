@@ -67,7 +67,7 @@ class UserEndpointTest {
   @Test
   @Order(1)
   @DisplayName("Create user with success")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createSuccess() throws Exception {
     mockMvc
         .perform(
@@ -84,7 +84,7 @@ class UserEndpointTest {
   @Test
   @Order(2)
   @DisplayName("Create user without firstName")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createWithoutFirstName() throws Exception {
     UserDto userDtoPartial = new UserDto(null, LAST_NAME);
 
@@ -104,7 +104,7 @@ class UserEndpointTest {
   @Test
   @Order(3)
   @DisplayName("Create user without lastName")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createWithoutLastName() throws Exception {
     UserDto userDtoPartial = new UserDto(FIRST_NAME, null);
 
@@ -124,7 +124,7 @@ class UserEndpointTest {
   @Test
   @Order(4)
   @DisplayName("Create user with bellow minimum lastName size")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createSizeMin() throws Exception {
     UserDto userDtoError = new UserDto(FIRST_NAME, "C");
 
@@ -144,7 +144,7 @@ class UserEndpointTest {
   @Test
   @Order(5)
   @DisplayName("Create user with above than maximum lastName size")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createSizeMax() throws Exception {
     UserDto userDtoError = new UserDto("Ricardo", "CamposCamposCamposCampos");
 
@@ -164,7 +164,7 @@ class UserEndpointTest {
   @Test
   @Order(6)
   @DisplayName("Try to create existing user")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void createExisting() throws Exception {
     mockMvc
         .perform(
@@ -182,7 +182,7 @@ class UserEndpointTest {
   @Test
   @Order(7)
   @DisplayName("Find users by first name")
-  @WithMockUser
+  @WithMockUser(roles = "user_read")
   void findUsersByFirstName() throws Exception {
     mockMvc
         .perform(
@@ -198,7 +198,7 @@ class UserEndpointTest {
   @Test
   @Order(8)
   @DisplayName("Find users by last name")
-  @WithMockUser
+  @WithMockUser(roles = "user_read")
   void findUsersByLastName() throws Exception {
     mockMvc
         .perform(
@@ -214,7 +214,7 @@ class UserEndpointTest {
   @Test
   @Order(9)
   @DisplayName("Find users by first and last name - 403 Forbidden")
-  @WithMockUser(value = "someUser", password = "123")
+  @WithMockUser
   void findUsersByFirstAndLastNameUnauthorized() throws Exception {
     mockMvc
         .perform(
@@ -228,7 +228,7 @@ class UserEndpointTest {
   @Test
   @Order(9)
   @DisplayName("Find users by first and last name - Authenticated")
-  @WithMockUser(authorities = "SCOPE_editor")
+  @WithMockUser(roles = "user_read")
   void findUsersByFirstAndLastName() throws Exception {
     mockMvc
         .perform(
@@ -244,7 +244,7 @@ class UserEndpointTest {
   @Test
   @Order(10)
   @DisplayName("Find all users")
-  @WithMockUser(authorities = "SCOPE_email")
+  @WithMockUser(roles = "user_read")
   void findAllUsers() throws Exception {
     mockMvc
         .perform(
@@ -261,7 +261,7 @@ class UserEndpointTest {
   @Test
   @Order(11)
   @DisplayName("Find users by last name not found")
-  @WithMockUser
+  @WithMockUser(roles = "user_read")
   void findUsersNotFound() throws Exception {
     mockMvc
         .perform(
@@ -279,7 +279,7 @@ class UserEndpointTest {
   @Test
   @Order(12)
   @DisplayName("Delete user that doesn't exist")
-  @WithMockUser
+  @WithMockUser(roles = "user_write")
   void deleteUserDoesNotExist() throws Exception {
     mockMvc
         .perform(
