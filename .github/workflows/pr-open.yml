@@ -13,6 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   NAME: nrbestapi
+  KEYCLOAK_SERVER_REALM: ${{ secrets.KEYCLOAK_SERVER_REALM }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
