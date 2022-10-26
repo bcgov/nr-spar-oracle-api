@@ -44,6 +44,7 @@ and deploy it.
 - Database
   - Remote Oracle with secure connection
   - PostgreSQL
+  - Flyway
 - DevOps
   - Docker
   - Docker Composer
@@ -57,20 +58,33 @@ and deploy it.
 # Getting started
 
 Once you have cloned this repository, can get it running by typing: `./mvnw spring-boot:run`
-from the project root directory. You **must** provide three environment variables for database
+from the project root directory. You **must** provide ten environment variables for database
 access configuration:
 
-- `DATABASE_HOST`
-- `DATABASE_PORT`
-- `SERVICE_NAME` (the database's name)
-- `DATABASE_USER`
-- `DATABASE_PASSWORD`
+- five related to the central database (*THE*):
+  - `DATABASE_HOST`
+  - `DATABASE_PORT`
+  - `SERVICE_NAME` (the database's name)
+  - `DATABASE_USER`
+  - `DATABASE_PASSWORD`
+- five related to the local database:
+  - `LOCAL_DATABASE_HOST`
+  - `LOCAL_DATABASE_PORT`
+  - `LOCAL_SERVICE_NAME` (the database's name)
+  - `LOCAL_DATABASE_USER`
+  - `LOCAL_DATABASE_PASSWORD`
 
 Then head to http://localhost:8090/actuator/health to check if the system was successfully launched:
 the `status` property should have the value *UP*.
 
 Before writing your first line of code, and learn more about the checks, including
 tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) guide.
+
+## Database versioning
+
+Our local database is versioned using Flyway. It's a good idea to execute a migration every time you
+run a new version of the application by executing `./mvnw flyway:migrate` providing environment
+variables related to the local database.
 
 ## Quick look
 
