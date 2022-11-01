@@ -54,6 +54,8 @@ public class SecurityConfig {
         .disable()
         .csrf()
         .disable()
+        .cors()
+        .and()
         .oauth2ResourceServer()
         .jwt(jwt -> jwt.jwtAuthenticationConverter(converter()).jwkSetUri(jwkSetUri));
 
