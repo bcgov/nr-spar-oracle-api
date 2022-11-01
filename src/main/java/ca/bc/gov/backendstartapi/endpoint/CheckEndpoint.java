@@ -36,6 +36,12 @@ public class CheckEndpoint {
     return CheckVo.builder().message("OK").release(nrbestapiVersion).build();
   }
 
+  /**
+   * Try to retrieve a vault value.
+   *
+   * @param vaultRequest a request containing path and name to be requested.
+   * @return a Map containing both the value and secret.
+   */
   @PostMapping(value = "/vault", produces = MediaType.APPLICATION_JSON_VALUE)
   public Map<String, String> vaultTest(@RequestBody VaultRequest vaultRequest) {
     Map<String, String> vaultMap = new HashMap<>();

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** Represents a vault request. */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -11,6 +11,7 @@ import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.Versioned;
 
+/** Handle vault access. */
 @Service
 @Slf4j
 public final class VaultAccess {
@@ -29,6 +30,12 @@ public final class VaultAccess {
     return new VaultTemplate(vaultEndpoint, new TokenAuthentication(token));
   }
 
+  /**
+   * Get a secret given a {VaultRequest} request.
+   *
+   * @param vaultRequest a request containing path and name to be requested.
+   * @return a String if found, an empty string otherwise.
+   */
   public String getSecret(VaultRequest vaultRequest) {
     log.info(
         "Retrieving secret for path: {} and name: {}",
@@ -39,7 +46,9 @@ public final class VaultAccess {
     log.info("Vault Template is here! Trying to get access!");
 
     Versioned<Map<String, Object>> secret =
-        vaultTemplate.opsForVersionedKeyValue(vaultRequest.getPath()).get(vaultRequest.getVaultName());
+        vaultTemplate
+            .opsForVersionedKeyValue(vaultRequest.getPath())
+            .get(vaultRequest.getVaultName());
 
     StringBuilder secretValue = new StringBuilder();
     if (!ObjectUtil.isEmptyOrNull(secret)) {
