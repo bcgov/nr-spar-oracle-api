@@ -55,6 +55,9 @@ parameters:
   - name: DATABASE_PASSWORD
     description: Password for the database connection
     required: true
+  - name: VAULT_URI
+    description: Vault host URI
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -119,6 +122,8 @@ objects:
                   value: ${DATABASE_USER}
                 - name: DATABASE_PASSWORD
                   value: ${DATABASE_PASSWORD}
+                - name: VAULT_URI
+                  value: ${VAULT_URI}
               ports:
                 - containerPort: 8090
                   protocol: TCP
