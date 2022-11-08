@@ -72,6 +72,39 @@ the `status` property should have the value *UP*.
 Before writing your first line of code, and learn more about the checks, including
 tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) guide.
 
+## Quick look
+
+But if all you want is to take a quick look on the running service, you can do it by
+using Docker.
+
+Note that you'll need these environment variables:
+```
+NRBESTAPI_VERSION=local
+DATABASE_HOST=<host>
+DATABASE_PORT=<port>
+SERVICE_NAME=<service-name>
+DATABASE_USER=<user>
+DATABASE_PASSWORD=<pass>
+KEYCLOAK_SERVER_REALM=<realm-server-address>
+```
+
+Build the service:
+```
+docker build -t bcgov/nrbestapi-test-service-api:latest \
+  --build-arg KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth .
+```
+
+Then run with:
+```
+docker run -e KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth \
+  -t bcgov/nrbestapi-test-service-api:latest
+```
+
+However, if you have docker-compose you can do:
+```
+docker-compose --env-file .env -f ./docker-compose.yml up --build --force-recreate --no-deps
+```
+
 ## Getting help
 
 As mentioned, we're here to help. Feel free to start a conversation

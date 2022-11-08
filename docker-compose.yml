@@ -11,11 +11,13 @@ services:
       SERVICE_NAME: ${SERVICE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      KEYCLOAK_SERVER_REALM: ${KEYCLOAK_SERVER_REALM}
     hostname: service-api
-    network_mode: "host"
     dns: 142.22.202.100
     ports:
       - "8090:8090"
     build:
       context: .
+      args:
+        KEYCLOAK_SERVER_REALM: ${KEYCLOAK_SERVER_REALM}
       dockerfile: Dockerfile
