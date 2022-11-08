@@ -1,7 +1,10 @@
 package ca.bc.gov.backendstartapi.config;
 
+import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import com.nimbusds.jose.shaded.json.JSONArray;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -71,6 +74,15 @@ public class SecurityConfig {
   private Converter<Jwt, Collection<GrantedAuthority>> roleConverter() {
     return jwt -> {
       final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
+      if (ObjectUtil.isEmptyOrNull(realmAccess)) {
+        String sub = String.valueOf(jwt.getClaims().get("sub"));
+        if (sub.startsWith("service-account-nr-fsa")) {
+          SimpleGrantedAuthority read = new SimpleGrantedAuthority("ROLE_user_read");
+          SimpleGrantedAuthority write = new SimpleGrantedAuthority("ROLE_user_write");
+          return List.of(read, write);
+        }
+        return new ArrayList<>();
+      }
       return realmAccess.stream()
           .map(roleName -> "ROLE_" + roleName)
           .map(SimpleGrantedAuthority::new)
