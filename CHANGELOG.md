@@ -1,3 +1,7 @@
+## [0.5.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.1...v0.5.2) (2022-11-08)
+
+
+
 ## [0.5.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.0...v0.5.1) (2022-11-08)
 
 
@@ -16,16 +20,6 @@
 
 
 ## [0.4.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.0...v0.4.1) (2022-10-04)
-
-
-### Bug Fixes
-
-* test user and find all req ([74d8d9b](https://github.com/bcgov/nr-backend-starting-api/commit/74d8d9b67980f7e00d08c02ac7c16287fbd909bf))
-
-
-### Features
-
-* add api tests for user endpoint ([242f237](https://github.com/bcgov/nr-backend-starting-api/commit/242f237b1c762b59a5502549d8b4a8e82902d046))
 
 
 
