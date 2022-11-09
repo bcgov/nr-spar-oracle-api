@@ -18,6 +18,4 @@ services:
       - "8090:8090"
     build:
       context: .
-      args:
-        KEYCLOAK_SERVER_REALM: ${KEYCLOAK_SERVER_REALM}
       dockerfile: Dockerfile

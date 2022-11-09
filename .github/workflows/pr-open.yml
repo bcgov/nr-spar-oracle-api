@@ -313,8 +313,6 @@ jobs:
         with:
           context: .
           push: true
-          build-args: |
-            KEYCLOAK_SERVER_REALM=${{ secrets.KEYCLOAK_SERVER_REALM }}
           tags: ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.ZONE }}-${{ env.COMPONENT }}
 
       - name: Clear any previous OpenShift image
