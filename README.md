@@ -90,13 +90,13 @@ KEYCLOAK_SERVER_REALM=<realm-server-address>
 
 Build the service:
 ```
-docker build -t bcgov/nrbestapi-test-service-api:latest \
-  --build-arg KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth .
+docker build -t bcgov/nrbestapi-test-service-api:latest .
 ```
 
 Then run with:
 ```
-docker run -e KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth \
+docker run -p 8090:8090 \
+  -e KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth \
   -t bcgov/nrbestapi-test-service-api:latest
 ```
 
