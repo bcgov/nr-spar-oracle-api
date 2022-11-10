@@ -1,5 +1,6 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -72,6 +73,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(USERDTO)))
@@ -91,6 +93,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
@@ -111,6 +114,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
@@ -131,6 +135,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
@@ -151,6 +156,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
@@ -169,6 +175,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(USERDTO)))
@@ -187,6 +194,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find-all-by-first-name/{firstName}", FIRST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -203,6 +211,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find-all-by-last-name/{lastName}", LAST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -219,6 +228,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().is(HttpStatus.FORBIDDEN.value()))
@@ -233,6 +243,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -249,6 +260,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find-all")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .header("X-Authorization", "Bearer lalala")
                 .accept(MediaType.APPLICATION_JSON))
@@ -266,6 +278,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             get("/api/users/find-all-by-first-name/{firstName}", "RRR")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())
@@ -284,6 +297,7 @@ class UserEndpointTest {
     mockMvc
         .perform(
             delete("/api/users/{firstName}/{lastName}", "User", "Name")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())
