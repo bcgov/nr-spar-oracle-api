@@ -36,13 +36,15 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let baseUrl = pm.environment.get(\"apiAddr\") + \"/users/John/Doe\"",
+									"let baseUrl = \"https://\" + pm.environment.get(\"apiAddr\") + \"/users/John/Doe\";",
 									"let options = { method: 'DELETE',",
-									"  url: baseUrl",
-									"}",
-									"",
+									"  url: baseUrl,",
+									"  header: {",
+									"      'Authorization': 'Bearer ' + pm.environment.get(\"authToken\")",
+									"  }",
+									"};",
 									"pm.sendRequest(options, function(err, res) {",
-									"    console.info(\"Removing the user first to avoid false positives\")",
+									"    console.info(\"Removing the user first to avoid false positives\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -51,13 +53,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\"\n}",
@@ -115,13 +111,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\"\n}",
@@ -180,13 +170,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"\"\n}",
@@ -235,13 +219,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find-all-by-first-name/John",
 							"protocol": "https",
@@ -282,13 +260,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find-all-by-first-name/Jane",
 							"protocol": "https",
@@ -328,13 +300,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find-all-by-last-name/Doe",
 							"protocol": "https",
@@ -421,13 +387,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find/John/Doe",
 							"protocol": "https",
@@ -469,13 +429,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find/Jane/Doer",
 							"protocol": "https",
@@ -524,13 +478,7 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/find-all",
 							"protocol": "https",
@@ -571,13 +519,7 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/John/Doe",
 							"protocol": "https",
@@ -618,13 +560,7 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [
-							{
-								"key": "Host",
-								"type": "text",
-								"value": "nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "https://{{apiAddr}}/users/Jane/Doer",
 							"protocol": "https",
@@ -667,6 +603,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -688,15 +627,88 @@
 				"description": "Returns the API status, environment and version."
 			},
 			"response": []
+		},
+		{
+			"name": "Auth request",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "CI67SDJapri58HYqB0IsrfyzUJHbY7GZ",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{authClient}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{authServer}}",
+					"host": [
+						"{{authServer}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"let authServer = pm.environment.get(\"authServer\");",
+					"let authClient = pm.environment.get(\"authClient\");",
+					"let authSecret = pm.environment.get(\"authSecret\");",
+					"",
+					"let options = {",
+					"    url: authServer,",
+					"    method: 'POST',",
+					"    header: {",
+					"        'Accept': 'application/json',",
+					"        'Content-Type': 'application/x-www-form-urlencoded',",
+					"    },",
+					"    body: {",
+					"        mode: 'urlencoded',",
+					"        urlencoded: [",
+					"            { key: 'grant_type', value: 'client_credentials' },",
+					"            { key: 'client_id', value: authClient },",
+					"            { key: 'client_secret', value: authSecret }",
+					"        ]",
+					"    }",
+					"}",
+					"",
+					"pm.sendRequest(options, (err, res) => {",
+					"    let jsonData = res.json();",
+					"    pm.environment.set(\"authToken\", jsonData.access_token);",
+					"});"
 				]
 			}
 		},
