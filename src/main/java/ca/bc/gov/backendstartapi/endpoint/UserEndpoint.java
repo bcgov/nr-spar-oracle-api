@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** This class exposes user related endpoints. */
 @NoArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @Setter
 public class UserEndpoint {
 

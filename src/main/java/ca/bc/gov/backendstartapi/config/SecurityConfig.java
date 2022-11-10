@@ -39,26 +39,20 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/check")
-        .permitAll()
-        .antMatchers(HttpMethod.GET, "/actuator")
-        .permitAll()
-        .antMatchers(HttpMethod.GET, "/actuator/**")
-        .permitAll()
+    http.cors()
+        .and()
+        .authorizeRequests()
+        .antMatchers("/api/**")
+        .authenticated()
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .permitAll()
         .anyRequest()
-        .authenticated()
+        .permitAll()
         .and()
         .httpBasic()
         .disable()
         .formLogin()
         .disable()
-        .csrf()
-        .disable()
-        .cors()
-        .and()
         .oauth2ResourceServer()
         .jwt(jwt -> jwt.jwtAuthenticationConverter(converter()).jwkSetUri(jwkSetUri));
 
