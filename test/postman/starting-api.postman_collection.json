@@ -627,45 +627,6 @@
 				"description": "Returns the API status, environment and version."
 			},
 			"response": []
-		},
-		{
-			"name": "Auth request",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "CI67SDJapri58HYqB0IsrfyzUJHbY7GZ",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "{{authClient}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{authServer}}",
-					"host": [
-						"{{authServer}}"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"auth": {
