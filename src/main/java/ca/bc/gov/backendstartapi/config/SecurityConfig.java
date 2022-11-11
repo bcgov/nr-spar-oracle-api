@@ -72,19 +72,20 @@ public class SecurityConfig {
   private Converter<Jwt, Collection<GrantedAuthority>> roleConverter() {
     return jwt -> {
       final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
+      List<GrantedAuthority> authorities = new ArrayList<>();
       if (ObjectUtil.isEmptyOrNull(realmAccess)) {
         String sub = String.valueOf(jwt.getClaims().get("sub"));
         if (sub.startsWith("service-account-nr-fsa")) {
-          SimpleGrantedAuthority read = new SimpleGrantedAuthority("ROLE_user_read");
-          SimpleGrantedAuthority write = new SimpleGrantedAuthority("ROLE_user_write");
-          return List.of(read, write);
+          authorities.add(new SimpleGrantedAuthority("ROLE_user_read"));
+          authorities.add(new SimpleGrantedAuthority("ROLE_user_write"));
         }
-        return new ArrayList<>();
+        return authorities;
       }
-      return realmAccess.stream()
+      realmAccess.stream()
           .map(roleName -> "ROLE_" + roleName)
           .map(SimpleGrantedAuthority::new)
-          .collect(Collectors.toList());
+          .forEach(authorities::add);
+      return authorities;
     };
   }
 }
