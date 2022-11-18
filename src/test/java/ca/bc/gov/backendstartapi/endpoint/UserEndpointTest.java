@@ -1,5 +1,7 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,7 +54,8 @@ class UserEndpointTest {
 
   @BeforeEach
   public void setup() {
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    this.mockMvc =
+        MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
   }
 
   private String getUserDtoString(UserDto userDto) throws Exception {
@@ -64,10 +68,12 @@ class UserEndpointTest {
   @Test
   @Order(1)
   @DisplayName("Create user with success")
+  @WithMockUser(roles = "user_write")
   void createSuccess() throws Exception {
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(USERDTO)))
@@ -80,12 +86,14 @@ class UserEndpointTest {
   @Test
   @Order(2)
   @DisplayName("Create user without firstName")
+  @WithMockUser(roles = "user_write")
   void createWithoutFirstName() throws Exception {
     UserDto userDtoPartial = new UserDto(null, LAST_NAME);
 
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
@@ -99,12 +107,14 @@ class UserEndpointTest {
   @Test
   @Order(3)
   @DisplayName("Create user without lastName")
+  @WithMockUser(roles = "user_write")
   void createWithoutLastName() throws Exception {
     UserDto userDtoPartial = new UserDto(FIRST_NAME, null);
 
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
@@ -118,12 +128,14 @@ class UserEndpointTest {
   @Test
   @Order(4)
   @DisplayName("Create user with bellow minimum lastName size")
+  @WithMockUser(roles = "user_write")
   void createSizeMin() throws Exception {
     UserDto userDtoError = new UserDto(FIRST_NAME, "C");
 
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
@@ -137,12 +149,14 @@ class UserEndpointTest {
   @Test
   @Order(5)
   @DisplayName("Create user with above than maximum lastName size")
+  @WithMockUser(roles = "user_write")
   void createSizeMax() throws Exception {
     UserDto userDtoError = new UserDto("Ricardo", "CamposCamposCamposCampos");
 
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
@@ -156,10 +170,12 @@ class UserEndpointTest {
   @Test
   @Order(6)
   @DisplayName("Try to create existing user")
+  @WithMockUser(roles = "user_write")
   void createExisting() throws Exception {
     mockMvc
         .perform(
-            post("/users")
+            post("/api/users")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(USERDTO)))
@@ -173,10 +189,12 @@ class UserEndpointTest {
   @Test
   @Order(7)
   @DisplayName("Find users by first name")
+  @WithMockUser(roles = "user_read")
   void findUsersByFirstName() throws Exception {
     mockMvc
         .perform(
-            get("/users/find-all-by-first-name/{firstName}", FIRST_NAME)
+            get("/api/users/find-all-by-first-name/{firstName}", FIRST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -188,10 +206,12 @@ class UserEndpointTest {
   @Test
   @Order(8)
   @DisplayName("Find users by last name")
+  @WithMockUser(roles = "user_read")
   void findUsersByLastName() throws Exception {
     mockMvc
         .perform(
-            get("/users/find-all-by-last-name/{lastName}", LAST_NAME)
+            get("/api/users/find-all-by-last-name/{lastName}", LAST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -202,11 +222,28 @@ class UserEndpointTest {
 
   @Test
   @Order(9)
-  @DisplayName("Find users by first and last name")
+  @DisplayName("Find users by first and last name - 403 Forbidden")
+  @WithMockUser
+  void findUsersByFirstAndLastNameUnauthorized() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+                .with(csrf().asHeader())
+                .header("Content-Type", "application/json")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(HttpStatus.FORBIDDEN.value()))
+        .andReturn();
+  }
+
+  @Test
+  @Order(9)
+  @DisplayName("Find users by first and last name - Authenticated")
+  @WithMockUser(roles = "user_read")
   void findUsersByFirstAndLastName() throws Exception {
     mockMvc
         .perform(
-            get("/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+            get("/api/users/find/{firstName}/{lastName}", FIRST_NAME, LAST_NAME)
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -218,11 +255,14 @@ class UserEndpointTest {
   @Test
   @Order(10)
   @DisplayName("Find all users")
+  @WithMockUser(roles = "user_read")
   void findAllUsers() throws Exception {
     mockMvc
         .perform(
-            get("/users/find-all")
+            get("/api/users/find-all")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
+                .header("X-Authorization", "Bearer lalala")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].firstName").value(FIRST_NAME))
@@ -233,10 +273,12 @@ class UserEndpointTest {
   @Test
   @Order(11)
   @DisplayName("Find users by last name not found")
+  @WithMockUser(roles = "user_read")
   void findUsersNotFound() throws Exception {
     mockMvc
         .perform(
-            get("/users/find-all-by-first-name/{firstName}", "RRR")
+            get("/api/users/find-all-by-first-name/{firstName}", "RRR")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())
@@ -250,10 +292,12 @@ class UserEndpointTest {
   @Test
   @Order(12)
   @DisplayName("Delete user that doesn't exist")
+  @WithMockUser(roles = "user_write")
   void deleteUserDoesNotExist() throws Exception {
     mockMvc
         .perform(
-            delete("/users/{firstName}/{lastName}", "User", "Name")
+            delete("/api/users/{firstName}/{lastName}", "User", "Name")
+                .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())

@@ -13,6 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   NAME: nrbestapi
+  KEYCLOAK_REALM_URL: ${{ secrets.KEYCLOAK_REALM_URL }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -364,6 +365,7 @@ jobs:
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
             -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
             -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)

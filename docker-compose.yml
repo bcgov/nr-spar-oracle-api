@@ -11,8 +11,8 @@ services:
       SERVICE_NAME: ${SERVICE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      KEYCLOAK_REALM_URL: ${KEYCLOAK_REALM_URL}
     hostname: service-api
-    network_mode: "host"
     dns: 142.22.202.100
     ports:
       - "8090:8090"
