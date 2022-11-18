@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.2...v0.6.0) (2022-11-18)
+
+
+### Features
+
+* authentication and authorization with keycloak ([#42](https://github.com/bcgov/nr-backend-starting-api/issues/42)) ([a1e4981](https://github.com/bcgov/nr-backend-starting-api/commit/a1e49817de015414da4aae9da7b5e77acd6bf8de))
+
+
+
 ## [0.5.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.1...v0.5.2) (2022-11-08)
 
 
@@ -16,10 +25,6 @@
 
 
 ## [0.4.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.1...v0.4.2) (2022-10-11)
-
-
-
-## [0.4.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.4.0...v0.4.1) (2022-10-04)
 
 
 
