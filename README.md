@@ -85,7 +85,7 @@ DATABASE_PORT=<port>
 SERVICE_NAME=<service-name>
 DATABASE_USER=<user>
 DATABASE_PASSWORD=<pass>
-KEYCLOAK_SERVER_REALM=<realm-server-address>
+KEYCLOAK_REALM_URL=<realm-server-address>
 ```
 
 Build the service:
@@ -96,7 +96,7 @@ docker build -t bcgov/nrbestapi-test-service-api:latest .
 Then run with:
 ```
 docker run -p 8090:8090 \
-  -e KEYCLOAK_SERVER_REALM=https://dev.loginproxy.gov.bc.ca/auth \
+  -e KEYCLOAK_REALM_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard \
   -t bcgov/nrbestapi-test-service-api:latest
 ```
 
