@@ -8,15 +8,11 @@ import java.util.Objects;
 /** This class contains utils methods. */
 public class ObjectUtil {
 
-  private ObjectUtil() {}
-
   /**
-   * Check if a given object instance is null or empty.
-   * By empty, it means to have no value or be entirely blank.
-   * You can check for String, Character, Integer, Arrays,
-   * and Collections. For another classes, they should
-   * implement the interface Empty, and create a method
-   * that can return the emptiness condition of that class.
+   * Check if a given object instance is null or empty. By empty, it means to have no value or be
+   * entirely blank. You can check for String, Character, Integer, Arrays, and Collections. For
+   * another classes, they should implement the interface Empty, and create a method that can return
+   * the emptiness condition of that class.
    *
    * @param obj Object instance to be checked
    * @return true if empty or null, false otherwise

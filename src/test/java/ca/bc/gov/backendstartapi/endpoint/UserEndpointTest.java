@@ -98,7 +98,7 @@ class UserEndpointTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problem!"))
+        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problems!"))
         .andExpect(jsonPath("$.fields[0].fieldName").value("firstName"))
         .andExpect(jsonPath("$.fields[0].fieldMessage").value("must not be blank"))
         .andReturn();
@@ -119,7 +119,7 @@ class UserEndpointTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoPartial)))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problem!"))
+        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problems!"))
         .andExpect(jsonPath("$.fields[0].fieldName").value("lastName"))
         .andExpect(jsonPath("$.fields[0].fieldMessage").value("must not be blank"))
         .andReturn();
@@ -140,7 +140,7 @@ class UserEndpointTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problem!"))
+        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problems!"))
         .andExpect(jsonPath("$.fields[0].fieldName").value("lastName"))
         .andExpect(jsonPath("$.fields[0].fieldMessage").value("size must be between 2 and 20"))
         .andReturn();
@@ -161,7 +161,7 @@ class UserEndpointTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(getUserDtoString(userDtoError)))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problem!"))
+        .andExpect(jsonPath("$.errorMessage").value("1 field(s) with validation problems!"))
         .andExpect(jsonPath("$.fields[0].fieldName").value("lastName"))
         .andExpect(jsonPath("$.fields[0].fieldMessage").value("size must be between 2 and 20"))
         .andReturn();

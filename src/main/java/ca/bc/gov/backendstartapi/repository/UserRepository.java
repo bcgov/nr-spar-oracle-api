@@ -46,7 +46,7 @@ public class UserRepository {
         .values()
         .forEach(
             dto -> {
-              if (dto.getFirstName().equals(firstName)) {
+              if (dto.firstName().equals(firstName)) {
                 usersFound.add(dto);
               }
             });
@@ -65,7 +65,7 @@ public class UserRepository {
         .values()
         .forEach(
             dto -> {
-              if (dto.getLastName().equals(lastName)) {
+              if (dto.lastName().equals(lastName)) {
                 usersFound.add(dto);
               }
             });

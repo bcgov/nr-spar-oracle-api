@@ -26,8 +26,8 @@ class UserRepositoryTest {
     UserDto saved = userRepository.save(USERDTO);
 
     Assertions.assertNotNull(saved);
-    Assertions.assertEquals(FIRST_NAME, saved.getFirstName());
-    Assertions.assertEquals(LAST_NAME, saved.getLastName());
+    Assertions.assertEquals(FIRST_NAME, saved.firstName());
+    Assertions.assertEquals(LAST_NAME, saved.lastName());
   }
 
   @Test
@@ -37,8 +37,8 @@ class UserRepositoryTest {
 
     List<UserDto> userList = userRepository.findAllByFirstName(FIRST_NAME);
     Assertions.assertEquals(1, userList.size());
-    Assertions.assertEquals(FIRST_NAME, userList.get(0).getFirstName());
-    Assertions.assertEquals(LAST_NAME, userList.get(0).getLastName());
+    Assertions.assertEquals(FIRST_NAME, userList.get(0).firstName());
+    Assertions.assertEquals(LAST_NAME, userList.get(0).lastName());
   }
 
   @Test
@@ -48,8 +48,8 @@ class UserRepositoryTest {
 
     List<UserDto> userList = userRepository.findAllByLastName(LAST_NAME);
     Assertions.assertEquals(1, userList.size());
-    Assertions.assertEquals(FIRST_NAME, userList.get(0).getFirstName());
-    Assertions.assertEquals(LAST_NAME, userList.get(0).getLastName());
+    Assertions.assertEquals(FIRST_NAME, userList.get(0).firstName());
+    Assertions.assertEquals(LAST_NAME, userList.get(0).lastName());
   }
 
   @Test
@@ -59,8 +59,8 @@ class UserRepositoryTest {
 
     Optional<UserDto> userList = userRepository.find(FIRST_NAME, LAST_NAME);
     Assertions.assertFalse(userList.isEmpty());
-    Assertions.assertEquals(FIRST_NAME, userList.get().getFirstName());
-    Assertions.assertEquals(LAST_NAME, userList.get().getLastName());
+    Assertions.assertEquals(FIRST_NAME, userList.get().firstName());
+    Assertions.assertEquals(LAST_NAME, userList.get().lastName());
   }
 
   @Test
@@ -71,8 +71,8 @@ class UserRepositoryTest {
     Collection<UserDto> userList = userRepository.findAll();
     Assertions.assertEquals(1, userList.size());
     UserDto userDto = new ArrayList<>(userList).get(0);
-    Assertions.assertEquals(FIRST_NAME, userDto.getFirstName());
-    Assertions.assertEquals(LAST_NAME, userDto.getLastName());
+    Assertions.assertEquals(FIRST_NAME, userDto.firstName());
+    Assertions.assertEquals(LAST_NAME, userDto.lastName());
   }
 
   @Test
@@ -82,8 +82,8 @@ class UserRepositoryTest {
 
     UserDto deleted = userRepository.delete(USERDTO);
     Assertions.assertNotNull(deleted);
-    Assertions.assertEquals(FIRST_NAME, deleted.getFirstName());
-    Assertions.assertEquals(LAST_NAME, deleted.getLastName());
+    Assertions.assertEquals(FIRST_NAME, deleted.firstName());
+    Assertions.assertEquals(LAST_NAME, deleted.lastName());
 
     Optional<UserDto> find = userRepository.find(FIRST_NAME, LAST_NAME);
     Assertions.assertTrue(find.isEmpty());

@@ -1,35 +1,10 @@
 package ca.bc.gov.backendstartapi.dto;
 
-import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 /** This class represents an example data object. */
-@Getter
-@Setter
-@ToString
-public class ExampleDto {
+public record ExampleDto(Long id, String firstName, String lastName) {
 
-  private Long id;
-  private String firstName;
-  private String lastName;
-
-  public ExampleDto() {
-    this(0L, "", "");
-  }
-
-  /**
-   * Create a new Example Dto.
-   *
-   * @param id id to be set
-   * @param firstName first name of the example
-   * @param lastName last name of the example
-   */
-  public ExampleDto(Long id, String firstName, String lastName) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
+  public static ExampleDto empty() {
+    return new ExampleDto(0L, "", "");
   }
 
   /**
@@ -50,22 +25,5 @@ public class ExampleDto {
     }
 
     return builder.toString();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ExampleDto that = (ExampleDto) o;
-    return id.equals(that.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
   }
 }
