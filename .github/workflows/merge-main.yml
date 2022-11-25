@@ -283,7 +283,12 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json --env-var "releaseVer=test=${{ env.NRBESTAPI_VERSION }}" --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
+          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json \
+            --env-var "releaseVer=test=${{ env.NRBESTAPI_VERSION }}" \
+            --env-var "authServer=${{ secrets.KEYCLOAK_SERVER_REALM }}" \
+            --env-var "authClient=${{ secrets.KC_SERVICE_ACCOUNT_NAME }}" \
+            --env-var "authClient=${{ secrets.KC_SERVICE_ACCOUNT_PASS }}" \
+            --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
 
       - name: Output the results
         uses: actions/upload-artifact@v2
