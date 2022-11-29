@@ -1,6 +1,5 @@
 package ca.bc.gov.backendstartapi.config;
 
-import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,7 @@ public class CorsConfig implements WebMvcConfigurer {
    */
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    if (!ObjectUtil.isEmptyOrNull(allowedOrigins)) {
+    if (allowedOrigins.length != 0) {
       log.info("allowedOrigins: {}", Arrays.asList(allowedOrigins));
 
       registry

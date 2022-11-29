@@ -1,6 +1,5 @@
 package ca.bc.gov.backendstartapi.config;
 
-import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,9 +69,8 @@ public class SecurityConfig {
 
   private Converter<Jwt, Collection<GrantedAuthority>> roleConverter() {
     return jwt -> {
-      final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
       List<GrantedAuthority> authorities = new ArrayList<>();
-      if (ObjectUtil.isEmptyOrNull(realmAccess)) {
+      if (!jwt.getClaims().containsKey("client_roles")) {
         String sub = String.valueOf(jwt.getClaims().get("sub"));
         if (sub.startsWith("service-account-nr-fsa")) {
           authorities.add(new SimpleGrantedAuthority("ROLE_user_read"));
@@ -80,6 +78,7 @@ public class SecurityConfig {
         }
         return authorities;
       }
+      final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
       realmAccess.stream()
           .map(roleName -> "ROLE_" + roleName)
           .map(SimpleGrantedAuthority::new)
