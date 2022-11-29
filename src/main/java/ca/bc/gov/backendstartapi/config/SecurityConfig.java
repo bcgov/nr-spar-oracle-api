@@ -77,8 +77,8 @@ public class SecurityConfig {
           String sub = String.valueOf(jwt.getClaims().get("sub"));
           return (sub.startsWith("service-account-nr-fsa"))
               ? List.of(
-              new SimpleGrantedAuthority("ROLE_user_read"),
-              new SimpleGrantedAuthority("ROLE_user_write"))
+                  new SimpleGrantedAuthority("ROLE_user_read"),
+                  new SimpleGrantedAuthority("ROLE_user_write"))
               : List.of();
         }
         final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
