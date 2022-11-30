@@ -63,7 +63,7 @@ public class SecurityConfig {
 
   private Converter<Jwt, AbstractAuthenticationToken> converter() {
     JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-    converter.setJwtGrantedAuthoritiesConverter(ROLE_CONVERTER);
+    converter.setJwtGrantedAuthoritiesConverter(roleConverter);
     return converter;
   }
 
@@ -71,7 +71,7 @@ public class SecurityConfig {
    * Parse the roles of a client from the JWT, if they're present; if not, subjects with service
    * accounts are granted read and write permissions.
    */
-  private static final Converter<Jwt, Collection<GrantedAuthority>> ROLE_CONVERTER =
+  private final Converter<Jwt, Collection<GrantedAuthority>> roleConverter =
       jwt -> {
         if (!jwt.getClaims().containsKey("client_roles")) {
           String sub = String.valueOf(jwt.getClaims().get("sub"));
