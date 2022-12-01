@@ -3,7 +3,6 @@ package ca.bc.gov.backendstartapi.repository;
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -41,16 +40,7 @@ public class UserRepository {
    * @return a list with all possible users
    */
   public List<UserDto> findAllByFirstName(String firstName) {
-    final List<UserDto> usersFound = new ArrayList<>();
-    users
-        .values()
-        .forEach(
-            dto -> {
-              if (dto.getFirstName().equals(firstName)) {
-                usersFound.add(dto);
-              }
-            });
-    return usersFound;
+    return users.values().stream().filter(user -> user.firstName().equals(firstName)).toList();
   }
 
   /**
@@ -60,16 +50,7 @@ public class UserRepository {
    * @return a list with all possible users
    */
   public List<UserDto> findAllByLastName(String lastName) {
-    final List<UserDto> usersFound = new ArrayList<>();
-    users
-        .values()
-        .forEach(
-            dto -> {
-              if (dto.getLastName().equals(lastName)) {
-                usersFound.add(dto);
-              }
-            });
-    return usersFound;
+    return users.values().stream().filter(user -> user.lastName().equals(lastName)).toList();
   }
 
   /**
@@ -80,14 +61,8 @@ public class UserRepository {
    * @return an Optional of UserDto if found, or Empty Optional otherwise.
    */
   public Optional<UserDto> find(String firstName, String lastName) {
-    UserDto userDtoToFind = new UserDto(firstName, lastName);
-
-    UserDto userDb = users.get(userDtoToFind.hashCode());
-    if (Objects.isNull(userDb)) {
-      return Optional.empty();
-    }
-
-    return Optional.of(userDb);
+    UserDto userDb = users.get(new UserDto(firstName, lastName).hashCode());
+    return Optional.ofNullable(userDb);
   }
 
   /**
