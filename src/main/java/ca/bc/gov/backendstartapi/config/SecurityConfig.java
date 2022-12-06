@@ -1,10 +1,12 @@
 package ca.bc.gov.backendstartapi.config;
 
 import ca.bc.gov.backendstartapi.util.ObjectUtil;
-import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.gson.JsonArray;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,10 +46,10 @@ public class SecurityConfig {
         .csrf()
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
-        .authorizeRequests()
-        .antMatchers("/api/**")
+        .authorizeHttpRequests()
+        .requestMatchers("/api/**")
         .authenticated()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .requestMatchers(HttpMethod.OPTIONS, "/**")
         .permitAll()
         .anyRequest()
         .permitAll()
@@ -70,7 +72,7 @@ public class SecurityConfig {
 
   private Converter<Jwt, Collection<GrantedAuthority>> roleConverter() {
     return jwt -> {
-      final JSONArray realmAccess = (JSONArray) jwt.getClaims().get("client_roles");
+      final JsonArray realmAccess = (JsonArray) jwt.getClaims().get("client_roles");
       List<GrantedAuthority> authorities = new ArrayList<>();
       if (ObjectUtil.isEmptyOrNull(realmAccess)) {
         String sub = String.valueOf(jwt.getClaims().get("sub"));
@@ -80,7 +82,7 @@ public class SecurityConfig {
         }
         return authorities;
       }
-      realmAccess.stream()
+      StreamSupport.stream(realmAccess.spliterator(), false)
           .map(roleName -> "ROLE_" + roleName)
           .map(SimpleGrantedAuthority::new)
           .forEach(authorities::add);
