@@ -64,7 +64,7 @@ public class SecurityConfig {
 
   private Converter<Jwt, AbstractAuthenticationToken> converter() {
     JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-    converter.setJwtGrantedAuthoritiesConverter(roleConverter);
+    converter.setJwtGrantedAuthoritiesConverter(roleConverter());
     return converter;
   }
 
