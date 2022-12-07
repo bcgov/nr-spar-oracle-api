@@ -3,13 +3,14 @@ package ca.bc.gov.backendstartapi.dto;
 import ca.bc.gov.backendstartapi.response.BaseResponse;
 import ca.bc.gov.backendstartapi.util.Empty;
 import ca.bc.gov.backendstartapi.util.ObjectUtil;
-import java.util.Objects;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Objects;
 
 /** This class represents a User data transition object. */
 @Getter

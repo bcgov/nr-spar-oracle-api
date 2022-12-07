@@ -1,6 +1,7 @@
 package ca.bc.gov.backendstartapi.util;
 
 import ca.bc.gov.backendstartapi.exception.EmptyObjectNotSupportedException;
+
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Objects;

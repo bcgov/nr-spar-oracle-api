@@ -2,11 +2,6 @@ package ca.bc.gov.backendstartapi.config;
 
 import ca.bc.gov.backendstartapi.util.ObjectUtil;
 import com.nimbusds.jose.shaded.gson.JsonArray;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.StreamSupport;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +17,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 /** This class contains all configurations related to security and authentication. */
 @Configuration

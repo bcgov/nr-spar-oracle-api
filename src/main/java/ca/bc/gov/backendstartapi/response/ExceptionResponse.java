@@ -2,10 +2,11 @@ package ca.bc.gov.backendstartapi.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** This class represents any kind of exception that this API may go through. */
 @Getter
