@@ -24,7 +24,7 @@ public class CorsConfig implements WebMvcConfigurer {
    */
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    if (allowedOrigins.length != 0) {
+    if (allowedOrigins != null && allowedOrigins.length > 0) {
       log.info("allowedOrigins: {}", Arrays.asList(allowedOrigins));
 
       registry

@@ -1,8 +1,8 @@
 package ca.bc.gov.backendstartapi.dto;
 
 import ca.bc.gov.backendstartapi.response.BaseResponse;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /** This class represents a User data transition object. */
 public record UserDto(
