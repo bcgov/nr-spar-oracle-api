@@ -4,15 +4,14 @@ import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 import ca.bc.gov.backendstartapi.response.ExceptionResponse;
 import ca.bc.gov.backendstartapi.response.FieldExceptionResponse;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** This class is responsible for handling all kind of exceptions and validations. */
 @RestControllerAdvice

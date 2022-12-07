@@ -4,16 +4,15 @@ import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
 import ca.bc.gov.backendstartapi.repository.UserRepository;
 import jakarta.validation.Valid;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 /** This class exposes user related endpoints. */
 @NoArgsConstructor

@@ -3,9 +3,8 @@ package ca.bc.gov.backendstartapi.repository;
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
-import org.springframework.stereotype.Repository;
-
 import java.util.*;
+import org.springframework.stereotype.Repository;
 
 /** This class is a sample class to handle users first and last name in memory. */
 @Repository

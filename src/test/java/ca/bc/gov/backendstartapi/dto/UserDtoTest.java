@@ -22,8 +22,7 @@ class UserDtoTest {
     UserDto userB = new UserDto("Igor", "Melo");
 
     Assertions.assertNotEquals(userA, userB);
-    Assertions.assertEquals(
-        userA, new UserDto("Ricardo", "Campos"));
+    Assertions.assertEquals(userA, new UserDto("Ricardo", "Campos"));
 
     Assertions.assertEquals(518622622, userA.hashCode());
     Assertions.assertEquals(72991099, userB.hashCode());
