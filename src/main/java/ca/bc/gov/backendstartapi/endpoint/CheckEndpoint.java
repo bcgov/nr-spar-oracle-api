@@ -23,6 +23,6 @@ public class CheckEndpoint {
   @GetMapping(value = "/check", produces = MediaType.APPLICATION_JSON_VALUE)
   public CheckVo check() {
     log.info("nrbestapiVersion: {}", nrbestapiVersion);
-    return CheckVo.builder().message("OK").release(nrbestapiVersion).build();
+    return new CheckVo("OK", nrbestapiVersion);
   }
 }
