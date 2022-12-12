@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jdk-alpine
 LABEL maintainer="Ricardo Montania Prado de Campos <ricardo.campos@encora.com>"
 
 WORKDIR /usr/share/service/
