@@ -1,3 +1,13 @@
+# [0.7.0](https://github.com/bcgov/nr-backend-starting-api/compare/v0.6.2...v0.7.0) (2022-12-12)
+
+
+### Features
+
+* **ci:** update to use jdk instead of jre ([83259f4](https://github.com/bcgov/nr-backend-starting-api/commit/83259f4239068803b88de37f3b54efacb0c7fd50))
+* **hikari:** adding hikari configuration ([4390888](https://github.com/bcgov/nr-backend-starting-api/commit/4390888b3e8b92187741b54f2cc259642624b19c))
+
+
+
 ## [0.6.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.6.1...v0.6.2) (2022-12-05)
 
 
@@ -23,10 +33,6 @@
 
 
 ## [0.5.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.1...v0.5.2) (2022-11-08)
-
-
-
-## [0.5.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.5.0...v0.5.1) (2022-11-08)
 
 
 
