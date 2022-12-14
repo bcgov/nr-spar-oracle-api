@@ -341,8 +341,8 @@ jobs:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
     outputs:
       vaultDatabaseUser: ${{ env.VAULT_DB_USER }}
       vaultDatabasePass: ${{ env.VAULT_DB_PASS }}
