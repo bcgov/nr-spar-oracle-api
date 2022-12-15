@@ -360,6 +360,16 @@ jobs:
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     steps:
       - uses: actions/checkout@v3
+      - name: Test User output value
+        if: "${{ steps.vault_retriever.outputs.VAULT_DB_USER != '' }}"
+        run: |
+          echo "User is not empty! User = ${{ steps.vault_retriever.outputs.VAULT_DB_USER }}"
+
+      - name: Test Pass output value
+        if: "${{ steps.vault_retriever.outputs.VAULT_DB_USER == '' }}"
+        run: |
+          echo "Pass is empty!"
+
       - name: Deploy
         run: |
           # Login to OpenShift and select project
