@@ -343,9 +343,6 @@ jobs:
           secrets: |
             apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
             apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
-    outputs:
-      vaultDatabaseUser: ${{ env.VAULT_DB_USER }}
-      vaultDatabasePass: ${{ env.VAULT_DB_PASS }}
 
   # Only for Pull Requests
   deploy-dev:
@@ -387,8 +384,8 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ steps.vault_retriever.outputs.vaultDatabaseUser }} \
-            -p DATABASE_PASSWORD=${{ steps.vault_retriever.outputs.vaultDatabasePass }} \
+            -p DATABASE_USER=${{ steps.vault_retriever.outputs.VAULT_DB_USER }} \
+            -p DATABASE_PASSWORD=${{ steps.vault_retriever.outputs.VAULT_DB_PASS }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
