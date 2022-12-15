@@ -330,8 +330,6 @@ jobs:
   deploy-dev:
     name: DEV Deployment (Only PR)
     needs:
-      - security
-      - tests
       - build-service-api
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
