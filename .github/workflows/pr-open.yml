@@ -328,8 +328,6 @@ jobs:
   deploy-dev:
     name: DEV Deployment (Only PR)
     needs:
-      - security
-      - tests
       - build-service-api
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
@@ -338,15 +336,23 @@ jobs:
       ZONE: ${{ github.event.number }}
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: https://vault-iit.apps.silver.devops.gov.bc.ca
+          token: ${{ secrets.VAULT_TOKEN }}
+          exportEnv: 'false'
+          secrets: |
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+
       - uses: actions/checkout@v3
       - name: Deploy
         run: |
           # Login to OpenShift and select project
           oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
           oc project ${{ secrets.OC_NAMESPACE }}
-
-          # Database uses a default build
-          # oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
 
           # Clean previous image, if rebuilding
           if [ ${{ needs.build-service-api.outputs.build == 'true' }} ]
@@ -363,14 +369,14 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
-            -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            -p DATABASE_USER=${{ steps.secrets.outputs.VAULT_DB_USER }} \
+            -p DATABASE_PASSWORD=${{ steps.secrets.outputs.VAULT_DB_PASS }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
-          #oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
+
       - name: DEV Deployment update
         uses: mshick/add-pr-comment@v1
         env:
@@ -379,7 +385,7 @@ jobs:
           allow-repeats: false
           message: |
             DEV deployments have completed successfully!
-            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/]()
+            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/](https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/)
 
   api-tests:
     name: Newman API tests runner
