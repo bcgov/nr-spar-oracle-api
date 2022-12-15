@@ -220,8 +220,8 @@ jobs:
           token: ${{ secrets.VAULT_TOKEN }}
           exportEnv: 'false'
           secrets: |
-            apps/data/test/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/test/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NRBESTAPI_VERSION env
@@ -413,8 +413,8 @@ jobs:
           token: ${{ secrets.VAULT_TOKEN }}
           exportEnv: 'false'
           secrets: |
-            apps/data/prod/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/prod/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NRBESTAPI_VERSION env
