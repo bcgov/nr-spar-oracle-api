@@ -325,24 +325,6 @@ jobs:
           oc delete is ${{ env.NAME }}-${{ env.ZONE }}-${{ env.COMPONENT }} || true
 
 
-  # Only for Pull Requests
-  vault_retriever:
-    name: Retrieve Vault Secrets
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - name: Import Secrets
-        id: vault_retriever
-        uses: hashicorp/vault-action@v2
-        with:
-          url: https://vault-iit.apps.silver.devops.gov.bc.ca
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
   # Only for Pull Requests
   deploy-dev:
@@ -359,14 +341,25 @@ jobs:
       ZONE: ${{ github.event.number }}
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: https://vault-iit.apps.silver.devops.gov.bc.ca
+          token: ${{ secrets.VAULT_TOKEN }}
+          exportEnv: 'false'
+          secrets: |
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+
       - uses: actions/checkout@v3
       - name: Test User output value
         if: "${{ steps.vault_retriever.outputs.VAULT_DB_USER != '' }}"
         run: |
-          echo "User is not empty! User = ${{ steps.vault_retriever.outputs.VAULT_DB_USER }}"
+          echo "User is not empty! User = ${{ steps.secrets.outputs.VAULT_DB_USER }}"
 
       - name: Test Pass output value
-        if: "${{ steps.vault_retriever.outputs.VAULT_DB_USER == '' }}"
+        if: "${{ steps.secrets.outputs.VAULT_DB_USER == '' }}"
         run: |
           echo "Pass is empty!"
 
@@ -394,8 +387,8 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ steps.vault_retriever.outputs.VAULT_DB_USER }} \
-            -p DATABASE_PASSWORD=${{ steps.vault_retriever.outputs.VAULT_DB_PASS }} \
+            -p DATABASE_USER=${{ steps.secrets.outputs.VAULT_DB_USER }} \
+            -p DATABASE_PASSWORD=${{ steps.secrets.outputs.VAULT_DB_PASS }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
