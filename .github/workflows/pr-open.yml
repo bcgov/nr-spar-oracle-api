@@ -324,8 +324,6 @@ jobs:
           # Clean previous image
           oc delete is ${{ env.NAME }}-${{ env.ZONE }}-${{ env.COMPONENT }} || true
 
-
-
   # Only for Pull Requests
   deploy-dev:
     name: DEV Deployment (Only PR)
@@ -350,24 +348,11 @@ jobs:
             apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
-      - name: Test User output value
-        if: "${{ steps.secrets.outputs.VAULT_DB_USER != '' }}"
-        run: |
-          echo "User is not empty! User = ${{ steps.secrets.outputs.VAULT_DB_USER }}"
-
-      - name: Test Pass output value
-        if: "${{ steps.secrets.outputs.VAULT_DB_USER == '' }}"
-        run: |
-          echo "Pass is empty!"
-
       - name: Deploy
         run: |
           # Login to OpenShift and select project
           oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
           oc project ${{ secrets.OC_NAMESPACE }}
-
-          # Database uses a default build
-          # oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
 
           # Clean previous image, if rebuilding
           if [ ${{ needs.build-service-api.outputs.build == 'true' }} ]
@@ -390,8 +375,8 @@ jobs:
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
           # Follow any active rollouts (see deploymentconfigs)
-          #oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-database -w
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
+
       - name: DEV Deployment update
         uses: mshick/add-pr-comment@v1
         env:
@@ -400,7 +385,7 @@ jobs:
           allow-repeats: false
           message: |
             DEV deployments have completed successfully!
-            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/]()
+            Service API: [https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/](https://${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca/)
 
   api-tests:
     name: Newman API tests runner
