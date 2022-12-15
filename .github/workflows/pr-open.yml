@@ -330,7 +330,6 @@ jobs:
   deploy-dev:
     name: DEV Deployment (Only PR)
     needs:
-      - vault_retriever
       - security
       - tests
       - build-service-api
@@ -354,7 +353,7 @@ jobs:
 
       - uses: actions/checkout@v3
       - name: Test User output value
-        if: "${{ steps.vault_retriever.outputs.VAULT_DB_USER != '' }}"
+        if: "${{ steps.secrets.outputs.VAULT_DB_USER != '' }}"
         run: |
           echo "User is not empty! User = ${{ steps.secrets.outputs.VAULT_DB_USER }}"
 
