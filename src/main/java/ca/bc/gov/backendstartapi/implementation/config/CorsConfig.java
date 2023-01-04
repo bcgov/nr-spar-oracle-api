@@ -1,4 +1,4 @@
-package ca.bc.gov.backendstartapi.config;
+package ca.bc.gov.backendstartapi.implementation.config;
 
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-
 
 /** This class holds the configuration for CORS handling. */
 @Configuration
