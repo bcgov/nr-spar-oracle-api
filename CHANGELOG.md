@@ -1,3 +1,7 @@
+## [0.8.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.1...v0.8.2) (2023-01-04)
+
+
+
 ## [0.8.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.0...v0.8.1) (2022-12-15)
 
 
@@ -19,17 +23,6 @@
 
 
 ## [0.6.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.6.1...v0.6.2) (2022-12-05)
-
-
-
-## [0.6.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.6.0...v0.6.1) (2022-12-01)
-
-
-### Bug Fixes
-
-* decouple api address ([e11bab4](https://github.com/bcgov/nr-backend-starting-api/commit/e11bab4d56d396bf7c596336176702466539b0f5))
-* fixing docker image build ([fbca865](https://github.com/bcgov/nr-backend-starting-api/commit/fbca865095f7687b92465dc1c0beb4a6768db3db))
-* remove unused req ([2132ecb](https://github.com/bcgov/nr-backend-starting-api/commit/2132ecb0d244651ac95a2cf24e4778a5f364c980))
 
 
 
