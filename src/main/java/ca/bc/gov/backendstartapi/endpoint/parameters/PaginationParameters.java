@@ -1,10 +1,10 @@
-package ca.bc.gov.backendstartapi.application.endpoint.parameters;
+package ca.bc.gov.backendstartapi.endpoint.parameters;
 
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * Parameters for pagination to be used in the processing of HTTP GET requests.
+ * Pagination parameters to be used in the processing of HTTP GET requests.
  *
  * <p>Each page contains up to {@code pageSize} results, excluding the first {@code page * pageSize}
  * results. For instance, <code>{page = 2, pageSize = 10}</code> will exclude the first 20 results,

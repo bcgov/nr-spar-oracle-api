@@ -1,4 +1,4 @@
-package ca.bc.gov.backendstartapi.application.endpoint;
+package ca.bc.gov.backendstartapi.endpoint;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -6,10 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ca.bc.gov.backendstartapi.implementation.VegetationCodeImpl;
-import ca.bc.gov.backendstartapi.model.VegetationCode;
-import ca.bc.gov.backendstartapi.model.service.VegetationCodeService;
+import ca.bc.gov.backendstartapi.entity.VegetationCode;
+import ca.bc.gov.backendstartapi.implementation.VegetationCodeRepositoryImpl;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ class VegetationCodeEndpointTest {
 
   private MockMvc mockMvc;
 
-  @MockBean private VegetationCodeService vegetationCodeService;
+  @MockBean private VegetationCodeRepositoryImpl vegetationCodeRepository;
 
   @Autowired private WebApplicationContext webApplicationContext;
 
@@ -44,9 +44,14 @@ class VegetationCodeEndpointTest {
   @Test
   void fetchExistentCode() throws Exception {
     VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
+        new VegetationCode(
+            "C1",
+            "Code 1",
+            LocalDate.of(2020, 1, 1),
+            LocalDate.of(2025, 1, 1),
+            LocalDateTime.now());
 
-    given(vegetationCodeService.findByCode("C1")).willReturn(Optional.of(vc));
+    given(vegetationCodeRepository.findByCode("C1")).willReturn(Optional.of(vc));
 
     mockMvc
         .perform(get("/vegetationCode/C1").accept(MediaType.APPLICATION_JSON))
@@ -57,10 +62,15 @@ class VegetationCodeEndpointTest {
   @Test
   void fetchNonExistentCode() throws Exception {
     VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
+        new VegetationCode(
+            "C1",
+            "Code 1",
+            LocalDate.of(2020, 1, 1),
+            LocalDate.of(2025, 1, 1),
+            LocalDateTime.now());
 
-    given(vegetationCodeService.findByCode("C1")).willReturn(Optional.of(vc));
-    given(vegetationCodeService.findByCode("C2")).willReturn(Optional.empty());
+    given(vegetationCodeRepository.findByCode("C1")).willReturn(Optional.of(vc));
+    given(vegetationCodeRepository.findByCode("C2")).willReturn(Optional.empty());
 
     mockMvc
         .perform(
@@ -72,9 +82,15 @@ class VegetationCodeEndpointTest {
   @Test
   void searchWithMatches() throws Exception {
     VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
+        new VegetationCode(
+            "C1",
+            "Code 1",
+            LocalDate.of(2020, 1, 1),
+            LocalDate.of(2025, 1, 1),
+            LocalDateTime.now());
 
-    given(vegetationCodeService.findValidByCodeOrDescription("1", 0, 20)).willReturn(List.of(vc));
+    given(vegetationCodeRepository.findValidByCodeOrDescription("1", 0, 20))
+        .willReturn(List.of(vc));
 
     mockMvc
         .perform(
@@ -87,10 +103,7 @@ class VegetationCodeEndpointTest {
 
   @Test
   void searchWithNoMatch() throws Exception {
-    VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
-
-    given(vegetationCodeService.findValidByCodeOrDescription("1", 0, 20))
+    given(vegetationCodeRepository.findValidByCodeOrDescription("1", 0, 20))
         .willReturn(Collections.emptyList());
 
     mockMvc
@@ -105,9 +118,15 @@ class VegetationCodeEndpointTest {
   @Test
   void searchWithNegativePage() throws Exception {
     VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
+        new VegetationCode(
+            "C1",
+            "Code 1",
+            LocalDate.of(2020, 1, 1),
+            LocalDate.of(2025, 1, 1),
+            LocalDateTime.now());
 
-    given(vegetationCodeService.findValidByCodeOrDescription("1", -1, 20)).willReturn(List.of(vc));
+    given(vegetationCodeRepository.findValidByCodeOrDescription("1", -1, 20))
+        .willReturn(List.of(vc));
 
     mockMvc
         .perform(
@@ -120,9 +139,14 @@ class VegetationCodeEndpointTest {
   @Test
   void searchWithNonPositivePageSize() throws Exception {
     VegetationCode vc =
-        new VegetationCodeImpl("C1", "Code 1", LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1));
+        new VegetationCode(
+            "C1",
+            "Code 1",
+            LocalDate.of(2020, 1, 1),
+            LocalDate.of(2025, 1, 1),
+            LocalDateTime.now());
 
-    given(vegetationCodeService.findValidByCodeOrDescription("1", 0, 0)).willReturn(List.of(vc));
+    given(vegetationCodeRepository.findValidByCodeOrDescription("1", 0, 0)).willReturn(List.of(vc));
 
     mockMvc
         .perform(

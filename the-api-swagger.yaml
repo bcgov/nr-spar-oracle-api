@@ -102,6 +102,11 @@ components:
           format: date
           description: |
             The date on which the code expires.
+        updateTimestamp:
+          type: string
+          format: datetime
+          description: |
+            The date and time when the code was last updated.
   parameters:
     Page:
       name: page

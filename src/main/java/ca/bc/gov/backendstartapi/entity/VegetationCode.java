@@ -1,13 +1,15 @@
-package ca.bc.gov.backendstartapi.implementation.entity;
+package ca.bc.gov.backendstartapi.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.beans.Transient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.NamedQuery;
 
 /**
@@ -19,16 +21,17 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(name = "vegetation_code")
+@AllArgsConstructor
 @Getter
-@Setter
+@ToString
 @NamedQuery(
-    name = VegetationCodeEntity.FIND_VALID_BY_CODE_OR_DESCRIPTION,
+    name = VegetationCode.FIND_VALID_BY_CODE_OR_DESCRIPTION,
     query =
-        "SELECT vc FROM VegetationCodeEntity vc "
+        "SELECT vc FROM VegetationCode vc "
             + "WHERE (vc.id ILIKE :search OR vc.description ILIKE :search) "
             + "AND CURRENT_DATE >= vc.effectiveDate AND CURRENT_DATE < vc.expiryDate "
             + "ORDER BY vc.id")
-public class VegetationCodeEntity {
+public class VegetationCode {
 
   public static final String FIND_VALID_BY_CODE_OR_DESCRIPTION =
       "VegetationCode.findValidByCodeOrDescription";
@@ -53,4 +56,13 @@ public class VegetationCodeEntity {
   /** The date and time of the last update. */
   @Column(name = "update_timestamp", nullable = false)
   private LocalDateTime updateTimestamp;
+
+  /** Because we need an empty constructor for Hibernate. */
+  private VegetationCode() {}
+
+  @Transient
+  public boolean isValid() {
+    var today = LocalDate.now();
+    return !effectiveDate.isAfter(today) && expiryDate.isAfter(today);
+  }
 }

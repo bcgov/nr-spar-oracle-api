@@ -1,4 +1,4 @@
-package ca.bc.gov.backendstartapi.implementation.config;
+package ca.bc.gov.backendstartapi.config;
 
 import com.nimbusds.jose.shaded.gson.JsonArray;
 import java.util.ArrayList;

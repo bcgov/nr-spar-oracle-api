@@ -1,8 +1,8 @@
-package ca.bc.gov.backendstartapi.application.endpoint;
+package ca.bc.gov.backendstartapi.endpoint;
 
-import ca.bc.gov.backendstartapi.application.endpoint.parameters.PaginationParameters;
-import ca.bc.gov.backendstartapi.model.VegetationCode;
-import ca.bc.gov.backendstartapi.model.service.VegetationCodeService;
+import ca.bc.gov.backendstartapi.endpoint.parameters.PaginationParameters;
+import ca.bc.gov.backendstartapi.entity.VegetationCode;
+import ca.bc.gov.backendstartapi.repository.VegetationCodeRepository;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class VegetationCodeEndpoint {
 
-  @Autowired private VegetationCodeService vegetationCodeService;
+  @Autowired private VegetationCodeRepository vegetationCodeRepository;
 
   /**
    * Fetch information about a single vegetation code.
@@ -34,7 +34,7 @@ public class VegetationCodeEndpoint {
    */
   @GetMapping(path = "/{code}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
   public ResponseEntity<VegetationCode> findByCode(@PathVariable("code") String code) {
-    var retrievalResult = vegetationCodeService.findByCode(code);
+    var retrievalResult = vegetationCodeRepository.findByCode(code);
     return ResponseEntity.of(retrievalResult);
   }
 
@@ -52,7 +52,7 @@ public class VegetationCodeEndpoint {
       @RequestParam(name = "search", defaultValue = "") String search,
       @Valid PaginationParameters paginationParameters) {
     var searchResults =
-        vegetationCodeService.findValidByCodeOrDescription(
+        vegetationCodeRepository.findValidByCodeOrDescription(
             search, paginationParameters.page(), paginationParameters.pageSize());
     return ResponseEntity.ok(searchResults);
   }

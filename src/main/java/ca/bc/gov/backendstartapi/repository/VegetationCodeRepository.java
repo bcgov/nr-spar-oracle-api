@@ -1,10 +1,10 @@
-package ca.bc.gov.backendstartapi.model.repository;
+package ca.bc.gov.backendstartapi.repository;
 
-import ca.bc.gov.backendstartapi.model.VegetationCode;
+import ca.bc.gov.backendstartapi.entity.VegetationCode;
 import java.util.List;
 import java.util.Optional;
 
-/** A repository to fetch {@link VegetationCode vegetation codes} from the data layer. */
+/** A repository to fetch {@link VegetationCode vegetation codes}. */
 public interface VegetationCodeRepository {
 
   /**
