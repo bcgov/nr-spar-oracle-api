@@ -152,7 +152,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetation-codes?search=1&size=0")
+            get("/api/vegetation-codes?search=1&per_page=0")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
