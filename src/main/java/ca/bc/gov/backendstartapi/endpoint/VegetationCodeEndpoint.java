@@ -36,6 +36,7 @@ public class VegetationCodeEndpoint {
    */
   @GetMapping(path = "/{code}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
   public VegetationCode findByCode(@PathVariable("code") String code) {
+
     var retrievalResult = vegetationCodeRepository.findByCode(code);
     return retrievalResult.orElseThrow(
         () ->
