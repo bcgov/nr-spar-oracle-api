@@ -6,14 +6,7 @@ services:
       context: .
     container_name: backend
     dns: ${DNS_ADDRESS}
-    environment:
-      NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_PORT: ${DATABASE_PORT}
-      SERVICE_NAME: ${SERVICE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      KEYCLOAK_REALM_URL: ${KEYCLOAK_REALM_URL}
+    env_file: .env
     healthcheck:
       test: ["CMD", "java", "HealthCheck"]
       interval: 1m30s

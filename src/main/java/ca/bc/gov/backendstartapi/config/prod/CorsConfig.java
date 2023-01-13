@@ -1,4 +1,4 @@
-package ca.bc.gov.backendstartapi.config;
+package ca.bc.gov.backendstartapi.config.prod;
 
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
