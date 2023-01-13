@@ -21,8 +21,8 @@ public interface VegetationCodeRepository {
    * @param search a string to which the codes' identifiers and descriptions should be matched
    * @param skip the number of results to skip
    * @param maxResults the maximum number of results to be returned
-   * @return a list with up to {@code pageSize} results that match {@code search}, ordered by their
-   *     identifiers
+   * @return a list with up to {@code maxResults} results that match {@code search}, ordered by
+   *     their identifiers
    */
   List<VegetationCode> findValidByCodeOrDescription(String search, int skip, int maxResults);
 }

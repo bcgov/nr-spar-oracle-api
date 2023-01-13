@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * requests.
  */
 @RestController
-@RequestMapping(path = "/vegetationCode")
+@RequestMapping(path = "/api/vegetationCode")
 @Validated
 public class VegetationCodeEndpoint {
 
@@ -45,7 +45,7 @@ public class VegetationCodeEndpoint {
    * @param search the string to match the vegetation codes with
    * @param paginationParameters parameters for the pagination of the search results; see {@link
    *     PaginationParameters}
-   * @return a list of {@code pageSize} or less vegetation codes, ordered by identifier
+   * @return a list of {@code size} or less vegetation codes, ordered by identifier
    */
   @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<VegetationCode>> findEffectiveByCodeOrDescription(
@@ -53,7 +53,7 @@ public class VegetationCodeEndpoint {
       @Valid PaginationParameters paginationParameters) {
     var searchResults =
         vegetationCodeRepository.findValidByCodeOrDescription(
-            search, paginationParameters.page(), paginationParameters.pageSize());
+            search, paginationParameters.skip(), paginationParameters.size());
     return ResponseEntity.ok(searchResults);
   }
 }

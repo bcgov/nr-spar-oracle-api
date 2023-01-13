@@ -16,7 +16,7 @@ tags:
   - name: vegetationCode
     description: Codes describing various vegetation species
 paths:
-  /vegetationCode:
+  /api/vegetationCode:
     get:
       tags:
         - vegetationCode
@@ -51,7 +51,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /vegetationCode/{code}:
+  /api/vegetationCode/{code}:
     get:
       tags:
         - vegetationCode
@@ -104,7 +104,7 @@ components:
             The date on which the code expires.
         updateTimestamp:
           type: string
-          format: datetime
+          format: date-time
           description: |
             The date and time when the code was last updated.
   parameters:
@@ -116,7 +116,7 @@ components:
       schema:
         type: integer
     PageSize:
-      name: pageSize
+      name: size
       in: query
       description: |
         The maximum number of results to fetch; must be positive. Defaults to 20.

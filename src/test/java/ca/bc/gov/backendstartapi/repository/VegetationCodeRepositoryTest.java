@@ -49,7 +49,7 @@ class VegetationCodeRepositoryTest {
   @Test
   void searchValid_match() {
     var results = vegetationCodeRepository.findValidByCodeOrDescription("vc", 0, 20);
-    assertEquals(2, results.size());
+    assertEquals(3, results.size());
 
     assertTrue(results.stream().allMatch(VegetationCode::isValid), "All results must be valid.");
 
@@ -69,19 +69,36 @@ class VegetationCodeRepositoryTest {
 
     assertEquals("VC3", vc3.getId());
     assertEquals("Vegetation code 3", vc3.getDescription());
+
+    var vc4 = results.get(2);
+
+    assertEquals("VC4", vc4.getId());
+    assertEquals("Vegetation code 4", vc4.getDescription());
   }
 
   @Test
   void searchValid_pagination() {
-    var results = vegetationCodeRepository.findValidByCodeOrDescription("vc", 1, 1);
-    assertEquals(1, results.size());
+    var results = vegetationCodeRepository.findValidByCodeOrDescription("vc", 1, 3);
+    assertEquals(2, results.size());
 
     assertTrue(results.stream().allMatch(VegetationCode::isValid), "All results must be valid.");
+
+    assertEquals(
+        results.stream()
+            .sorted((vc1, vc2) -> CharSequence.compare(vc1.getId(), vc2.getId()))
+            .toList(),
+        results,
+        "Results must be sorted by code.");
 
     var vc3 = results.get(0);
 
     assertEquals("VC3", vc3.getId());
     assertEquals("Vegetation code 3", vc3.getDescription());
+
+    var vc4 = results.get(1);
+
+    assertEquals("VC4", vc4.getId());
+    assertEquals("Vegetation code 4", vc4.getDescription());
   }
 
   @Test
