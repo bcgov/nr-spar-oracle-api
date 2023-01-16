@@ -74,36 +74,31 @@ tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) gu
 
 ## Quick look
 
-But if all you want is to take a quick look on the running service, you can do it by
-using Docker.
+You can run the project avoiding the need of Keycloak authentication using the files under the
+`script` folder. You'll still need an Oracle database and to define the environment variables
+necessary to access it:
 
-Note that you'll need these environment variables:
 ```
-NRBESTAPI_VERSION=local
 DATABASE_HOST=<host>
 DATABASE_PORT=<port>
 SERVICE_NAME=<service-name>
 DATABASE_USER=<user>
 DATABASE_PASSWORD=<pass>
-KEYCLOAK_REALM_URL=<realm-server-address>
 ```
 
-Build the service:
+You can put these on a file named `dev.env` under the `script` folder and build the Docker image:
+
 ```
-docker build -t bcgov/nrbestapi-test-service-api:latest .
+./script/dev-docker-build.sh
 ```
 
-Then run with:
+Then run a container with:
+
 ```
-docker run -p 8090:8090 \
-  -e KEYCLOAK_REALM_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard \
-  -t bcgov/nrbestapi-test-service-api:latest
+./script/dev.sh
 ```
 
-However, if you have docker-compose you can do:
-```
-docker-compose --env-file .env -f ./docker-compose.yml up --build --force-recreate --no-deps
-```
+And the service will be accessible under `localhost:8090`.
 
 ## Getting help
 

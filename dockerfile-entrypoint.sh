@@ -8,4 +8,4 @@ java \
     -Djava.security.egd=file:/dev/./urandom \
     ${JAVA_OPTS} \
     -jar \
-    /usr/share/service/service.jar
+    /usr/share/service/target/backend-start-api.jar

@@ -100,3 +100,5 @@ snyk.sarif
 
 # Jetbrains IntelliJ IDEA
 .idea/
+
+scripts/dev.env
