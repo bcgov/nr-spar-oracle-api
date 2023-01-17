@@ -4,8 +4,9 @@ info:
   description: |
     A REST API to fetch information from the THE database.
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: OGL-BC
+    url: https://www2.gov.bc.ca/gov/content/data/open-data/open-government-licence-bc
+  termsOfService: https://www2.gov.bc.ca/gov/content/data/open-data/api-terms-of-use-for-ogl-information
   version: 0.0.1
 externalDocs:
   description: Our Jira project
@@ -16,7 +17,7 @@ tags:
   - name: vegetationCode
     description: Codes describing various vegetation species
 paths:
-  /api/vegetationCode:
+  /vegetation-codes:
     get:
       tags:
         - vegetationCode
@@ -51,7 +52,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/vegetationCode/{code}:
+  /vegetation-codes/{code}:
     get:
       tags:
         - vegetationCode

@@ -54,7 +54,7 @@ class VegetationCodeEndpointTest {
     given(vegetationCodeRepository.findByCode("C1")).willReturn(Optional.of(vc));
 
     mockMvc
-        .perform(get("/api/vegetationCode/C1").accept(MediaType.APPLICATION_JSON))
+        .perform(get("/api/vegetation-codes/C1").accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
@@ -74,7 +74,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetationCode/C2")
+            get("/api/vegetation-codes/C2")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())
@@ -96,7 +96,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetationCode?search=1")
+            get("/api/vegetation-codes?search=1")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -110,7 +110,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetationCode?search=1")
+            get("/api/vegetation-codes?search=1")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -132,7 +132,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetationCode?search=1&page=-1")
+            get("/api/vegetation-codes?search=1&page=-1")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
@@ -152,7 +152,7 @@ class VegetationCodeEndpointTest {
 
     mockMvc
         .perform(
-            get("/api/vegetationCode?search=1&size=0")
+            get("/api/vegetation-codes?search=1&size=0")
                 .with(csrf().asHeader())
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
