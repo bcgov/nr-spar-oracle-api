@@ -7,13 +7,7 @@
 # 2. Allow stopping the container by pressing Ctrl+C
 # 3. Remove the container once it's stopped
 # 4. Make it so that we don't need to build a new image every time the application code changes
-# 5. Optionally, read and export environment variables from a file
-
-PATH_TO_SCRIPT=$(dirname "$(realpath "$0")")
-
-if [ -f "$PATH_TO_SCRIPT"/dev.env ]; then
-    export $(grep -v '^#' "$PATH_TO_SCRIPT"/dev.env | xargs)
-fi
+# 5. Read and export environment variables from a file
 
 DNS=$(nslookup gov.bc.ca | grep -Po 'Server:\s*\K.*$')
 echo "Using DNS server $DNS"
@@ -22,6 +16,8 @@ echo "Using DNS server $DNS"
 : "${IMAGE_TAG:=bcgov/nrbestapi-test-service-api}"
 : "${CONTAINER_NAME:=backend-starting-api}"
 
+PATH_TO_SCRIPT=$(dirname "$(realpath "$0")")
+
 docker run \
     --network host \
     --rm \
@@ -29,12 +25,9 @@ docker run \
     --interactive \
     -v "$PATH_TO_SCRIPT"/../target:/usr/share/service/target \
     --dns="$DNS" \
-    -e DATABASE_HOST="$DATABASE_HOST" \
-    -e DATABASE_PORT="$DATABASE_PORT" \
-    -e DATABASE_USER="$DATABASE_USER" \
-    -e DATABASE_PASSWORD="$DATABASE_PASSWORD" \
-    -e SERVICE_NAME="$SERVICE_NAME" \
-    -e KEYCLOAK_REALM_URL="$KEYCLOAK_REALM_URL" \
+    -e AUTHENTICATION_ENABLED="$AUTHENTICATION_ENABLED" \
+    -e AUTHORIZATION_ENABLED="$AUTHORIZATION_ENABLED" \
     -e JAVA_OPTS="$JAVA_OPTS $DEBUG" \
+    --env-file="$PATH_TO_SCRIPT"/dev.env \
     --name="$CONTAINER_NAME" \
     "$IMAGE_TAG"
