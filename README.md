@@ -74,9 +74,7 @@ tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) gu
 
 ## Quick look
 
-You can run the project avoiding the need of Keycloak authentication using the files under the
-`script` folder. You'll still need an Oracle database and to define the environment variables
-necessary to access it:
+You'll need an Oracle database and to define the environment variables necessary to access it:
 
 ```
 DATABASE_HOST=<host>
@@ -84,6 +82,7 @@ DATABASE_PORT=<port>
 SERVICE_NAME=<service-name>
 DATABASE_USER=<user>
 DATABASE_PASSWORD=<pass>
+KEYCLOAK_REALM_URL=<realm-server-address>
 ```
 
 You can put these on a file named `dev.env` under the `script` folder and build the Docker image:
