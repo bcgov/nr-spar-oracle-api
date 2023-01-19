@@ -24,7 +24,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 /** This class contains all configurations related to security and authentication. */
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
   @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
@@ -87,5 +87,4 @@ public class SecurityConfig {
       return authorities;
     };
   }
-
 }
