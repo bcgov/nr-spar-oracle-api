@@ -336,17 +336,6 @@ jobs:
       ZONE: ${{ github.event.number }}
       NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
     steps:
-      - name: Import Secrets
-        id: secrets
-        uses: hashicorp/vault-action@v2.2.0
-        with:
-          url: https://vault-iit.apps.silver.devops.gov.bc.ca
-          token: ${{ secrets.VAULT_TOKEN }}
-          exportEnv: 'false'
-          secrets: |
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
-
       - uses: actions/checkout@v3
       - name: Deploy
         run: |
@@ -369,8 +358,8 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ steps.secrets.outputs.VAULT_DB_USER }} \
-            -p DATABASE_PASSWORD=${{ steps.secrets.outputs.VAULT_DB_PASS }} \
+            -p DATABASE_USER=${{ secrets.DATABASE_USER }} \
+            -p DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
 
