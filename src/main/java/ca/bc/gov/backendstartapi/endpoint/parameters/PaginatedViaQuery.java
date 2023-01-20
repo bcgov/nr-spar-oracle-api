@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *
  * <ul>
  *   <li>page: Zero-based page index indicating the page to be returned; defaults to 0
- *   <li>per_page: The maximum number of results in a page; defaults to 20
+ *   <li>perPage: The maximum number of results in a page; defaults to 20
  * </ul>
  *
  * <p>The code for such parameters, along with their behaviour, must be implemented and documented
@@ -31,6 +31,6 @@ import java.lang.annotation.Target;
 @Parameter(
     in = ParameterIn.QUERY,
     description = "The maximum number of results in a page.",
-    name = "per_page",
+    name = "perPage",
     schema = @Schema(type = "integer", defaultValue = "20", minimum = "1"))
 public @interface PaginatedViaQuery {}

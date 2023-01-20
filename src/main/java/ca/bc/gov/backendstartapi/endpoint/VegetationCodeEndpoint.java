@@ -72,7 +72,7 @@ public class VegetationCodeEndpoint {
    * @param search the string to match the vegetation codes with
    * @param paginationParameters parameters for the pagination of the search results; see {@link
    *     PaginationParameters}
-   * @return a list of {@code per_page} or less vegetation codes matching {@code search}, ordered by
+   * @return a list of {@code perPage} or less vegetation codes matching {@code search}, ordered by
    *     identifier
    */
   @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -98,6 +98,6 @@ public class VegetationCodeEndpoint {
           String search,
       @Valid PaginationParameters paginationParameters) {
     return vegetationCodeRepository.findValidByCodeOrDescription(
-        search, paginationParameters.skip(), paginationParameters.per_page());
+        search, paginationParameters.skip(), paginationParameters.perPage());
   }
 }
