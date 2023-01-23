@@ -1,3 +1,7 @@
+## [0.9.3](https://github.com/bcgov/nr-backend-starting-api/compare/v0.9.2...v0.9.3) (2023-01-23)
+
+
+
 ## [0.9.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.9.1...v0.9.2) (2023-01-23)
 
 
@@ -16,10 +20,6 @@
 
 
 ## [0.8.3](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.2...v0.8.3) (2023-01-19)
-
-
-
-## [0.8.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.1...v0.8.2) (2023-01-04)
 
 
 
