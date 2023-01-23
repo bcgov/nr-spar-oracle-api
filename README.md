@@ -26,7 +26,7 @@ your problem is someone else's problem. Let's figure it out together. So, ask
 a question using our channels. We have [our own Stackoverflow](https://stackoverflow.developer.gov.bc.ca/)
 and [our Rocket Chat](https://chat.developer.gov.bc.ca/) channel.
 
-# Stack
+## Stack
 
 Here you can find a comprehensive list of all languages and tools that are been used
 in this service. And also everything you need to get started, build locally, test
@@ -54,7 +54,7 @@ and deploy it.
   - Postman
   - DBeaver
 
-# Getting started
+## Getting started
 
 Once you have cloned this repository, can get it running by typing: `./mvnw spring-boot:run`
 from the project root directory. You **must** provide three environment variables for database
@@ -72,7 +72,7 @@ the `status` property should have the value *UP*.
 Before writing your first line of code, and learn more about the checks, including
 tests, please take a moment and check out our [CONTRIBUTING](CONTRIBUTING.md) guide.
 
-## Quick look
+### Quick look
 
 But if all you want is to take a quick look on the running service, you can do it by
 using Docker.
@@ -104,6 +104,8 @@ However, if you have docker-compose you can do:
 ```
 docker-compose --env-file .env -f ./docker-compose.yml up --build --force-recreate --no-deps
 ```
+
+You can then check the API documentation accessing `localhost:8090/swagger-ui.html`.
 
 ## Getting help
 
