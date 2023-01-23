@@ -1,3 +1,7 @@
+## [0.9.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.9.1...v0.9.2) (2023-01-23)
+
+
+
 ## [0.9.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.9.0...v0.9.1) (2023-01-20)
 
 
@@ -16,15 +20,6 @@
 
 
 ## [0.8.2](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.1...v0.8.2) (2023-01-04)
-
-
-
-## [0.8.1](https://github.com/bcgov/nr-backend-starting-api/compare/v0.8.0...v0.8.1) (2022-12-15)
-
-
-### Bug Fixes
-
-* use dev credentials in test and prod for now ([#53](https://github.com/bcgov/nr-backend-starting-api/issues/53)) ([0ca3de4](https://github.com/bcgov/nr-backend-starting-api/commit/0ca3de41dd7f9943a75b23fd79614b2762beb487))
 
 
 
