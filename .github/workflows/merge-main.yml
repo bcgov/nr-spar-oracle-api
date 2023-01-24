@@ -214,14 +214,14 @@ jobs:
     steps:
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.2.0
+        uses: hashicorp/vault-action@v2.4.3
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ secrets.VAULT_TOKEN }}
           exportEnv: 'false'
           secrets: |
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/test/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/test/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NRBESTAPI_VERSION env
@@ -407,14 +407,14 @@ jobs:
 
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.2.0
+        uses: hashicorp/vault-action@v2.4.3
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ secrets.VAULT_TOKEN }}
           exportEnv: 'false'
           secrets: |
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/data/dev/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/prod/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/prod/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NRBESTAPI_VERSION env
