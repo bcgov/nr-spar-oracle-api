@@ -54,10 +54,6 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# dotenv environment variables file
-.env
-.env.test
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -101,4 +97,5 @@ snyk.sarif
 # Jetbrains IntelliJ IDEA
 .idea/
 
-scripts/dev.env
+# Environment variables file
+*.env
