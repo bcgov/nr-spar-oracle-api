@@ -11,6 +11,7 @@ ENV LANGUAGE en_CA.UTF-8
 ENV LC_ALL en_CA.UTF-8
 
 COPY InstallCert.java .
+COPY HealthCheck.java .
 
 COPY ./target/backend-start-api.jar /usr/share/service/
 COPY dockerfile-entrypoint.sh /usr/share/service/dockerfile-entrypoint.sh
