@@ -23,4 +23,4 @@ services:
     image: bcgov/nrbestapi-test-service-api:latest
     network_mode: "host"
     volumes:
-      - ./target:/usr/share/service/target
+      - ./target:/usr/share/service/artifacts
