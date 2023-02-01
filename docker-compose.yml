@@ -5,7 +5,7 @@ services:
     build:
       context: .
     container_name: backend
-    dns: ${DNS}
+    dns: ${DNS_ADDRESS}
     environment:
       NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
       DATABASE_HOST: ${DATABASE_HOST}
