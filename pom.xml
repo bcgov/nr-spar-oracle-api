@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov</groupId>
-	<artifactId>backend-start-api</artifactId>
+	<artifactId>nr-spar-oracle-api</artifactId>
 	<version>0.9.8</version>
-	<name>backend-start-api</name>
-	<description>Starting backend API project</description>
+	<name>nr-spar-oracle-api</name>
+	<description>API to fetch data from THE to SPAR</description>
 
 	<licenses>
 		<license>
@@ -374,7 +374,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>backend-start-api</finalName>
+		<finalName>nr-spar-oracle-api</finalName>
 	</build>
 
 </project>

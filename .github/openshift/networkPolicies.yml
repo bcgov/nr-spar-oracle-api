@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "NR Backend Starting API"
+    description: "NR SPAR Oracle API"
     tags: "nrbestapi"
     iconClass: icon-java
 objects:

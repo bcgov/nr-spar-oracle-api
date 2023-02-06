@@ -400,7 +400,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json \
+          newman run test/postman/oracle-api.postman_collection.json -e test/postman/oracle-api.postman_environment.json \
             --env-var "apiAddr=${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca" \
             --env-var "releaseVer=snapshot-${{ github.event.number }}" \
             --env-var "authServer=${{ secrets.KEYCLOAK_SERVER_REALM }}" \

@@ -1,6 +1,6 @@
 # Postman Collection
 
-On this folder there are two files that contains the API tests, all those tests are in the Postman format along with the environment needed to run. The first file `starting-api.postman_collection.json` it's the collection itself with all the requests and tests, and the second file `starting-api.postman_environment.json` contains all the variables.
+On this folder there are two files that contains the API tests, all those tests are in the Postman format along with the environment needed to run. The first file `oracle-api.postman_collection.json` it's the collection itself with all the requests and tests, and the second file `oracle-api.postman_environment.json` contains all the variables.
 
 ## How to Run
 

@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "NR Backend Starting API"
+    description: "NR SPAR Oracle API"
     tags: "nrbestapi"
     iconClass: icon-java
 labels:
@@ -33,7 +33,7 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-backend-starting-api:prod-service-api
+    value: bcgov/nr-spar-oracle-api:prod-service-api
   - name: NRBESTAPI_VERSION
     description: Current service API release version
     required: true
