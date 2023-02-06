@@ -102,8 +102,12 @@ docker run -p 8090:8090 \
 
 However, if you have docker-compose you can do:
 ```
-docker-compose --env-file .env -f ./docker-compose.yml up --build --force-recreate --no-deps
+docker-compose up --build --force-recreate --no-deps
 ```
+
+You'll need to provide the address of the DNS server to be used by the container in the environment
+variable `DNS_ADDRESS`: you can find the address of the DNS server you're using right now using
+[nslookup](https://en.wikipedia.org/wiki/Nslookup), for instance.
 
 You can then check the API documentation accessing `localhost:8090/swagger-ui.html`.
 
