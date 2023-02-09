@@ -4,7 +4,7 @@ metadata:
   name: ${NAME}
   annotations:
     description: "NR SPAR Oracle API"
-    tags: "nrbestapi"
+    tags: "nr-spar-oracle-api"
     iconClass: icon-java
 objects:
   - apiVersion: networking.k8s.io/v1

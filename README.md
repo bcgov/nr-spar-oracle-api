@@ -79,7 +79,7 @@ using Docker.
 
 Note that you'll need these environment variables:
 ```
-NRBESTAPI_VERSION=local
+NR_SPAR_ORACLE_API_VERSION=local
 DATABASE_HOST=<host>
 DATABASE_PORT=<port>
 SERVICE_NAME=<service-name>
@@ -90,14 +90,14 @@ KEYCLOAK_REALM_URL=<realm-server-address>
 
 Build the service:
 ```
-docker build -t bcgov/nrbestapi-test-service-api:latest .
+docker build -t bcgov/nr-spar-oracle-api:latest .
 ```
 
 Then run with:
 ```
 docker run -p 8090:8090 \
   -e KEYCLOAK_REALM_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard \
-  -t bcgov/nrbestapi-test-service-api:latest
+  -t bcgov/bcgov/nr-spar-oracle-api-service:latest
 ```
 
 However, if you have docker-compose you can do:

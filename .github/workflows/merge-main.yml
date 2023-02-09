@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  NAME: nrbestapi
+  NAME: nr-spar-oracle-api
 
 concurrency:
   group: ${{ github.workflow }}
@@ -210,7 +210,7 @@ jobs:
       name: test
     env:
       ZONE: test
-      NRBESTAPI_VERSION: ${{ needs.release.outputs.version }}
+      NR_SPAR_ORACLE_API_VERSION: ${{ needs.release.outputs.version }}
     steps:
       - name: Import Secrets
         id: secrets
@@ -224,8 +224,8 @@ jobs:
             apps/data/test/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
-      - name: Print NRBESTAPI_VERSION env
-        run: echo NRBESTAPI_VERSION:test-${{ env.NRBESTAPI_VERSION }}
+      - name: Print NR_SPAR_ORACLE_API_VERSION env
+        run: echo NR_SPAR_ORACLE_API_VERSION:test-${{ env.NR_SPAR_ORACLE_API_VERSION }}
       - name: Deploy
         run: |
           # Login to OpenShift and select project
@@ -235,7 +235,7 @@ jobs:
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc create -f - || true
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p NRBESTAPI_VERSION=test-${{ env.NRBESTAPI_VERSION }} \
+            -p NR_SPAR_ORACLE_API_VERSION=test-${{ env.NR_SPAR_ORACLE_API_VERSION }} \
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
@@ -295,7 +295,7 @@ jobs:
       - name: Run Postman Collection
         run: |
           newman run test/postman/oracle-api.postman_collection.json -e test/postman/oracle-api.postman_environment.json \
-            --env-var "releaseVer=test=${{ env.NRBESTAPI_VERSION }}" \
+            --env-var "releaseVer=test=${{ env.NR_SPAR_ORACLE_API_VERSION }}" \
             --env-var "authServer=${{ secrets.KEYCLOAK_SERVER_REALM }}" \
             --env-var "authClient=${{ secrets.KC_SERVICE_ACCOUNT_NAME }}" \
             --env-var "authClient=${{ secrets.KC_SERVICE_ACCOUNT_PASS }}" \
@@ -393,7 +393,7 @@ jobs:
     env:
       ZONE: prod
       PREV: test
-      NRBESTAPI_VERSION: ${{ needs.release.outputs.version }}
+      NR_SPAR_ORACLE_API_VERSION: ${{ needs.release.outputs.version }}
     steps:
       - name: Remove any stale images
         if: needs.image-service-api.outputs.build == 'true'
@@ -417,8 +417,8 @@ jobs:
             apps/data/prod/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
-      - name: Print NRBESTAPI_VERSION env
-        run: echo NRBESTAPI_VERSION:prod-${{ env.NRBESTAPI_VERSION }}
+      - name: Print NR_SPAR_ORACLE_API_VERSION env
+        run: echo NR_SPAR_ORACLE_API_VERSION:prod-${{ env.NR_SPAR_ORACLE_API_VERSION }}
       - name: Deploy
         run: |
           # Login to OpenShift and select project
@@ -433,7 +433,7 @@ jobs:
           # Process and apply deployment templates
           #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc apply -f -
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p NRBESTAPI_VERSION=prod-${{ env.NRBESTAPI_VERSION }} \
+            -p NR_SPAR_ORACLE_API_VERSION=prod-${{ env.NR_SPAR_ORACLE_API_VERSION }} \
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
