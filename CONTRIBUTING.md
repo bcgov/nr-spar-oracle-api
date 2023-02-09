@@ -70,12 +70,11 @@ You can check your code before submitting with `./mvnw --no-transfer-progress ch
 
 After setting up your environment you might want to see this service running. 
 You can get it up and running by typing `./mvnw spring-boot:run` in the project
-root directory.
+root directory (add the `-Dprofile=dev` option to disable the need for authentication
+and authorisation.
 
 In case you want to debug with remote JVM, you can do it with this command:
 `./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"`
-
-Note: TODO add here about database and running HOW-TOs.
 
 ## Run tests
 
