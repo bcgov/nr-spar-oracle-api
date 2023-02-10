@@ -35,7 +35,7 @@ jobs:
         run: mvn -B --no-transfer-progress clean package -DskipTests -Dtests.skip=true -Dskip.unit.tests=true --file pom.xml
 
       - name: Saving artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: service
           path: target/nr-spar-oracle-api.jar
