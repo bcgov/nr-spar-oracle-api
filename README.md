@@ -97,7 +97,7 @@ Then run with:
 ```
 docker run -p 8090:8090 \
   -e KEYCLOAK_REALM_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard \
-  -t bcgov/bcgov/nr-spar-oracle-api-service:latest
+  -t bcgov/nr-spar-oracle-api-service:latest
 ```
 
 However, if you have docker-compose you can do:
