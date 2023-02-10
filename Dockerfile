@@ -16,8 +16,9 @@ ENV LC_ALL en_CA.UTF-8
 COPY InstallCert.java .
 COPY HealthCheck.java .
 
-COPY target/backend-start-api.jar artifacts/backend-start-api.jar
-COPY dockerfile-entrypoint.sh dockerfile-entrypoint.sh
+COPY target/nr-spar-oracle-api.jar artifacts/
+COPY dockerfile-entrypoint.sh .
+
 RUN chmod -R g+w . && \
     chmod g+x dockerfile-entrypoint.sh && \
     chmod g+w ${JAVA_HOME}/lib/security/cacerts

@@ -13,7 +13,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    image: bcgov/nrbestapi-test-service-api:latest
+    image: bcgov/nr-spar-oracle-api:latest
     network_mode: "host"
     volumes:
       - ./target:/usr/share/service/artifacts
