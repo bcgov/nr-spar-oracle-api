@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  NAME: nrbestapi
+  NAME: nr-spar-oracle-api
   KEYCLOAK_REALM_URL: ${{ secrets.KEYCLOAK_REALM_URL }}
 
 concurrency:
@@ -279,7 +279,7 @@ jobs:
     env:
       COMPONENT: service-api
       ZONE: ${{ github.event.number }}
-      NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
+      NR_SPAR_ORACLE_API_VERSION: snapshot-${{ github.event.number }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
@@ -334,7 +334,7 @@ jobs:
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
-      NRBESTAPI_VERSION: snapshot-${{ github.event.number }}
+      NR_SPAR_ORACLE_API_VERSION: snapshot-${{ github.event.number }}
     steps:
       - uses: actions/checkout@v3
       - name: Deploy
@@ -353,7 +353,7 @@ jobs:
 
           # Process and apply template
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
-            -p NRBESTAPI_VERSION=${{ env.NRBESTAPI_VERSION }} \
+            -p NR_SPAR_ORACLE_API_VERSION=${{ env.NR_SPAR_ORACLE_API_VERSION }} \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
@@ -400,7 +400,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run test/postman/starting-api.postman_collection.json -e test/postman/starting-api.postman_environment.json \
+          newman run test/postman/oracle-api.postman_collection.json -e test/postman/oracle-api.postman_environment.json \
             --env-var "apiAddr=${{ env.NAME }}-${{ github.event.number }}-service-api.apps.silver.devops.gov.bc.ca" \
             --env-var "releaseVer=snapshot-${{ github.event.number }}" \
             --env-var "authServer=${{ secrets.KEYCLOAK_SERVER_REALM }}" \

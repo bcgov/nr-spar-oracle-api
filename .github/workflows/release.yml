@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: service
-          path: target/backend-start-api.jar
+          path: target/nr-spar-oracle-api.jar
           retention-days: 1
 
   push_to_registry:

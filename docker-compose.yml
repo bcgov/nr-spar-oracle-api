@@ -7,7 +7,7 @@ services:
     container_name: backend
     dns: ${DNS_ADDRESS}
     environment:
-      NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
+      NR_SPAR_ORACLE_API_VERSION: ${NR_SPAR_ORACLE_API_VERSION}
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
       SERVICE_NAME: ${SERVICE_NAME}
@@ -20,7 +20,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    image: bcgov/nrbestapi-test-service-api:latest
+    image: bcgov/nr-spar-oracle-api:latest
     network_mode: "host"
     volumes:
       - ./target:/usr/share/service/artifacts

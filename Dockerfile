@@ -14,7 +14,7 @@ ENV LC_ALL en_CA.UTF-8
 COPY InstallCert.java .
 COPY HealthCheck.java .
 
-COPY ./target/backend-start-api.jar /usr/share/service/artifacts/backend-start-api.jar
+COPY ./target/nr-spar-oracle-api.jar /usr/share/service/artifacts/nr-spar-oracle-api.jar
 COPY dockerfile-entrypoint.sh /usr/share/service/dockerfile-entrypoint.sh
 RUN chmod -R g+w . && \
     chmod g+x dockerfile-entrypoint.sh && \
