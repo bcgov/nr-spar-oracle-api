@@ -2,6 +2,12 @@ package ca.bc.gov.backendstartapi.endpoint;
 
 import ca.bc.gov.backendstartapi.entity.FundingSource;
 import ca.bc.gov.backendstartapi.repository.FundingSourceRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.NoArgsConstructor;
@@ -17,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @NoArgsConstructor
 @RequestMapping("/api/funding-sources")
+@Tag(
+    name = "FundingSourceEndpoint",
+    description = "Resource to retrieve Funding Source to Owners Agencies")
 public class FundingSourceEndpoint {
 
   private FundingSourceRepository fundingSourceRepository;
@@ -33,6 +42,23 @@ public class FundingSourceEndpoint {
    */
   @GetMapping(produces = "application/json")
   @PreAuthorize("hasRole('user_read')")
+  @Operation(
+      summary = "Retrieve all funding sources",
+      description = "Retrieve all valid (not expired) funding source")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Returns a list containing all valid (non expired) funding sources",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = FundingSource.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Access token is missing or invalid",
+            content = @Content(schema = @Schema(implementation = Void.class)))
+      })
   public List<FundingSource> getAllFundingSources() {
     return fundingSourceRepository.findAll().stream()
         .filter(x -> x.getExpiryDate().isAfter(LocalDate.now()))
