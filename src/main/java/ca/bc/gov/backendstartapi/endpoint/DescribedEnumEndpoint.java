@@ -2,6 +2,11 @@ package ca.bc.gov.backendstartapi.endpoint;
 
 import ca.bc.gov.backendstartapi.dto.DescribedEnumDto;
 import ca.bc.gov.backendstartapi.enumeration.DescribedEnum;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.MediaType;
@@ -27,7 +32,13 @@ public abstract class DescribedEnumEndpoint<E extends Enum<E> & DescribedEnum> {
    * @return a list with all the possible values for {@code E} and their description
    */
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<DescribedEnumDto<E>>> getAll() {
+  @Operation(
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "A list of all the codes and their descriptions.")
+      })
+  public ResponseEntity<List<DescribedEnumDto<E>>> fetchAll() {
     var valueDtos = Arrays.stream(enumClass.getEnumConstants()).map(DescribedEnumDto::new).toList();
     return ResponseEntity.ok(valueDtos);
   }
@@ -39,10 +50,19 @@ public abstract class DescribedEnumEndpoint<E extends Enum<E> & DescribedEnum> {
    * @return the enum value named {@code code}, if it exists
    */
   @GetMapping(path = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<DescribedEnumDto<E>> fetch(@PathVariable("code") String code) {
+  @Operation(
+      responses = {
+        @ApiResponse(responseCode = "200", description = "The code that was found."),
+        @ApiResponse(
+            responseCode = "404",
+            description = "No code was found",
+            content = @Content(schema = @Schema(hidden = true)))
+      })
+  public ResponseEntity<DescribedEnumDto<E>> fetch(
+      @Parameter(description = "The code to be fetched.") @PathVariable("code") String code) {
     var valueDto =
         Arrays.stream(enumClass.getEnumConstants())
-            .dropWhile(v -> v.name().equals(code))
+            .dropWhile(v -> !v.name().equals(code))
             .findFirst()
             .map(DescribedEnumDto::new);
     return ResponseEntity.of(valueDto);

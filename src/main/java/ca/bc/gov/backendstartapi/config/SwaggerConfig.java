@@ -3,6 +3,9 @@ package ca.bc.gov.backendstartapi.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -51,6 +54,27 @@ public class SwaggerConfig {
                         .type(Type.HTTP)
                         .scheme("bearer")
                         .bearerFormat("JWT")))
-        .addSecurityItem(new SecurityRequirement().addList(BEARER_SECURITY_SCHEME_NAME));
+        .addSecurityItem(new SecurityRequirement().addList(BEARER_SECURITY_SCHEME_NAME))
+        // TODO: find a way to keep this closer to the controller itself.
+        .paths(
+            new Paths()
+                .addPathItem(
+                    "/api/seedlot-status",
+                    new PathItem()
+                        .get(
+                            new Operation()
+                                .operationId("fetchAllSeedlotStatus")
+                                .summary("Fetch all the possible seed lot status")
+                                .description(
+                                    """
+Fetch all the possible status for a seed lot and their descriptions.""")))
+                .addPathItem(
+                    "/api/seedlot-status/{code}",
+                    new PathItem()
+                        .get(
+                            new Operation()
+                                .operationId("fetchSeedlotStatus")
+                                .summary("Fetch a single seed lot status")
+                                .description("Fetch a seed lot status by its code."))));
   }
 }

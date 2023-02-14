@@ -1,6 +1,7 @@
 package ca.bc.gov.backendstartapi.dto;
 
 import ca.bc.gov.backendstartapi.enumeration.DescribedEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,12 +12,15 @@ import lombok.ToString;
  */
 @Getter
 @ToString
+@Schema(description = "An enum with its code and description.")
 public final class DescribedEnumDto<E extends Enum<E> & DescribedEnum> {
 
   /** The enum itself. */
+  @Schema(description = "The code itself.")
   private final E code;
 
   /** A description for the enum in {@code code}. */
+  @Schema(description = "The code's meaning.")
   private final String description;
 
   /**
