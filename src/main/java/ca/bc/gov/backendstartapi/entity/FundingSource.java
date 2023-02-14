@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
+/** This class presents a funding source to an agency seedlot owner. */
 @Getter
 @Setter
 @Entity
@@ -26,5 +27,4 @@ public class FundingSource {
 
   @Column(name = "EXPIRY_DATE")
   private LocalDate expiryDate;
-
 }

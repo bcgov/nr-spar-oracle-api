@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** This class exposes funding sources resources API. */
 @Setter
 @RestController
 @NoArgsConstructor
@@ -25,11 +26,16 @@ public class FundingSourceEndpoint {
     this.fundingSourceRepository = fundingSourceRepository;
   }
 
+  /**
+   * Retrieve all funding sources.
+   *
+   * @return A list of {@link FundingSource} with all found result.
+   */
   @GetMapping(produces = "application/json")
   @PreAuthorize("hasRole('user_read')")
   public List<FundingSource> getAllFundingSources() {
-    return fundingSourceRepository.findAll()
-        .stream().filter(x -> x.getExpiryDate().isAfter(LocalDate.now()))
+    return fundingSourceRepository.findAll().stream()
+        .filter(x -> x.getExpiryDate().isAfter(LocalDate.now()))
         .toList();
   }
 }
