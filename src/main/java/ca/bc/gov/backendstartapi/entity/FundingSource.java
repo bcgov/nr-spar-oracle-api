@@ -32,8 +32,7 @@ public class FundingSource {
   @Schema(
       description = "Funding source's effective date.",
       type = "string",
-      format = "date",
-      example = "2003-04-01")
+      format = "date")
   private LocalDate effectiveDate;
 
   @Column(name = "EXPIRY_DATE")

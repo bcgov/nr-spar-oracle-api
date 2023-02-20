@@ -23,9 +23,9 @@ class FundingSourceRepositoryTest {
 
   @Test
   @DisplayName("findAllTest")
-  @Sql(scripts = {"classpath:scripts/FundingSourceRepositoryTest_findAll.sql"})
+  @Sql(scripts = {"classpath:scripts/FundingSourceRepositoryTest_findAllTest.sql"})
   void findAllTest() {
-    List<FundingSource> sources = fundingSourceRepository.findAll();
+    List<FundingSource> sources = fundingSourceRepository.findAllValid();
 
     Assertions.assertFalse(sources.isEmpty());
     Assertions.assertEquals(3, sources.size());

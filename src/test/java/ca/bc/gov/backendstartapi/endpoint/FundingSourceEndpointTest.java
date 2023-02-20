@@ -57,7 +57,7 @@ class FundingSourceEndpointTest {
     sources.add(fundingSourceCbi);
     sources.add(fundingSourceCl);
 
-    when(fundingSourceRepository.findAll()).thenReturn(sources);
+    when(fundingSourceRepository.findAllValid()).thenReturn(sources);
 
     mockMvc
         .perform(
@@ -94,40 +94,4 @@ class FundingSourceEndpointTest {
         .andReturn();
   }
 
-  @Test
-  @DisplayName("findAllExpiredTest")
-  @WithMockUser(roles = "user_read")
-  void findAllExpiredTest() throws Exception {
-    FundingSource fundingSourceBct = new FundingSource();
-    fundingSourceBct.setCode("BCT");
-    fundingSourceBct.setDescription("BC Timber Sales");
-    fundingSourceBct.setEffectiveDate(LocalDate.parse("2003-04-01"));
-    fundingSourceBct.setExpiryDate(LocalDate.parse("2022-12-31"));
-
-    FundingSource fundingSourceCbi = new FundingSource();
-    fundingSourceCbi.setCode("CBI");
-    fundingSourceCbi.setDescription("Carbon Offset Investment");
-    fundingSourceCbi.setEffectiveDate(LocalDate.parse("2013-08-01"));
-    fundingSourceCbi.setExpiryDate(LocalDate.parse("9999-12-31"));
-
-    List<FundingSource> sources = new ArrayList<>();
-    sources.add(fundingSourceBct);
-    sources.add(fundingSourceCbi);
-
-    when(fundingSourceRepository.findAll()).thenReturn(sources);
-
-    mockMvc
-        .perform(
-            get("/api/funding-sources")
-                .with(csrf().asHeader())
-                .header("Content-Type", "application/json")
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].code").value("CBI"))
-        .andExpect(jsonPath("$[0].description").value("Carbon Offset Investment"))
-        .andExpect(jsonPath("$[0].effectiveDate").value("2013-08-01"))
-        .andExpect(jsonPath("$[0].expiryDate").value("9999-12-31"))
-
-        .andReturn();
-  }
 }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,8 +44,9 @@ public class FundingSourceEndpoint {
   @GetMapping(produces = "application/json")
   @PreAuthorize("hasRole('user_read')")
   @Operation(
-      summary = "Retrieve all funding sources",
-      description = "Retrieve all valid (not expired) funding source")
+      summary = "Retrieve non-expired funding sources",
+      description = "Retrieve all valid (non expired) funding source based on effectiveDate "
+          + "and expiryDate, where 'today >= effectiveDate' and 'today < expiryDate'.")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -59,9 +61,7 @@ public class FundingSourceEndpoint {
             description = "Access token is missing or invalid",
             content = @Content(schema = @Schema(implementation = Void.class)))
       })
-  public List<FundingSource> getAllFundingSources() {
-    return fundingSourceRepository.findAll().stream()
-        .filter(x -> x.getExpiryDate().isAfter(LocalDate.now()))
-        .toList();
+  public List<FundingSource> getAllValidFundingSources() {
+    return fundingSourceRepository.findAllValid();
   }
 }
