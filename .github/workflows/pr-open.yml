@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -74,7 +74,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -83,7 +83,7 @@ jobs:
             ${{ runner.os }}-maven-test-
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -146,7 +146,7 @@ jobs:
       - validate
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -330,7 +330,10 @@ jobs:
     needs:
       - build-service-api
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
+    if: |
+      github.event_name == 'pull_request'
+      && github.event.pull_request.base.ref == 'main'
+      && ${{ github.actor != 'dependabot[bot]' }}
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
