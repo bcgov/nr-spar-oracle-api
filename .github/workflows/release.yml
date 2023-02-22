@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache Maven
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-test-${{ hashFiles('**/pom.xml') }}
@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: service
-          path: target/backend-start-api.jar
+          path: target/nr-spar-oracle-api.jar
           retention-days: 1
 
   push_to_registry:

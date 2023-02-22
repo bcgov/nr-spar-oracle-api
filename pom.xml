@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov</groupId>
-	<artifactId>backend-start-api</artifactId>
-	<version>0.9.6</version>
-	<name>backend-start-api</name>
-	<description>Starting backend API project</description>
+	<artifactId>nr-spar-oracle-api</artifactId>
+	<version>0.9.10</version>
+	<name>nr-spar-oracle-api</name>
+	<description>API to fetch data from THE to SPAR</description>
 
 	<licenses>
 		<license>
@@ -294,7 +294,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.4.1</version>
+				<version>3.5.0</version>
 				<configuration>
 					<source>17</source>
 					<doctitle>Javadoc Documentation for ${project.name} ${project.version}</doctitle>
@@ -350,7 +350,7 @@
 					<dependency>
 						<groupId>com.puppycrawl.tools</groupId>
 						<artifactId>checkstyle</artifactId>
-						<version>10.6.0</version>
+						<version>10.7.0</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -374,7 +374,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>backend-start-api</finalName>
+		<finalName>nr-spar-oracle-api</finalName>
 	</build>
 
 </project>

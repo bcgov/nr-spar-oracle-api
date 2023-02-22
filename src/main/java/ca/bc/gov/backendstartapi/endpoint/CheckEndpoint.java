@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Hidden
 public class CheckEndpoint {
 
-  @Value("${nrbestapi.version}")
-  private String nrbestapiVersion;
+  @Value("${nr-spar-oracle-api.version}")
+  private String nrSparOracleApiVersion;
 
   /**
    * Check if the service is up and running.
@@ -24,7 +24,7 @@ public class CheckEndpoint {
    */
   @GetMapping(value = "/check", produces = MediaType.APPLICATION_JSON_VALUE)
   public CheckVo check() {
-    log.info("nrbestapiVersion: {}", nrbestapiVersion);
-    return new CheckVo("OK", nrbestapiVersion);
+    log.info("nrSparOracleApiVersion: {}", nrSparOracleApiVersion);
+    return new CheckVo("OK", nrSparOracleApiVersion);
   }
 }

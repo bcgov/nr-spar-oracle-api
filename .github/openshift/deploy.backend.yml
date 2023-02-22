@@ -3,8 +3,8 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "NR Backend Starting API"
-    tags: "nrbestapi"
+    description: "NR SPAR Oracle API"
+    tags: "nr-spar-oracle-api"
     iconClass: icon-java
 labels:
   app: ${NAME}-${ZONE}
@@ -12,7 +12,7 @@ labels:
 parameters:
   - name: NAME
     description: Module name
-    value: nrbestapi
+    value: nr-spar-oracle-api
   - name: COMPONENT
     description: Component name
     value: service-api
@@ -33,8 +33,8 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-backend-starting-api:prod-service-api
-  - name: NRBESTAPI_VERSION
+    value: bcgov/nr-spar-oracle-api:prod-service-api
+  - name: NR_SPAR_ORACLE_API_VERSION
     description: Current service API release version
     required: true
   - name: ALLOWED_ORIGINS
@@ -108,8 +108,8 @@ objects:
               imagePullPolicy: Always
               name: ${NAME}
               env:
-                - name: NRBESTAPI_VERSION
-                  value: ${NRBESTAPI_VERSION}
+                - name: NR_SPAR_ORACLE_API_VERSION
+                  value: ${NR_SPAR_ORACLE_API_VERSION}
                 - name: ALLOWED_ORIGINS
                   value: ${ALLOWED_ORIGINS}
                 - name: DATABASE_HOST
