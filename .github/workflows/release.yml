@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cache Maven
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-test-${{ hashFiles('**/pom.xml') }}
@@ -35,7 +35,7 @@ jobs:
         run: mvn -B --no-transfer-progress clean package -DskipTests -Dtests.skip=true -Dskip.unit.tests=true --file pom.xml
 
       - name: Saving artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: service
           path: target/nr-spar-oracle-api.jar
