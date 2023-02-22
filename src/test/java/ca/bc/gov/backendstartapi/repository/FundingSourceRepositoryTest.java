@@ -24,8 +24,8 @@ class FundingSourceRepositoryTest {
   private boolean isValid(FundingSource fundingSource) {
     LocalDate today = LocalDate.now();
 
-    // Effective date - Should be before today
-    if (!fundingSource.getEffectiveDate().isBefore(today)) {
+    // Effective date - Should be before or same as today
+    if (fundingSource.getEffectiveDate().isAfter(today)) {
       return false;
     }
 
