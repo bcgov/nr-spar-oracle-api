@@ -370,7 +370,7 @@ jobs:
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
 
       - name: DEV Deployment update
-        uses: mshick/add-pr-comment@v1
+        uses: mshick/add-pr-comment@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
