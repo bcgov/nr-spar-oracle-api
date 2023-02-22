@@ -10,8 +10,7 @@ public interface FundingSourceRepository extends JpaRepository<FundingSource, St
 
   @Query(
       value =
-          "select fs.* from SPAR_FUND_SRCE_CODE fs WHERE CURRENT_DATE >= fs.EFFECTIVE_DATE "
-              + "AND CURRENT_DATE < fs.EXPIRY_DATE ORDER BY fs.SPAR_FUND_SRCE_CODE",
-      nativeQuery = true)
+          "select fs from FundingSource fs WHERE CURRENT_DATE >= fs.effectiveDate "
+              + "AND CURRENT_DATE < fs.expiryDate ORDER BY fs.code")
   List<FundingSource> findAllValid();
 }

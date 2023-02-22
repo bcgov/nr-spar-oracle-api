@@ -39,7 +39,6 @@ public class FundingSource {
   @Schema(
       description = "Funding source's expiry date.",
       type = "string",
-      format = "date",
-      example = "9999-12-31")
+      format = "date")
   private LocalDate expiryDate;
 }
