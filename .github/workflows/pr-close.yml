@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  NAME: nrbestapi
+  NAME: nr-spar-oracle-api
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

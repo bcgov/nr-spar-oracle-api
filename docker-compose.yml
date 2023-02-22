@@ -2,20 +2,25 @@ version: '3.9'
 
 services:
   backend:
-    container_name: service-api
-    image: service-api:latest
+    build:
+      context: .
+    container_name: backend
+    dns: ${DNS_ADDRESS}
     environment:
-      NRBESTAPI_VERSION: ${NRBESTAPI_VERSION}
+      NR_SPAR_ORACLE_API_VERSION: ${NR_SPAR_ORACLE_API_VERSION}
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
       SERVICE_NAME: ${SERVICE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       KEYCLOAK_REALM_URL: ${KEYCLOAK_REALM_URL}
-    hostname: service-api
-    dns: 142.22.202.100
-    ports:
-      - "8090:8090"
-    build:
-      context: .
-      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", "java", "HealthCheck"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    image: bcgov/nr-spar-oracle-api:latest
+    network_mode: "host"
+    volumes:
+      - ./target:/usr/share/service/artifacts
