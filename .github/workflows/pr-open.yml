@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -50,7 +50,7 @@ jobs:
         run: mvn --no-transfer-progress checkstyle:checkstyle -Dcheckstyle.skip=false --file pom.xml
 
       - name: Archive Checkstyle
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: checkstyle
           path: target/site/checkstyle.html
@@ -74,7 +74,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -83,7 +83,7 @@ jobs:
             ${{ runner.os }}-maven-test-
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -125,7 +125,7 @@ jobs:
           add: '*.svg'
 
       - name: Upload JaCoCo coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
           path: target/coverage-reports/merged-test-report/
@@ -146,7 +146,7 @@ jobs:
       - validate
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -330,7 +330,10 @@ jobs:
     needs:
       - build-service-api
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
+    if: |
+      github.event_name == 'pull_request'
+      && github.event.pull_request.base.ref == 'main'
+      && ${{ github.actor != 'dependabot[bot]' }}
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
@@ -367,7 +370,7 @@ jobs:
           oc rollout status dc/${{ env.NAME }}-${{ env.ZONE }}-service-api -w
 
       - name: DEV Deployment update
-        uses: mshick/add-pr-comment@v1
+        uses: mshick/add-pr-comment@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -409,7 +412,7 @@ jobs:
             --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
 
       - name: Output the results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: API test report
           path: testArtifacts 

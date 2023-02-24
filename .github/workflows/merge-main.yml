@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -80,7 +80,7 @@ jobs:
             ${{ runner.os }}-maven-test-
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -124,7 +124,7 @@ jobs:
           fi
 
       - name: Upload JaCoCo coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
           path: target/coverage-reports/merged-test-report/
@@ -147,7 +147,7 @@ jobs:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2
@@ -263,7 +263,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.3.0
+        uses: zaproxy/action-full-scan@v0.4.0
         with:
           target: https://${{ env.NAME }}-test-service-api.apps.silver.devops.gov.bc.ca/
           cmd_options: "-a"
@@ -302,7 +302,7 @@ jobs:
             --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/api-tests-report.html
 
       - name: Output the results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: API test report
           path: testArtifacts
@@ -322,7 +322,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@0.3.0
+        uses: aquasecurity/trivy-action@0.9.1
         with:
           scan-type: "fs"
           format: "sarif"
