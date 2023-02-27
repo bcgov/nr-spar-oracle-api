@@ -1,3 +1,7 @@
+## [0.10.1](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.10.0...v0.10.1) (2023-02-27)
+
+
+
 # [0.10.0](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.9.10...v0.10.0) (2023-02-22)
 
 
@@ -16,10 +20,6 @@
 
 
 ## [0.9.8](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.9.7...v0.9.8) (2023-02-07)
-
-
-
-## [0.9.7](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.9.6...v0.9.7) (2023-02-06)
 
 
 
