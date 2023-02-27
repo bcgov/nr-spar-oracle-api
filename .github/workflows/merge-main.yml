@@ -214,7 +214,7 @@ jobs:
     steps:
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.4.3
+        uses: hashicorp/vault-action@v2.5.0
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ secrets.VAULT_TOKEN }}
@@ -407,7 +407,7 @@ jobs:
 
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.4.3
+        uses: hashicorp/vault-action@v2.5.0
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ secrets.VAULT_TOKEN }}
