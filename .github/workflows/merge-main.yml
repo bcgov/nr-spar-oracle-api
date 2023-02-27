@@ -373,7 +373,7 @@ jobs:
           echo "Image promotion not required"
       - name: Promote Service API Image
         if: steps.check.outputs.build == 'true'
-        uses: shrink/actions-docker-registry-tag@v2
+        uses: shrink/actions-docker-registry-tag@v3
         with:
           registry: ${{ env.REGISTRY }}
           repository: ${{ github.repository }}
@@ -454,7 +454,7 @@ jobs:
           done
 
       - name: Promote Image to PROD
-        uses: shrink/actions-docker-registry-tag@v2
+        uses: shrink/actions-docker-registry-tag@v3
         with:
           registry: ${{ env.REGISTRY }}
           repository: ${{ github.repository }}
