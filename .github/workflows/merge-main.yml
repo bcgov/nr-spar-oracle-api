@@ -212,12 +212,21 @@ jobs:
       ZONE: test
       NR_SPAR_ORACLE_API_VERSION: ${{ needs.release.outputs.version }}
     steps:
+      - name: Broker
+        id: broker
+        uses: bcgov-nr/action-vault-broker-approle@v0.0.4
+        with:
+          broker_jwt: ${{ secrets.BROKER_JWT }}
+          provision_role_id: ${{ secrets.PROVISION_ROLE_ID }}
+          project_name: spar
+          app_name: app-spar
+          environment: test
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.4.3
+        uses: hashicorp/vault-action@v2.5.0
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
-          token: ${{ secrets.VAULT_TOKEN }}
+          token: ${{ steps.broker.outputs.vault_token }}
           exportEnv: 'false'
           secrets: |
             apps/data/test/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
@@ -231,8 +240,7 @@ jobs:
           # Login to OpenShift and select project
           oc login --token=${{ secrets.OC_TOKEN }} --server=${{ secrets.OC_SERVER }}
           oc project ${{ secrets.OC_NAMESPACE }}
-          # Do not replace database; 'oc create' kicks up an error if objects already exist
-          #oc process -f .github/openshift/deploy.database.yml -p ZONE=${{ env.ZONE }} | oc create -f - || true
+
           # Process and apply deployment templates
           oc process -f .github/openshift/deploy.backend.yml -p ZONE=${{ env.ZONE }} \
             -p NR_SPAR_ORACLE_API_VERSION=test-${{ env.NR_SPAR_ORACLE_API_VERSION }} \
