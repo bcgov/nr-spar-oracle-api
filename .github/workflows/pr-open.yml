@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-maven-test-
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -90,7 +90,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -201,7 +201,7 @@ jobs:
           languages: java
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
