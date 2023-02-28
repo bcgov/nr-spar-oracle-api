@@ -1,0 +1,63 @@
+SET @today = current_date;
+SET @next_year = DATEADD(YEAR, 1, @today);
+
+drop table if exists ORCHARD_LOT_TYPE_CODE;
+
+create table ORCHARD_LOT_TYPE_CODE (
+  ORCHARD_LOT_TYPE_CODE CHAR(1) NOT NULL,
+  DESCRIPTION VARCHAR(15) NOT NULL,
+  EFFECTIVE_DATE TIMESTAMP NOT NULL,
+  EXPIRY_DATE TIMESTAMP NOT NULL,
+  PRIMARY KEY (ORCHARD_LOT_TYPE_CODE)
+);
+
+insert into ORCHARD_LOT_TYPE_CODE
+(ORCHARD_LOT_TYPE_CODE, DESCRIPTION, EFFECTIVE_DATE, EXPIRY_DATE)
+values
+  ('C', 'Cutting Lot', @today, @next_year),
+  ('S', 'Seed Lot', @today, @next_year);
+
+-- ESB - Established
+insert into ORCHARD (
+  ORCHARD_ID,
+  ORCHARD_NAME,
+  VEGETATION_CODE,
+  ORCHARD_LOT_TYPE_CODE,
+  ORCHARD_STAGE_CODE
+) VALUES (
+  '820',
+  'FERNDALE INSTITUTE',
+  'AX',
+  'C',
+  'ESB'
+);
+
+-- RET - Retired
+insert into ORCHARD (
+  ORCHARD_ID,
+  ORCHARD_NAME,
+  VEGETATION_CODE,
+  ORCHARD_LOT_TYPE_CODE,
+  ORCHARD_STAGE_CODE
+) VALUES (
+  '612',
+  'E.KOOTENAY BREED A',
+  'SX',
+  'S',
+  'RET'
+);
+
+-- PRD - Producing
+insert into ORCHARD (
+  ORCHARD_ID,
+  ORCHARD_NAME,
+  VEGETATION_CODE,
+  ORCHARD_LOT_TYPE_CODE,
+  ORCHARD_STAGE_CODE
+) VALUES (
+  '337',
+  'GRANDVIEW',
+  'PLI',
+  'S',
+  'PRD'
+);
