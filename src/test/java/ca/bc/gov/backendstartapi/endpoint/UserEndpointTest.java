@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ca.bc.gov.backendstartapi.dto.UserDto;
 import ca.bc.gov.backendstartapi.exception.UserExistsException;
 import ca.bc.gov.backendstartapi.exception.UserNotFoundException;
-import ca.bc.gov.backendstartapi.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
@@ -48,9 +46,11 @@ class UserEndpointTest {
 
   private MockMvc mockMvc;
 
-  @Autowired UserRepository userRepository;
+  private final WebApplicationContext webApplicationContext;
 
-  @Autowired private WebApplicationContext webApplicationContext;
+  UserEndpointTest(WebApplicationContext webApplicationContext) {
+    this.webApplicationContext = webApplicationContext;
+  }
 
   @BeforeEach
   public void setup() {

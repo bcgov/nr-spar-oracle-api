@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +33,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Tag(name = "vegetationCode", description = "Codes describing various vegetation species")
 public class VegetationCodeEndpoint {
 
-  @Autowired private VegetationCodeRepository vegetationCodeRepository;
+  private final VegetationCodeRepository vegetationCodeRepository;
+
+  VegetationCodeEndpoint(VegetationCodeRepository vegetationCodeRepository) {
+    this.vegetationCodeRepository = vegetationCodeRepository;
+  }
 
   /**
    * Fetch information about a single vegetation code.
@@ -79,8 +82,9 @@ public class VegetationCodeEndpoint {
   @Operation(
       summary = "Search for valid vegetation codes by their identifier or description",
       description =
-          "Search for valid vegetation codes (ones which `effectiveDate` ≤ today < `expiryDate`) "
-              + "with identifier or description matching `search`.",
+          """
+              Search for valid vegetation codes (ones which `effectiveDate` ≤ today < `expiryDate`)
+              with identifier or description matching `search`.""",
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -93,8 +97,9 @@ public class VegetationCodeEndpoint {
       @RequestParam(name = "search", defaultValue = "")
           @Parameter(
               description =
-                  "A string to be matched against the codes' identifier or description. Not "
-                      + "providing a value matches everything.")
+                  """
+                      A string to be matched against the codes' identifier or description. Not
+                      providing a value matches everything.""")
           String search,
       @Valid PaginationParameters paginationParameters) {
     return vegetationCodeRepository.findValidByCodeOrDescription(

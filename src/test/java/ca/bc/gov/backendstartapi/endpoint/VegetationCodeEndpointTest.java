@@ -16,7 +16,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,7 +33,11 @@ class VegetationCodeEndpointTest {
 
   @MockBean private VegetationCodeRepositoryImpl vegetationCodeRepository;
 
-  @Autowired private WebApplicationContext webApplicationContext;
+  private final WebApplicationContext webApplicationContext;
+
+  VegetationCodeEndpointTest(WebApplicationContext webApplicationContext) {
+    this.webApplicationContext = webApplicationContext;
+  }
 
   @BeforeEach
   public void setup() {
