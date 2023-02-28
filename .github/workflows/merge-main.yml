@@ -413,12 +413,21 @@ jobs:
           oc project ${{ secrets.OC_NAMESPACE }}
           oc delete is/${{ env.NAME }}-${{ env.ZONE}}-${{ env.COMPONENT }} || true
 
+      - name: Broker
+        id: broker
+        uses: bcgov-nr/action-vault-broker-approle@v0.0.5
+        with:
+          broker_jwt: ${{ secrets.BROKER_JWT }}
+          provision_role_id: ${{ secrets.PROVISION_ROLE_ID }}
+          project_name: spar
+          app_name: app-spar
+          environment: prod
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.4.3
+        uses: hashicorp/vault-action@v2.5.0
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
-          token: ${{ secrets.VAULT_TOKEN }}
+          token: ${{ steps.broker.outputs.vault_token }}
           exportEnv: 'false'
           secrets: |
             apps/data/prod/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
