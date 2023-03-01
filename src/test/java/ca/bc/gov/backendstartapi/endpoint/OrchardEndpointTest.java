@@ -61,7 +61,17 @@ class OrchardEndpointTest {
 
   @Test
   @DisplayName("findByIdNotFoundTest")
-  void findByIdNotFoundTest() {
-    //
+  @WithMockUser(roles = "user_read")
+  void findByIdNotFoundTest() throws Exception {
+    when(orchardRepository.findById(any())).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(
+            get("/api/orchards/{id}", "612")
+                .with(csrf().asHeader())
+                .header("Content-Type", "application/json")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andReturn();
   }
 }
