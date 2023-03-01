@@ -7,7 +7,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /** An implementation of {@link VegetationCodeRepository}. */
@@ -15,7 +14,12 @@ import org.springframework.stereotype.Repository;
 public class VegetationCodeRepositoryImpl implements VegetationCodeRepository {
 
   @PersistenceContext private EntityManager em;
-  @Autowired private VegetationCodeJpaRepository jpaRepository;
+
+  private final VegetationCodeJpaRepository jpaRepository;
+
+  VegetationCodeRepositoryImpl(VegetationCodeJpaRepository jpaRepository) {
+    this.jpaRepository = jpaRepository;
+  }
 
   @Override
   public Optional<VegetationCode> findByCode(String code) {

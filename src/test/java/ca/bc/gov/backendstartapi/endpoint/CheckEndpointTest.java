@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
@@ -26,7 +25,11 @@ class CheckEndpointTest {
 
   private MockMvc mockMvc;
 
-  @Autowired private WebApplicationContext webApplicationContext;
+  private final WebApplicationContext webApplicationContext;
+
+  CheckEndpointTest(WebApplicationContext webApplicationContext) {
+    this.webApplicationContext = webApplicationContext;
+  }
 
   @BeforeEach
   public void setup() {

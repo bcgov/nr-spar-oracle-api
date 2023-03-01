@@ -16,7 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class VegetationCodeRepositoryTest {
 
-  @Autowired private VegetationCodeRepository vegetationCodeRepository;
+  private final VegetationCodeRepository vegetationCodeRepository;
+
+  @Autowired
+  VegetationCodeRepositoryTest(VegetationCodeRepository vegetationCodeRepository) {
+    this.vegetationCodeRepository = vegetationCodeRepository;
+  }
 
   @Test
   void findById_valid() {
