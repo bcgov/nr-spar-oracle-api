@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ca.bc.gov.backendstartapi.entity.Orchard;
-import ca.bc.gov.backendstartapi.repository.OrchardRepository;
+import ca.bc.gov.backendstartapi.dto.OrchardLotTypeDescriptionDto;
+import ca.bc.gov.backendstartapi.service.OrchardService;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,21 +27,23 @@ class OrchardEndpointTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockBean private OrchardRepository orchardRepository;
+  @MockBean private OrchardService orchardService;
 
   @Test
   @DisplayName("findByIdPrdSuccessTest")
   @WithMockUser(roles = "user_read")
   void findByIdPrdSuccessTest() throws Exception {
-    Orchard orchardPrd = new Orchard();
-    orchardPrd.setId("337");
-    orchardPrd.setName("GRANDVIEW");
-    orchardPrd.setVegetationCode("PLI");
-    orchardPrd.setLotTypeCode('S');
-    orchardPrd.setLotTypeDescription("Seed Lot");
-    orchardPrd.setStageCode("PRD");
+    OrchardLotTypeDescriptionDto descriptionDto = new OrchardLotTypeDescriptionDto(
+        "337",
+        "GRANDVIEW",
+        "PLI",
+        'S',
+        "Seed Lot",
+        "PRD"
+    );
 
-    when(orchardRepository.findById(any())).thenReturn(Optional.of(orchardPrd));
+    when(orchardService.findNotRetiredOrchardValidLotType(any()))
+        .thenReturn(Optional.of(descriptionDto));
 
     mockMvc
         .perform(
@@ -63,7 +65,7 @@ class OrchardEndpointTest {
   @DisplayName("findByIdNotFoundTest")
   @WithMockUser(roles = "user_read")
   void findByIdNotFoundTest() throws Exception {
-    when(orchardRepository.findById(any())).thenReturn(Optional.empty());
+    when(orchardService.findNotRetiredOrchardValidLotType(any())).thenReturn(Optional.empty());
 
     mockMvc
         .perform(

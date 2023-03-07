@@ -1,6 +1,7 @@
 package ca.bc.gov.backendstartapi.repository;
 
 import ca.bc.gov.backendstartapi.entity.Orchard;
+import ca.bc.gov.backendstartapi.entity.OrchardLotTypeCode;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -24,29 +25,37 @@ class OrchardRepositoryTest {
   @Test
   @DisplayName("findByIdSuccessTest")
   void findByIdSuccessTest() {
-    Optional<Orchard> orchardPrd = orchardRepository.findById("337");
+    Optional<Orchard> orchardPrd = orchardRepository.findNotRetiredById("337");
 
     Assertions.assertTrue(orchardPrd.isPresent());
-    Assertions.assertEquals("GRANDVIEW", orchardPrd.get().getName());
-    Assertions.assertEquals("PLI", orchardPrd.get().getVegetationCode());
-    Assertions.assertEquals('S', orchardPrd.get().getLotTypeCode());
-    Assertions.assertEquals("Seed Lot", orchardPrd.get().getLotTypeDescription());
-    Assertions.assertEquals("PRD", orchardPrd.get().getStageCode());
+    Orchard orchardOne = orchardPrd.get();
+    OrchardLotTypeCode orchardLotTypeCodeOne = orchardOne.getOrchardLotTypeCode();
 
-    Optional<Orchard> orchardEsb = orchardRepository.findById("820");
+    Assertions.assertNotNull(orchardLotTypeCodeOne);
+    Assertions.assertEquals("GRANDVIEW", orchardOne.getName());
+    Assertions.assertEquals("PLI", orchardOne.getVegetationCode());
+    Assertions.assertEquals('S', orchardLotTypeCodeOne.getCode());
+    Assertions.assertEquals("Seed Lot", orchardLotTypeCodeOne.getDescription());
+    Assertions.assertEquals("PRD", orchardOne.getStageCode());
+
+    Optional<Orchard> orchardEsb = orchardRepository.findNotRetiredById("820");
 
     Assertions.assertTrue(orchardEsb.isPresent());
-    Assertions.assertEquals("FERNDALE INSTITUTE", orchardEsb.get().getName());
-    Assertions.assertEquals("AX", orchardEsb.get().getVegetationCode());
-    Assertions.assertEquals('C', orchardEsb.get().getLotTypeCode());
-    Assertions.assertEquals("Cutting Lot", orchardEsb.get().getLotTypeDescription());
-    Assertions.assertEquals("ESB", orchardEsb.get().getStageCode());
+    Orchard orchardTwo = orchardEsb.get();
+    OrchardLotTypeCode orchardLotTypeCodeTwo = orchardTwo.getOrchardLotTypeCode();
+
+    Assertions.assertNotNull(orchardLotTypeCodeTwo);
+    Assertions.assertEquals("FERNDALE INSTITUTE", orchardTwo.getName());
+    Assertions.assertEquals("AX", orchardTwo.getVegetationCode());
+    Assertions.assertEquals('C', orchardLotTypeCodeTwo.getCode());
+    Assertions.assertEquals("Cutting Lot", orchardLotTypeCodeTwo.getDescription());
+    Assertions.assertEquals("ESB", orchardTwo.getStageCode());
   }
 
   @Test
   @DisplayName("findByIdNotFoundTest")
   void findByIdNotFoundTest() {
-    Optional<Orchard> orchardRet = orchardRepository.findById("612");
+    Optional<Orchard> orchardRet = orchardRepository.findNotRetiredById("612");
 
     Assertions.assertTrue(orchardRet.isEmpty());
   }

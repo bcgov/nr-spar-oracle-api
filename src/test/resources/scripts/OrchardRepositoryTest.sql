@@ -1,21 +1,11 @@
 SET @today = current_date;
 SET @next_year = DATEADD(YEAR, 1, @today);
 
-drop table if exists ORCHARD_LOT_TYPE_CODE;
-
-create table ORCHARD_LOT_TYPE_CODE (
-  ORCHARD_LOT_TYPE_CODE CHAR(1) NOT NULL,
-  DESCRIPTION VARCHAR(15) NOT NULL,
-  EFFECTIVE_DATE TIMESTAMP NOT NULL,
-  EXPIRY_DATE TIMESTAMP NOT NULL,
-  PRIMARY KEY (ORCHARD_LOT_TYPE_CODE)
-);
-
 insert into ORCHARD_LOT_TYPE_CODE
-(ORCHARD_LOT_TYPE_CODE, DESCRIPTION, EFFECTIVE_DATE, EXPIRY_DATE)
+(ORCHARD_LOT_TYPE_CODE, DESCRIPTION, EFFECTIVE_DATE, EXPIRY_DATE, UPDATE_TIMESTAMP)
 values
-  ('C', 'Cutting Lot', @today, @next_year),
-  ('S', 'Seed Lot', @today, @next_year);
+  ('C', 'Cutting Lot', @today, @next_year, current_date),
+  ('S', 'Seed Lot', @today, @next_year, current_date);
 
 -- ESB - Established
 insert into ORCHARD (

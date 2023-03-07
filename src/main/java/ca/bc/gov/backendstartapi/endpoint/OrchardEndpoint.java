@@ -1,7 +1,8 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
+import ca.bc.gov.backendstartapi.dto.OrchardLotTypeDescriptionDto;
 import ca.bc.gov.backendstartapi.entity.Orchard;
-import ca.bc.gov.backendstartapi.repository.OrchardRepository;
+import ca.bc.gov.backendstartapi.service.OrchardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,11 +32,11 @@ import org.springframework.web.server.ResponseStatusException;
     description = "A location where class A seed or class A cuttings are produced.")
 public class OrchardEndpoint {
 
-  private OrchardRepository orchardRepository;
+  private OrchardService orchardService;
 
   @Autowired
-  public OrchardEndpoint(OrchardRepository orchardRepository) {
-    this.orchardRepository = orchardRepository;
+  public OrchardEndpoint(OrchardService orchardService) {
+    this.orchardService = orchardService;
   }
 
   /**
@@ -58,13 +59,14 @@ public class OrchardEndpoint {
             content = @Content(schema = @Schema(implementation = Void.class))),
         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
       })
-  public Orchard getOrchardById(
+  public OrchardLotTypeDescriptionDto getOrchardById(
       @PathVariable
           @Parameter(name = "id", in = ParameterIn.PATH, description = "Identifier of the orchard.")
           String id) {
-    Optional<Orchard> orchard = orchardRepository.findById(id);
+    Optional<OrchardLotTypeDescriptionDto> orchardLotType =
+        orchardService.findNotRetiredOrchardValidLotType(id);
 
-    return orchard.orElseThrow(
+    return orchardLotType.orElseThrow(
         () ->
             new ResponseStatusException(
                 HttpStatus.NOT_FOUND, String.format("Orchard %s not found.", id)));
