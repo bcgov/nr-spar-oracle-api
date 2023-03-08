@@ -23,7 +23,7 @@ public class OrchardLotTypeCode {
   @Schema(description = "A code describing various Orchard Lot Types.", example = "S")
   private Character code;
 
-  @Column(name = "DESCRIPTION", nullable = false)
+  @Column(name = "DESCRIPTION", nullable = false, length = 120)
   @Schema(description = "A description for the affiliated code.", example = "Seed Lot")
   private String description;
 

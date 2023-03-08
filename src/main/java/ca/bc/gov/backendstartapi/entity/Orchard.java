@@ -20,19 +20,19 @@ import lombok.Setter;
 public class Orchard {
 
   @Id
-  @Column(name = "ORCHARD_ID")
+  @Column(name = "ORCHARD_ID", length = 3)
   private String id;
 
-  @Column(name = "ORCHARD_NAME")
+  @Column(name = "ORCHARD_NAME", length = 30)
   private String name;
 
-  @Column(name = "VEGETATION_CODE")
+  @Column(name = "VEGETATION_CODE", length = 8)
   private String vegetationCode;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "ORCHARD_LOT_TYPE_CODE", referencedColumnName = "ORCHARD_LOT_TYPE_CODE")
   private OrchardLotTypeCode orchardLotTypeCode;
 
-  @Column(name = "ORCHARD_STAGE_CODE")
+  @Column(name = "ORCHARD_STAGE_CODE", length = 3)
   private String stageCode;
 }
