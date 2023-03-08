@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @NoArgsConstructor
 @RequestMapping("/api/funding-sources")
 @Tag(
-    name = "FundingSourceEndpoint",
+    name = "fundingSource",
     description = "Resource to retrieve Funding Source to Owners Agencies")
 public class FundingSourceEndpoint {
 
