@@ -219,16 +219,17 @@ jobs:
           provision_role_id: ${{ secrets.PROVISION_ROLE_ID }}
           project_name: spar
           app_name: app-spar
+          environment: test
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v2
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ steps.broker.outputs.vault_token }}
           exportEnv: 'false'
           secrets: |
-            apps/test/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/test/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/test/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/test/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NR_SPAR_ORACLE_API_VERSION env
@@ -245,8 +246,8 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ steps.import-secrets.outputs.VAULT_DB_USER }} \
-            -p DATABASE_PASSWORD=${{ steps.import-secrets.outputs.VAULT_DB_PASS }} \
+            -p DATABASE_USER='${{ steps.import-secrets.outputs.VAULT_DB_USER }}' \
+            -p DATABASE_PASSWORD='${{ steps.import-secrets.outputs.VAULT_DB_PASS }}' \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.ZONE }}-service-api | oc apply -f -
@@ -418,16 +419,17 @@ jobs:
           provision_role_id: ${{ secrets.PROVISION_ROLE_ID }}
           project_name: spar
           app_name: app-spar
+          environment: production
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2.5.0
+        uses: hashicorp/vault-action@v2
         with:
           url: https://vault-iit.apps.silver.devops.gov.bc.ca
           token: ${{ steps.broker.outputs.vault_token }}
           exportEnv: 'false'
           secrets: |
-            apps/prod/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
-            apps/prod/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
+            apps/data/prod/spar/app-spar/db_proxy_read_only db_username | VAULT_DB_USER;
+            apps/data/prod/spar/app-spar/db_proxy_read_only db_password | VAULT_DB_PASS;
 
       - uses: actions/checkout@v3
       - name: Print NR_SPAR_ORACLE_API_VERSION env
@@ -450,8 +452,8 @@ jobs:
             -p DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             -p DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
             -p SERVICE_NAME=${{ secrets.SERVICE_NAME }} \
-            -p DATABASE_USER=${{ steps.import-secrets.outputs.VAULT_DB_USER }} \
-            -p DATABASE_PASSWORD=${{ steps.import-secrets.outputs.VAULT_DB_PASS }} \
+            -p DATABASE_USER='${{ steps.import-secrets.outputs.VAULT_DB_USER }}' \
+            -p DATABASE_PASSWORD='${{ steps.import-secrets.outputs.VAULT_DB_PASS }}' \
             -p ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
             -p KEYCLOAK_REALM_URL=${{ secrets.KEYCLOAK_REALM_URL }} \
             -p PROMOTE=${{ github.repository }}:${{ env.PREV }}-service-api | oc apply -f -
