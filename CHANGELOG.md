@@ -1,3 +1,7 @@
+## [0.11.5](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.11.4...v0.11.5) (2023-03-20)
+
+
+
 ## [0.11.4](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.11.3...v0.11.4) (2023-03-20)
 
 
@@ -11,15 +15,6 @@
 
 
 ## [0.11.1](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.11.0...v0.11.1) (2023-03-14)
-
-
-
-# [0.11.0](https://github.com/bcgov/nr-spar-oracle-api/compare/v0.10.7...v0.11.0) (2023-03-08)
-
-
-### Features
-
-* create orchard api ([#91](https://github.com/bcgov/nr-spar-oracle-api/issues/91)) ([1ef0384](https://github.com/bcgov/nr-spar-oracle-api/commit/1ef0384b089a0fc755ef66da7e1bf912b04c41ac))
 
 
 
