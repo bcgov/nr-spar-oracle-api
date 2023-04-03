@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ca.bc.gov</groupId>
 	<artifactId>nr-spar-oracle-api</artifactId>
-	<version>0.11.6</version>
+	<version>0.11.7</version>
 	<name>nr-spar-oracle-api</name>
 	<description>API to fetch data from THE to SPAR</description>
 
