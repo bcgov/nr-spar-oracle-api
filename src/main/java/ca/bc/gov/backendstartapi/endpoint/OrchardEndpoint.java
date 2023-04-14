@@ -1,6 +1,7 @@
 package ca.bc.gov.backendstartapi.endpoint;
 
 import ca.bc.gov.backendstartapi.dto.OrchardLotTypeDescriptionDto;
+import ca.bc.gov.backendstartapi.dto.OrchardParentTreeDto;
 import ca.bc.gov.backendstartapi.entity.Orchard;
 import ca.bc.gov.backendstartapi.service.OrchardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,5 +71,40 @@ public class OrchardEndpoint {
         () ->
             new ResponseStatusException(
                 HttpStatus.NOT_FOUND, String.format("Orchard %s not found.", id)));
+  }
+
+  @GetMapping(path = "/parent-tree-table-contribution/{id}/{spuId}", produces = "application/json")
+  @PreAuthorize("hasRole('user_read')")
+  @Operation(
+      summary = "Fetch the parent tree contribution data to an Orchard.",
+      description = "Returns all parent tree contribution table given an Orchard ID and SPU ID.",
+      responses = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Access token is missing or invalid",
+            content = @Content(schema = @Schema(implementation = Void.class))),
+        @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+      })
+  public Object getParentTreeTableContributionData(
+      @PathVariable
+          @Parameter(name = "id", in = ParameterIn.PATH, description = "Identifier of the orchard.")
+          String id,
+      @PathVariable
+          @Parameter(
+              name = "spuId",
+              in = ParameterIn.PATH,
+              description = "Identifier of the Seed Planning Unit")
+          Long spuId) {
+    Optional<OrchardParentTreeDto> parentTreeDto =
+        orchardService.findOrchardParentTreeContributionData(id, spuId);
+
+    return parentTreeDto.orElseThrow(
+        () ->
+            new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                String.format(
+                    "Orchard Parent Tree Contribution data not found for orchard id %s and spu id %d.",
+                    id, spuId)));
   }
 }
