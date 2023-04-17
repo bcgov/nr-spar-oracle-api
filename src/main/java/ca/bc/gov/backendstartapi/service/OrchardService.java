@@ -87,7 +87,7 @@ public class OrchardService {
    * @param spuId SPU identification
    * @return Optional of {@link OrchardParentTreeDto}
    */
-  public Optional<OrchardParentTreeDto> findOrchardParentTreeContributionData(
+  public Optional<OrchardParentTreeDto> findParentTreeGeneticQualityData(
       String orchardId, Long spuId) {
 
     long starting = Instant.now().toEpochMilli();

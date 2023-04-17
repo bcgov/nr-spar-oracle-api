@@ -76,12 +76,14 @@ public class OrchardEndpoint {
   /**
    * Gets {@link ca.bc.gov.backendstartapi.entity.ParentTree} data to an {@link Orchard}.
    *
-   * @param id {@link Orchard} identification
-   * @param spuId Seed Planning Unit identification
+   * @param orchardId {@link Orchard}'s identification
+   * @param spuId Seed Planning Unit's identification
    * @return an {@link OrchardParentTreeDto}
    * @throws ResponseStatusException if no data is found
    */
-  @GetMapping(path = "/parent-tree-contribution/{id}/{spuId}", produces = "application/json")
+  @GetMapping(
+      path = "/parent-tree-genetic-quality/{orchardId}/{spuId}",
+      produces = "application/json")
   @PreAuthorize("hasRole('user_read')")
   @Operation(
       summary = "Fetch the parent tree contribution data to an Orchard.",
@@ -94,10 +96,13 @@ public class OrchardEndpoint {
             content = @Content(schema = @Schema(implementation = Void.class))),
         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
       })
-  public OrchardParentTreeDto getParentTreeContributionData(
+  public OrchardParentTreeDto getParentTreeGeneticQualityData(
       @PathVariable
-          @Parameter(name = "id", in = ParameterIn.PATH, description = "Identifier of the orchard.")
-          String id,
+          @Parameter(
+              name = "orchardId",
+              in = ParameterIn.PATH,
+              description = "Identifier of the Orchard.")
+          String orchardId,
       @PathVariable
           @Parameter(
               name = "spuId",
@@ -105,7 +110,7 @@ public class OrchardEndpoint {
               description = "Identifier of the Seed Planning Unit")
           Long spuId) {
     Optional<OrchardParentTreeDto> parentTreeDto =
-        orchardService.findOrchardParentTreeContributionData(id, spuId);
+        orchardService.findParentTreeGeneticQualityData(orchardId, spuId);
 
     return parentTreeDto.orElseThrow(
         () ->
@@ -113,6 +118,6 @@ public class OrchardEndpoint {
                 HttpStatus.NOT_FOUND,
                 String.format(
                     "Orchard Parent Tree data not found for Orchard ID %s and SPU ID %d.",
-                    id, spuId)));
+                    orchardId, spuId)));
   }
 }
