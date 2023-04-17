@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
+/** This class represents a Genetic Quality of an {@link ParentTree} in the database. */
 @Getter
 @Setter
 @Entity

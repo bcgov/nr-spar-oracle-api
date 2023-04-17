@@ -18,15 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** This class contains methods to handle orchards. */
-@Setter
-@NoArgsConstructor
 @Service
 @Slf4j
 public class OrchardService {
@@ -39,8 +35,10 @@ public class OrchardService {
 
   private ParentTreeGeneticQualityRepository parentTreeGeneticQualityRepository;
 
+  private OrchardService() {}
+
   @Autowired
-  public OrchardService(
+  OrchardService(
       OrchardRepository orchardRepository,
       ParentTreeOrchardRepository parentTreeOrchardRepository,
       ParentTreeRepository parentTreeRepository,

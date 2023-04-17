@@ -8,6 +8,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This class represents a relation between {@link ParentTree} and {@link Orchard} in the database.
+ */
 @Getter
 @Setter
 @Entity
@@ -22,7 +25,10 @@ public class ParentTreeOrchard {
   @Column(name = "ORCHARD_ID")
   @Schema(
       description =
-          "A unique identifier which is assigned to a location where cuttings or A class seed is produced.",
+          """
+          A unique identifier which is assigned to a location where cuttings or A class seed is
+          produced.
+          """,
       example = "405")
   private String orchardId;
 }

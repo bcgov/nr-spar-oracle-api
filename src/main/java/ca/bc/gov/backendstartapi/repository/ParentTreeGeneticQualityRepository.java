@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+/**
+ * This class holds methods for retrieving {@link ParentTreeGeneticQuality} data from the database.
+ */
 public interface ParentTreeGeneticQualityRepository
     extends JpaRepository<ParentTreeGeneticQuality, Long> {
 

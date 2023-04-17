@@ -73,7 +73,15 @@ public class OrchardEndpoint {
                 HttpStatus.NOT_FOUND, String.format("Orchard %s not found.", id)));
   }
 
-  @GetMapping(path = "/parent-tree-table-contribution/{id}/{spuId}", produces = "application/json")
+  /**
+   * Gets {@link ca.bc.gov.backendstartapi.entity.ParentTree} data to an {@link Orchard}.
+   *
+   * @param id {@link Orchard} identification
+   * @param spuId Seed Planning Unit identification
+   * @return an {@link OrchardParentTreeDto}
+   * @throws ResponseStatusException if no data is found
+   */
+  @GetMapping(path = "/parent-tree-contribution/{id}/{spuId}", produces = "application/json")
   @PreAuthorize("hasRole('user_read')")
   @Operation(
       summary = "Fetch the parent tree contribution data to an Orchard.",
@@ -86,7 +94,7 @@ public class OrchardEndpoint {
             content = @Content(schema = @Schema(implementation = Void.class))),
         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
       })
-  public Object getParentTreeTableContributionData(
+  public OrchardParentTreeDto getParentTreeContributionData(
       @PathVariable
           @Parameter(name = "id", in = ParameterIn.PATH, description = "Identifier of the orchard.")
           String id,
@@ -104,7 +112,7 @@ public class OrchardEndpoint {
             new ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 String.format(
-                    "Orchard Parent Tree Contribution data not found for orchard id %s and spu id %d.",
+                    "Orchard Parent Tree data not found for Orchard ID %s and SPU ID %d.",
                     id, spuId)));
   }
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/** This class represents a Parent Tree of an {@link Orchard} in the database. */
 @Getter
 @Setter
 @Entity
@@ -23,7 +24,10 @@ public class ParentTree {
   @Column(name = "PARENT_TREE_NUMBER", length = 5, nullable = false)
   @Schema(
       description =
-          "The original registration number given to a Parent Tree in conjunction with a Species Code.",
+          """
+          The original registration number given to a Parent Tree in conjunction with a Species
+          Code.
+          """,
       example = "37")
   private String parentTreeNumber;
 
