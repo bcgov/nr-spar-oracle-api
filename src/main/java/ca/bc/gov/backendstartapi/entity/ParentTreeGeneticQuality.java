@@ -54,7 +54,7 @@ public class ParentTreeGeneticQuality {
   @Schema(description = "A code describing various Genetic Worths.", example = "GVO")
   private String geneticWorthCode;
 
-  @Column(name = "GENETIC_QUALITY_VALUE", nullable = false, precision = 1)
+  @Column(name = "GENETIC_QUALITY_VALUE", nullable = false, precision = 3, scale = 1)
   @Schema(
       description =
           """
