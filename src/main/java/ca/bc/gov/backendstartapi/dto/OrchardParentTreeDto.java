@@ -1,5 +1,6 @@
 package ca.bc.gov.backendstartapi.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -16,9 +17,23 @@ import lombok.ToString;
 @ToString
 public class OrchardParentTreeDto {
 
+  @Schema(
+      description =
+          """
+          A unique identifier which is assigned to a location where cuttings or A class seed is
+          produced.
+          """,
+      example = "405")
   private String orchardId;
+
+  @Schema(description = "A code describing various Vegetation Species.", example = "ACT")
   private String vegetationCode;
+
+  @Schema(
+      description = "A unique identifier which is assigned to a Seed Planning Unit.",
+      example = "7")
   private Long seedPlanUnitId;
+
   private List<ParentTreeDto> parentTrees;
 
   public OrchardParentTreeDto() {

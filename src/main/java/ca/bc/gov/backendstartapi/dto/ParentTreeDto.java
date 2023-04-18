@@ -29,9 +29,6 @@ public class ParentTreeDto {
       example = "37")
   private String parentTreeNumber;
 
-  @Schema(description = "A code describing various Vegetation Species.", example = "ACT")
-  private String vegetationCode;
-
   @Schema(
       description = "The code that indicates the status of the Parent Tree registration",
       example = "APP")
