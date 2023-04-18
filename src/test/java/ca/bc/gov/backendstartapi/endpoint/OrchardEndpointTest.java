@@ -87,7 +87,6 @@ class OrchardEndpointTest {
     ParentTreeDto parentTreeDto1 = new ParentTreeDto();
     parentTreeDto1.setParentTreeId(4001L);
     parentTreeDto1.setParentTreeNumber("37");
-    parentTreeDto1.setVegetationCode("FDC");
     parentTreeDto1.setParentTreeRegStatusCode("APP");
     parentTreeDto1.setLocalNumber("123");
     parentTreeDto1.setActive(true);
@@ -120,7 +119,6 @@ class OrchardEndpointTest {
         .andExpect(jsonPath("$.seedPlanUnitId").value("7"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeId").value("4001"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeNumber").value("37"))
-        .andExpect(jsonPath("$.parentTrees[0].vegetationCode").value("FDC"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeRegStatusCode").value("APP"))
         .andExpect(jsonPath("$.parentTrees[0].localNumber").value("123"))
         .andExpect(jsonPath("$.parentTrees[0].active").value("true"))

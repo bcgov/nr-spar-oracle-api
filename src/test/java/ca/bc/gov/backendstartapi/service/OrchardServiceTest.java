@@ -215,7 +215,6 @@ class OrchardServiceTest {
     ParentTreeDto parentTreeDto = orchardParentTreeDto.getParentTrees().get(0);
     Assertions.assertEquals(4032L, parentTreeDto.getParentTreeId());
     Assertions.assertEquals("37", parentTreeDto.getParentTreeNumber());
-    Assertions.assertEquals("FDC", parentTreeDto.getVegetationCode());
     Assertions.assertEquals("APP", parentTreeDto.getParentTreeRegStatusCode());
     Assertions.assertEquals("123", parentTreeDto.getLocalNumber());
     Assertions.assertTrue(parentTreeDto.isActive());
