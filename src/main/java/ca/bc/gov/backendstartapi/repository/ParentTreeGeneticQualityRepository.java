@@ -21,5 +21,8 @@ public interface ParentTreeGeneticQualityRepository
             and parentTreeId in ?4
           """)
   List<ParentTreeGeneticQuality> findAllBySpuGeneticWorthTypeParentTreeId(
-      Long spuId, Character geneticWorthCalcInd, String geneticTypeCode, List<Long> parentTreeIdList);
+      Long spuId,
+      Character geneticWorthCalcInd,
+      String geneticTypeCode,
+      List<Long> parentTreeIdList);
 }

@@ -151,7 +151,6 @@ class OrchardServiceTest {
   @DisplayName("findParentTreeGeneticQualityDataTest_Success")
   void findParentTreeGeneticQualityDataTest_Success() {
     String orchardId = "407";
-    Long spuId = 7L;
 
     // Orchard
     Orchard orchard = new Orchard();
@@ -182,6 +181,8 @@ class OrchardServiceTest {
     parentTree.setBreedingProgram(true);
 
     when(parentTreeRepository.findAllIn(any())).thenReturn(List.of(parentTree));
+
+    Long spuId = 7L;
 
     // Parent Tree Genetic Quality
     ParentTreeGeneticQuality geneticQuality = new ParentTreeGeneticQuality();
