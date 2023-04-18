@@ -147,7 +147,9 @@ public class OrchardService {
       ParentTreeDto parentTreeDto = new ParentTreeDto();
       parentTreeDto.setParentTreeId(parentTree.getId());
       parentTreeDto.setParentTreeNumber(parentTree.getParentTreeNumber());
+      parentTreeDto.setVegetationCode(parentTree.getVegetationCode());
       parentTreeDto.setParentTreeRegStatusCode(parentTree.getParentTreeRegStatusCode());
+      parentTreeDto.setLocalNumber(parentTree.getLocalNumber());
       parentTreeDto.setActive(parentTree.getActive());
       parentTreeDto.setTested(parentTree.getTested());
       parentTreeDto.setBreedingProgram(parentTree.getBreedingProgram());
