@@ -20,13 +20,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class ParentTreeGeneticQualityTest {
+class ParentTreeGeneticQualityRepositoryTest {
 
   @Autowired private ParentTreeGeneticQualityRepository parentTreeGeneticQualityRepository;
 
   @Test
   @DisplayName("findAllBySpuGeneticWorthTypeParentTreeIdTest")
-  @Sql(scripts = {"classpath:scripts/ParentTreeGeneticQuality.sql"})
+  @Sql(scripts = {"classpath:scripts/ParentTreeGeneticQualityRepository.sql"})
   void findAllBySpuGeneticWorthTypeParentTreeIdTest() {
     long spuId = 7L;
     char geneticWorthCalcInd = 'Y';
