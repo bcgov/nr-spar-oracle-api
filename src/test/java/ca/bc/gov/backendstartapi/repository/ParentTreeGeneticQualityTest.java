@@ -20,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class ParentTreeGeneticQualityTest {
+class ParentTreeGeneticQualityTest {
 
   @Autowired private ParentTreeGeneticQualityRepository parentTreeGeneticQualityRepository;
 
