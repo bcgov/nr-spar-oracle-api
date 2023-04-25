@@ -192,10 +192,10 @@ class OrchardServiceTest {
     geneticQuality.setGeneticTypeCode("BV");
     geneticQuality.setGeneticWorthCode("GVO");
     geneticQuality.setGeneticQualityValue(new BigDecimal("18.0"));
-    geneticQuality.setGeneticWorthCalcInd('Y');
+    geneticQuality.setToBeUsedInCalculations(true);
 
     when(parentTreeGeneticQualityRepository.findAllBySpuGeneticWorthTypeParentTreeId(
-            any(), any(), any(), any()))
+            spuId, true, "BV", List.of(4032L)))
         .thenReturn(List.of(geneticQuality));
 
     Optional<OrchardParentTreeDto> dto =

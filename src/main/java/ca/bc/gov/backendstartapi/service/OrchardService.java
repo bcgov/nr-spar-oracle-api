@@ -173,7 +173,7 @@ public class OrchardService {
       Long spuId, List<Long> parentTreeIdList) {
     List<ParentTreeGeneticQualityDto> list = new ArrayList<>();
 
-    char geneticWorthCalcInd = 'Y';
+    boolean geneticWorthCalcInd = true;
     String geneticType = "BV";
 
     List<ParentTreeGeneticQuality> ptgqList =

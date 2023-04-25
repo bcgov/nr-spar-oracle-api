@@ -29,7 +29,7 @@ class ParentTreeGeneticQualityRepositoryTest {
   @Sql(scripts = {"classpath:scripts/ParentTreeGeneticQualityRepository.sql"})
   void findAllBySpuGeneticWorthTypeParentTreeIdTest() {
     long spuId = 7L;
-    char geneticWorthCalcInd = 'Y';
+    boolean geneticWorthCalcInd = true;
     String geneticTypeCode = "BV";
     List<Long> parentTreeIdList = List.of(4032L);
 
@@ -47,7 +47,7 @@ class ParentTreeGeneticQualityRepositoryTest {
     assertEquals("BV", geneticQuality.getGeneticTypeCode());
     assertEquals("GVO", geneticQuality.getGeneticWorthCode());
     assertEquals(new BigDecimal("18.0"), geneticQuality.getGeneticQualityValue());
-    assertEquals('Y', geneticQuality.getGeneticWorthCalcInd());
+    assertTrue(geneticQuality.isToBeUsedInCalculations());
   }
 
   @Test
@@ -55,7 +55,7 @@ class ParentTreeGeneticQualityRepositoryTest {
   void findAllBySpuGeneticWorthTypeParentTreeIdEmptyTest() {
     List<ParentTreeGeneticQuality> parentTreeGeneticQualities =
         parentTreeGeneticQualityRepository.findAllBySpuGeneticWorthTypeParentTreeId(
-            0L, 'Y', "BV", List.of());
+            0L, true, "BV", List.of());
 
     assertTrue(parentTreeGeneticQualities.isEmpty());
   }

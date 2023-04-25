@@ -16,13 +16,13 @@ public interface ParentTreeGeneticQualityRepository
           """
           from ParentTreeGeneticQuality
           where seedPlaningUnitId = ?1
-            and geneticWorthCalcInd = ?2
+            and toBeUsedInCalculations = ?2
             and geneticTypeCode = ?3
             and parentTreeId in ?4
           """)
   List<ParentTreeGeneticQuality> findAllBySpuGeneticWorthTypeParentTreeId(
       Long spuId,
-      Character geneticWorthCalcInd,
+      boolean geneticWorthCalcInd,
       String geneticTypeCode,
       List<Long> parentTreeIdList);
 }

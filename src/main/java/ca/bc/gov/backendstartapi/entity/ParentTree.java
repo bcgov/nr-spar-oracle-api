@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ParentTree {
 
   @Id
-  @Column(name = "PARENT_TREE_ID", length = 10)
+  @Column(name = "PARENT_TREE_ID")
   private Long id;
 
   @Column(name = "PARENT_TREE_NUMBER", length = 5, nullable = false)
