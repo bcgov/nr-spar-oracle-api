@@ -32,7 +32,7 @@ public class OrchardParentTreeDto {
   @Schema(
       description = "A unique identifier which is assigned to a Seed Planning Unit.",
       example = "7")
-  private Long seedPlanUnitId;
+  private Long seedPlanningUnitId;
 
   private List<ParentTreeDto> parentTrees;
 

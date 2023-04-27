@@ -43,7 +43,7 @@ class ParentTreeGeneticQualityRepositoryTest {
 
     assertEquals(2563L, geneticQuality.getId());
     assertEquals(4032L, geneticQuality.getParentTreeId());
-    assertEquals(7L, geneticQuality.getSeedPlaningUnitId());
+    assertEquals(7L, geneticQuality.getSeedPlanningUnitId());
     assertEquals("BV", geneticQuality.getGeneticTypeCode());
     assertEquals("GVO", geneticQuality.getGeneticWorthCode());
     assertEquals(new BigDecimal("18.0"), geneticQuality.getGeneticQualityValue());

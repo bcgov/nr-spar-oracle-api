@@ -82,7 +82,7 @@ class OrchardEndpointTest {
     OrchardParentTreeDto orchardParentTreeDto = new OrchardParentTreeDto();
     orchardParentTreeDto.setOrchardId("405");
     orchardParentTreeDto.setVegetationCode("FDC");
-    orchardParentTreeDto.setSeedPlanUnitId(7L);
+    orchardParentTreeDto.setSeedPlanningUnitId(7L);
 
     ParentTreeDto parentTreeDto1 = new ParentTreeDto();
     parentTreeDto1.setParentTreeId(4001L);
@@ -109,14 +109,17 @@ class OrchardEndpointTest {
 
     mockMvc
         .perform(
-            get(path, orchardParentTreeDto.getOrchardId(), orchardParentTreeDto.getSeedPlanUnitId())
+            get(
+                    path,
+                    orchardParentTreeDto.getOrchardId(),
+                    orchardParentTreeDto.getSeedPlanningUnitId())
                 .with(csrf().asHeader())
                 .header("Content-Type", "application/json")
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.orchardId").value("405"))
         .andExpect(jsonPath("$.vegetationCode").value("FDC"))
-        .andExpect(jsonPath("$.seedPlanUnitId").value("7"))
+        .andExpect(jsonPath("$.seedPlanningUnitId").value("7"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeId").value("4001"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeNumber").value("37"))
         .andExpect(jsonPath("$.parentTrees[0].parentTreeRegStatusCode").value("APP"))

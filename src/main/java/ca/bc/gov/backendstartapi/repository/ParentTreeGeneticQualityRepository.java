@@ -15,7 +15,7 @@ public interface ParentTreeGeneticQualityRepository
       value =
           """
           from ParentTreeGeneticQuality
-          where seedPlaningUnitId = ?1
+          where seedPlanningUnitId = ?1
             and toBeUsedInCalculations = ?2
             and geneticTypeCode = ?3
             and parentTreeId in ?4

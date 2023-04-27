@@ -188,7 +188,7 @@ class OrchardServiceTest {
     ParentTreeGeneticQuality geneticQuality = new ParentTreeGeneticQuality();
     geneticQuality.setId(555L);
     geneticQuality.setParentTreeId(parentTreeOrchard1.getParentTreeId());
-    geneticQuality.setSeedPlaningUnitId(spuId);
+    geneticQuality.setSeedPlanningUnitId(spuId);
     geneticQuality.setGeneticTypeCode("BV");
     geneticQuality.setGeneticWorthCode("GVO");
     geneticQuality.setGeneticQualityValue(new BigDecimal("18.0"));
@@ -208,7 +208,7 @@ class OrchardServiceTest {
     // Orchard Parent Tree
     Assertions.assertEquals(orchardId, orchardParentTreeDto.getOrchardId());
     Assertions.assertEquals("FDC", orchardParentTreeDto.getVegetationCode());
-    Assertions.assertEquals(7L, orchardParentTreeDto.getSeedPlanUnitId());
+    Assertions.assertEquals(7L, orchardParentTreeDto.getSeedPlanningUnitId());
     Assertions.assertEquals(1, orchardParentTreeDto.getParentTrees().size());
 
     // Parent Trees

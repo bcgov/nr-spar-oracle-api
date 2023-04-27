@@ -25,7 +25,7 @@ public class ParentTreeGeneticQuality {
   private Long parentTreeId;
 
   @Column(name = "SEED_PLAN_UNIT_ID", nullable = false)
-  private Long seedPlaningUnitId;
+  private Long seedPlanningUnitId;
 
   @Column(name = "GENETIC_TYPE_CODE", nullable = false, length = 2)
   private String geneticTypeCode;
@@ -39,7 +39,7 @@ public class ParentTreeGeneticQuality {
   /**
    * Indicates that the {@link #geneticQualityValue} will be used in Genetic Worth calculations if
    * the associated {@link ParentTree} is used in Seedlot composition. Only one GQ value can be
-   * designated as such per unique combination of {@link #seedPlaningUnitId}, {@link
+   * designated as such per unique combination of {@link #seedPlanningUnitId}, {@link
    * #geneticTypeCode} and {@link #geneticWorthCode}.
    */
   @Column(name = "GENETIC_WORTH_CALC_IND", nullable = false)

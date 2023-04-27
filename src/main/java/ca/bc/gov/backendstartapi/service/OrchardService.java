@@ -103,7 +103,7 @@ public class OrchardService {
     OrchardParentTreeDto orchardParentTreeDto = new OrchardParentTreeDto();
     orchardParentTreeDto.setOrchardId(orchard.get().getId());
     orchardParentTreeDto.setVegetationCode(orchard.get().getVegetationCode());
-    orchardParentTreeDto.setSeedPlanUnitId(spuId);
+    orchardParentTreeDto.setSeedPlanningUnitId(spuId);
 
     long endingTwo = Instant.now().toEpochMilli();
     log.info("Time elapsed creating basic OrchardParentTreeDto: {}", endingTwo - endingOne);
