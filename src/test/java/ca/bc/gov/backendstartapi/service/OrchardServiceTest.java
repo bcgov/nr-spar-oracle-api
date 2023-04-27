@@ -12,6 +12,7 @@ import ca.bc.gov.backendstartapi.entity.OrchardLotTypeCode;
 import ca.bc.gov.backendstartapi.entity.ParentTree;
 import ca.bc.gov.backendstartapi.entity.ParentTreeGeneticQuality;
 import ca.bc.gov.backendstartapi.entity.ParentTreeOrchard;
+import ca.bc.gov.backendstartapi.entity.ParentTreeOrchardId;
 import ca.bc.gov.backendstartapi.repository.OrchardRepository;
 import ca.bc.gov.backendstartapi.repository.ParentTreeGeneticQualityRepository;
 import ca.bc.gov.backendstartapi.repository.ParentTreeOrchardRepository;
@@ -163,10 +164,12 @@ class OrchardServiceTest {
 
     // Parent Tree Orchard
     ParentTreeOrchard parentTreeOrchard1 = new ParentTreeOrchard();
-    parentTreeOrchard1.setParentTreeId(4032L);
-    parentTreeOrchard1.setOrchardId(orchardId);
+    ParentTreeOrchardId parentTreeOrchardId1 = new ParentTreeOrchardId();
+    parentTreeOrchardId1.setParentTreeId(4032L);
+    parentTreeOrchardId1.setOrchardId(orchardId);
+    parentTreeOrchard1.setId(parentTreeOrchardId1);
 
-    when(parentTreeOrchardRepository.findAllByOrchardId(orchardId))
+    when(parentTreeOrchardRepository.findByIdOrchardId(orchardId))
         .thenReturn(List.of(parentTreeOrchard1));
 
     // Parent Tree
@@ -187,7 +190,7 @@ class OrchardServiceTest {
     // Parent Tree Genetic Quality
     ParentTreeGeneticQuality geneticQuality = new ParentTreeGeneticQuality();
     geneticQuality.setId(555L);
-    geneticQuality.setParentTreeId(parentTreeOrchard1.getParentTreeId());
+    geneticQuality.setParentTreeId(parentTreeOrchard1.getId().getParentTreeId());
     geneticQuality.setSeedPlanningUnitId(spuId);
     geneticQuality.setGeneticTypeCode("BV");
     geneticQuality.setGeneticWorthCode("GVO");

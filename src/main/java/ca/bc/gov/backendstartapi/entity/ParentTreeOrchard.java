@@ -1,8 +1,7 @@
 package ca.bc.gov.backendstartapi.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +15,5 @@ import lombok.Setter;
 @Table(name = "PARENT_TREE_ORCHARD")
 public class ParentTreeOrchard {
 
-  @Id
-  @Column(name = "PARENT_TREE_ID")
-  private Long parentTreeId;
-
-  @Column(name = "ORCHARD_ID")
-  private String orchardId;
+  @EmbeddedId private ParentTreeOrchardId id;
 }

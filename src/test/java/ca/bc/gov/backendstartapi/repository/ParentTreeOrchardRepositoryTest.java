@@ -27,21 +27,21 @@ class ParentTreeOrchardRepositoryTest {
   @DisplayName("findAllByOrchardIdTest")
   @Sql(scripts = {"classpath:scripts/ParentTreeOrchardRepository.sql"})
   void findAllByOrchardIdTest() {
-    List<ParentTreeOrchard> orchards = parentTreeOrchardRepository.findAllByOrchardId("407");
+    List<ParentTreeOrchard> orchards = parentTreeOrchardRepository.findByIdOrchardId("407");
 
     assertFalse(orchards.isEmpty());
     assertEquals(3, orchards.size());
 
     ParentTreeOrchard parentTreeOrchard = orchards.get(0);
 
-    assertEquals(4032L, parentTreeOrchard.getParentTreeId());
-    assertEquals("407", parentTreeOrchard.getOrchardId());
+    assertEquals(4032L, parentTreeOrchard.getId().getParentTreeId());
+    assertEquals("407", parentTreeOrchard.getId().getOrchardId());
   }
 
   @Test
   @DisplayName("findAllByOrchardIdEmptyTest")
   void findAllByOrchardIdEmptyTest() {
-    List<ParentTreeOrchard> orchards = parentTreeOrchardRepository.findAllByOrchardId("123");
+    List<ParentTreeOrchard> orchards = parentTreeOrchardRepository.findByIdOrchardId("123");
 
     assertTrue(orchards.isEmpty());
   }

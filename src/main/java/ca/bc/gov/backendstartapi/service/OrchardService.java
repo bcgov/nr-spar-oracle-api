@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 /** This class contains methods to handle orchards. */
 @Service
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrchardService {
 
   private OrchardRepository orchardRepository;
@@ -34,8 +37,6 @@ public class OrchardService {
   private ParentTreeRepository parentTreeRepository;
 
   private ParentTreeGeneticQualityRepository parentTreeGeneticQualityRepository;
-
-  private OrchardService() {}
 
   @Autowired
   OrchardService(
@@ -119,29 +120,25 @@ public class OrchardService {
   private List<ParentTreeDto> findAllParentTree(String orchardId, Long spuId, long milli) {
     List<ParentTreeDto> parentTreeDtoList = new ArrayList<>();
     List<ParentTreeOrchard> parentTreeOrchards =
-        parentTreeOrchardRepository.findAllByOrchardId(orchardId);
+        parentTreeOrchardRepository.findByIdOrchardId(orchardId);
     long endingThree = Instant.now().toEpochMilli();
     log.info("Time elapsed querying all parent tree to the orchard: {}", endingThree - milli);
 
-    List<Long> orchardIdList =
-        parentTreeOrchards.stream().map(ParentTreeOrchard::getParentTreeId).toList();
+    List<Long> parentTreeIdList = new ArrayList<>();
+    parentTreeOrchards.forEach(pto -> parentTreeIdList.add(pto.getId().getParentTreeId()));
 
     long endingFour = Instant.now().toEpochMilli();
     log.info("Time elapsed mapping all parent tree orchard ids: {}", endingFour - endingThree);
 
-    List<ParentTree> parentTreeList = parentTreeRepository.findAllIn(orchardIdList);
+    List<ParentTree> parentTreeList = parentTreeRepository.findAllIn(parentTreeIdList);
 
     long endingFive = Instant.now().toEpochMilli();
     log.info("Time elapsed finding all parent tree (select in): {}", endingFive - endingFour);
 
-    List<Long> parentTreeIdList = parentTreeList.stream().map(ParentTree::getId).toList();
-    long endingSix = Instant.now().toEpochMilli();
-    log.info("Time elapsed mapping all parent tree ids: {}", endingSix - endingFive);
-
     List<ParentTreeGeneticQualityDto> qualityDtoList =
         findAllParentTreeGeneticQualities(spuId, parentTreeIdList);
     long endingSeven = Instant.now().toEpochMilli();
-    log.info("Time elapsed querying all parent tree genetic quality: {}", endingSeven - endingSix);
+    log.info("Time elapsed querying all parent tree genetic quality: {}", endingSeven - endingFive);
 
     for (ParentTree parentTree : parentTreeList) {
       ParentTreeDto parentTreeDto = new ParentTreeDto();
@@ -155,7 +152,6 @@ public class OrchardService {
       parentTreeDto.setFemaleParentTreeId(parentTree.getFemaleParentParentTreeId());
       parentTreeDto.setMaleParentTreeId(parentTree.getMaleParentParentTreeId());
 
-      // remove from for
       parentTreeDto.setParentTreeGeneticQualities(
           qualityDtoList.stream()
               .filter(x -> x.getParentTreeId().equals(parentTree.getId()))
