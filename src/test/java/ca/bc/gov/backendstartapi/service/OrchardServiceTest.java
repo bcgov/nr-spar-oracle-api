@@ -4,10 +4,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import ca.bc.gov.backendstartapi.dto.OrchardLotTypeDescriptionDto;
+import ca.bc.gov.backendstartapi.dto.OrchardParentTreeDto;
+import ca.bc.gov.backendstartapi.dto.ParentTreeDto;
+import ca.bc.gov.backendstartapi.dto.ParentTreeGeneticQualityDto;
 import ca.bc.gov.backendstartapi.entity.Orchard;
 import ca.bc.gov.backendstartapi.entity.OrchardLotTypeCode;
+import ca.bc.gov.backendstartapi.entity.ParentTree;
+import ca.bc.gov.backendstartapi.entity.ParentTreeGeneticQuality;
+import ca.bc.gov.backendstartapi.entity.ParentTreeOrchard;
+import ca.bc.gov.backendstartapi.entity.ParentTreeOrchardId;
 import ca.bc.gov.backendstartapi.repository.OrchardRepository;
+import ca.bc.gov.backendstartapi.repository.ParentTreeGeneticQualityRepository;
+import ca.bc.gov.backendstartapi.repository.ParentTreeOrchardRepository;
+import ca.bc.gov.backendstartapi.repository.ParentTreeRepository;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +34,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 class OrchardServiceTest {
 
   @Mock private OrchardRepository orchardRepository;
+
+  @Mock private ParentTreeOrchardRepository parentTreeOrchardRepository;
+
+  @Mock private ParentTreeRepository parentTreeRepository;
+
+  @Mock private ParentTreeGeneticQualityRepository parentTreeGeneticQualityRepository;
 
   @Autowired @InjectMocks private OrchardService orchardService;
 
@@ -116,5 +134,104 @@ class OrchardServiceTest {
         orchardService.findNotRetiredOrchardValidLotType("612");
 
     Assertions.assertTrue(descriptionDto.isEmpty());
+  }
+
+  @Test
+  @DisplayName("findParentTreeGeneticQualityDataTest_Empty")
+  void findParentTreeGeneticQualityDataTest_Empty() {
+    String orchardId = "999";
+    when(orchardRepository.findById(orchardId)).thenReturn(Optional.empty());
+
+    Optional<OrchardParentTreeDto> dto =
+        orchardService.findParentTreeGeneticQualityData(orchardId, 2L);
+
+    Assertions.assertTrue(dto.isEmpty());
+  }
+
+  @Test
+  @DisplayName("findParentTreeGeneticQualityDataTest_Success")
+  void findParentTreeGeneticQualityDataTest_Success() {
+    String orchardId = "407";
+
+    // Orchard
+    Orchard orchard = new Orchard();
+    orchard.setId(orchardId);
+    orchard.setName("Test");
+    orchard.setVegetationCode("FDC");
+    orchard.setStageCode("ABC");
+
+    when(orchardRepository.findById(orchardId)).thenReturn(Optional.of(orchard));
+
+    // Parent Tree Orchard
+    ParentTreeOrchard parentTreeOrchard1 = new ParentTreeOrchard();
+    ParentTreeOrchardId parentTreeOrchardId1 = new ParentTreeOrchardId();
+    parentTreeOrchardId1.setParentTreeId(4032L);
+    parentTreeOrchardId1.setOrchardId(orchardId);
+    parentTreeOrchard1.setId(parentTreeOrchardId1);
+
+    when(parentTreeOrchardRepository.findByIdOrchardId(orchardId))
+        .thenReturn(List.of(parentTreeOrchard1));
+
+    // Parent Tree
+    ParentTree parentTree = new ParentTree();
+    parentTree.setId(4032L);
+    parentTree.setParentTreeNumber("37");
+    parentTree.setVegetationCode("FDC");
+    parentTree.setParentTreeRegStatusCode("APP");
+    parentTree.setLocalNumber("123");
+    parentTree.setActive(true);
+    parentTree.setTested(true);
+    parentTree.setBreedingProgram(true);
+
+    when(parentTreeRepository.findAllIn(any())).thenReturn(List.of(parentTree));
+
+    Long spuId = 7L;
+
+    // Parent Tree Genetic Quality
+    ParentTreeGeneticQuality geneticQuality = new ParentTreeGeneticQuality();
+    geneticQuality.setId(555L);
+    geneticQuality.setParentTreeId(parentTreeOrchard1.getId().getParentTreeId());
+    geneticQuality.setSeedPlanningUnitId(spuId);
+    geneticQuality.setGeneticTypeCode("BV");
+    geneticQuality.setGeneticWorthCode("GVO");
+    geneticQuality.setGeneticQualityValue(new BigDecimal("18.0"));
+    geneticQuality.setToBeUsedInCalculations(true);
+
+    when(parentTreeGeneticQualityRepository.findAllBySpuGeneticWorthTypeParentTreeId(
+            spuId, true, "BV", List.of(4032L)))
+        .thenReturn(List.of(geneticQuality));
+
+    Optional<OrchardParentTreeDto> dto =
+        orchardService.findParentTreeGeneticQualityData(orchardId, spuId);
+
+    Assertions.assertFalse(dto.isEmpty());
+
+    OrchardParentTreeDto orchardParentTreeDto = dto.get();
+
+    // Orchard Parent Tree
+    Assertions.assertEquals(orchardId, orchardParentTreeDto.getOrchardId());
+    Assertions.assertEquals("FDC", orchardParentTreeDto.getVegetationCode());
+    Assertions.assertEquals(7L, orchardParentTreeDto.getSeedPlanningUnitId());
+    Assertions.assertEquals(1, orchardParentTreeDto.getParentTrees().size());
+
+    // Parent Trees
+    ParentTreeDto parentTreeDto = orchardParentTreeDto.getParentTrees().get(0);
+    Assertions.assertEquals(4032L, parentTreeDto.getParentTreeId());
+    Assertions.assertEquals("37", parentTreeDto.getParentTreeNumber());
+    Assertions.assertEquals("APP", parentTreeDto.getParentTreeRegStatusCode());
+    Assertions.assertEquals("123", parentTreeDto.getLocalNumber());
+    Assertions.assertTrue(parentTreeDto.isActive());
+    Assertions.assertTrue(parentTreeDto.isTested());
+    Assertions.assertTrue(parentTreeDto.isBreedingProgram());
+    Assertions.assertNull(parentTreeDto.getFemaleParentTreeId());
+    Assertions.assertNull(parentTreeDto.getMaleParentTreeId());
+    Assertions.assertEquals(1, parentTreeDto.getParentTreeGeneticQualities().size());
+
+    // Parent Tree Genetic Quality
+    ParentTreeGeneticQualityDto geneticDto = parentTreeDto.getParentTreeGeneticQualities().get(0);
+    Assertions.assertEquals(4032L, geneticDto.getParentTreeId());
+    Assertions.assertEquals("BV", geneticDto.getGeneticTypeCode());
+    Assertions.assertEquals("GVO", geneticDto.getGeneticWorthCode());
+    Assertions.assertEquals(new BigDecimal("18.0"), geneticDto.getGeneticQualityValue());
   }
 }
